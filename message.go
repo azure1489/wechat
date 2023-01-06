@@ -284,3 +284,25 @@ func DownPic(url string, toPath, msgXml string) error {
 
 	return nil
 }
+
+// GetUnReadMsgNum 获取未读消息总数 https://www.showdoc.com.cn/WeChatProject/9690385454945788
+func GetUnReadMsgNum(url string) (string, error) {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return "", err
+	}
+
+	resultBody, err := client.DoPost("/GetUnReadMsgNum", nil)
+	if err != nil {
+		return "", err
+	}
+
+	commonResult := model.GetUnReadMsgNumResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return "", err
+	}
+
+	return commonResult.GetUnReadMsgNum, nil
+}

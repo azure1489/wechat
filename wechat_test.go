@@ -143,3 +143,14 @@ func TestDownPic(t *testing.T) {
 		return
 	}
 }
+
+func TestGetUnReadMsgNum(t *testing.T) {
+	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
+	info, err := GetUnReadMsgNum(url)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	fmt.Println(info)
+}

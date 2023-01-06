@@ -75,3 +75,7 @@ type DownPicReq struct {
 type DownPicResult struct {
 	DownPic string `json:"DownPic"`
 }
+
+type GetUnReadMsgNumResult struct {
+	GetUnReadMsgNum string `json:"GetUnReadMsgNum"`
+}
