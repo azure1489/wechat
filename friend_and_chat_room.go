@@ -3,10 +3,10 @@ package wechat
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/azure1489/wechat/model"
+	"github.com/azure1489/wechat/util"
 	"strings"
 	"time"
-	"wechat/model"
-	"wechat/util"
 )
 
 // GetFriendAndChatRoomList 获取好友和群清单 https://www.showdoc.com.cn/WeChatProject/8995071288617868

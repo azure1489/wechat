@@ -1,4 +1,4 @@
-module wechat
+module github.com/azure1489/wechat
 
 require (
 )
