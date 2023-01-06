@@ -19,3 +19,12 @@ type QueryBodyInfoResult struct {
 	V3          string `json:"v3"`
 	V4          string `json:"v4"`
 }
+
+type EditFriendMarkReq struct {
+	Wxid string `json:"wxid"`
+	Mark string `json:"mark"`
+}
+
+type EditFriendMarkResult struct {
+	EditFriendMark string `json:"EditFriendMark"`
+}

@@ -154,3 +154,12 @@ func TestGetUnReadMsgNum(t *testing.T) {
 
 	fmt.Println(info)
 }
+
+func TestEditFriendMark(t *testing.T) {
+	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
+	err := EditFriendMark(url, "", "test2")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
