@@ -33,7 +33,7 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 
 func TestSendTextMsg(t *testing.T) {
 	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
-	err := SendTextMsg(url, "filehelper", "中午还吃吗")
+	err := SendTextMsg(url, "filehelper", "rttt")
 	if err != nil {
 		t.Error(err)
 		return
@@ -137,11 +137,15 @@ func TestGetGIFURL(t *testing.T) {
 
 func TestDownPic(t *testing.T) {
 	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
-	err := DownPic(url, "D:\\test.jpg", "<msg><img hdlength=\"0\" length=\"315516\" hevc_mid_size=\"0\"  cdnbigimgurl=\"\" cdnmidimgurl=\"3057020100044b304902010002044be37a2b02032f59e1020415c7587d020463b70dd4042461663562393166302d313236332d346666632d393633302d3162313061313766623030640204011800020201000405004c550500\" aeskey=\"0de40e3aaef6cd046e57415849621ed8\" cdnthumburl=\"3057020100044b304902010002044be37a2b02032f59e1020415c7587d020463b70dd4042461663562393166302d313236332d346666632d393633302d3162313061313766623030640204011800020201000405004c550500\" cdnthumblength=\"16497\" cdnthumbwidth=\"120\" cdnthumbheight=\"120\" cdnthumbaeskey=\"0de40e3aaef6cd046e57415849621ed8\" encryver=\"1\" md5=\"286b5947152e8698e1caa807c1239698\"/><commenturl></commenturl></msg>")
+
+	filePath := "D:\\test2.jpg"
+	err := DownPic(url, filePath, "<msg><img hdlength=\"0\" length=\"209763\" hevc_mid_size=\"0\"  cdnbigimgurl=\"\" cdnmidimgurl=\"3057020100044b304902010002044be37a2b02032f597d0204179f3cb70204638f1b70042465613135306638322d633766322d343161302d626239352d3830363064636633613035610204011800020201000405004c53d900\" aeskey=\"f398b9444dd72d30a5a04902d232f8fb\" cdnthumburl=\"3057020100044b304902010002044be37a2b02032f597d0204179f3cb70204638f1b70042465613135306638322d633766322d343161302d626239352d3830363064636633613035610204011800020201000405004c53d900\" cdnthumblength=\"27673\" cdnthumbwidth=\"116\" cdnthumbheight=\"120\" cdnthumbaeskey=\"f398b9444dd72d30a5a04902d232f8fb\" encryver=\"1\" md5=\"12a8fd3164293a29a7592b2e4bd1a580\"/><commenturl></commenturl></msg>")
 	if err != nil {
 		t.Error(err)
 		return
 	}
+
+	SendPicMsg(url, "filehelper", filePath, "")
 }
 
 func TestGetUnReadMsgNum(t *testing.T) {
@@ -158,6 +162,15 @@ func TestGetUnReadMsgNum(t *testing.T) {
 func TestEditFriendMark(t *testing.T) {
 	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
 	err := EditFriendMark(url, "", "test2")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestSendDIYMsg(t *testing.T) {
+	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
+	err := SendDIYMsg(url, "filehelper", "3", "<?xml version=\"1.0\"?>\n<msg>\n\t<img aeskey=\"b2337cba8409dfbc309a4854c3b7a4cb\" encryver=\"0\" cdnthumbaeskey=\"b2337cba8409dfbc309a4854c3b7a4cb\" cdnthumburl=\"3057020100044b304902010002044be37a2b02032f59e1020432c7587d020463b996d0042435616561623063632d653966342d346538642d396562652d363637366263663263323935020401190a020201000405004c54a100\" cdnthumblength=\"2515\" cdnthumbheight=\"90\" cdnthumbwidth=\"120\" cdnmidheight=\"0\" cdnmidwidth=\"0\" cdnhdheight=\"0\" cdnhdwidth=\"0\" cdnmidimgurl=\"3057020100044b304902010002044be37a2b02032f59e1020432c7587d020463b996d0042435616561623063632d653966342d346538642d396562652d363637366263663263323935020401190a020201000405004c54a100\" length=\"1\" md5=\"6293dad30a9383b85ee4248308f803ab\" hevc_mid_size=\"28226\" />\n\t<platform_signature></platform_signature>\n\t<imgdatahash></imgdatahash>\n</msg>\n")
 	if err != nil {
 		t.Error(err)
 		return

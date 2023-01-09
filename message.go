@@ -306,3 +306,35 @@ func GetUnReadMsgNum(url string) (string, error) {
 
 	return commonResult.GetUnReadMsgNum, nil
 }
+
+// SendDIYMsg 发送自定义消息 https://www.showdoc.com.cn/WeChatProject/9167460676535402
+func SendDIYMsg(url string, wxid, msgType, msg string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.SendDIYMsgReq{
+		Type: msgType,
+		Wxid: wxid,
+		Msg:  msg,
+	}
+
+	resultBody, err := client.DoPost("/SendDIYMsg", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.SendDIYMsgResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.SendDIYMsg != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}

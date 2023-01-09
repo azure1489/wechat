@@ -79,3 +79,13 @@ type DownPicResult struct {
 type GetUnReadMsgNumResult struct {
 	GetUnReadMsgNum string `json:"GetUnReadMsgNum"`
 }
+
+type SendDIYMsgReq struct {
+	Type string `json:"type"`
+	Wxid string `json:"wxid"`
+	Msg  string `json:"msg"`
+}
+
+type SendDIYMsgResult struct {
+	SendDIYMsg string `json:"SendDIYMsg"`
+}
