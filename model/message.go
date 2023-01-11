@@ -5,6 +5,10 @@ type SendTextMsgReq struct {
 	Msg  string `json:"msg"`
 }
 
+type SendTextMsgResult struct {
+	SendTextMsg string `json:"SendTextMsg"`
+}
+
 type SendPicMsgReq struct {
 	Wxid        string `json:"wxid"`
 	PicPath     string `json:"picpath"`
@@ -45,6 +49,7 @@ type ConfigureMsgReciveFullURLResult struct {
 
 type ConfigureMsgReciveReq struct {
 	IsEnable string `json:"isEnable"`
+	Url      string `json:"url"`
 }
 
 type ConfigureMsgReciveResult struct {

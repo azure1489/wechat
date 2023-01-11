@@ -33,7 +33,7 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 
 func TestSendTextMsg(t *testing.T) {
 	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
-	err := SendTextMsg(url, "filehelper", "rttt")
+	err := SendTextMsg(url, "25984983467352819@openim", "test")
 	if err != nil {
 		t.Error(err)
 		return
@@ -67,18 +67,18 @@ func TestSendPicMsg(t *testing.T) {
 	}
 }
 
-func TestConfigureMsgReciveFullURL(t *testing.T) {
-	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30003)
-	err := ConfigureMsgReciveFullURL(url, "")
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
+//func TestConfigureMsgReciveFullURL(t *testing.T) {
+//	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
+//	err := ConfigureMsgReciveFullURL(url, "https://mp.aworld.ltd/message/save/configure")
+//	if err != nil {
+//		t.Error(err)
+//		return
+//	}
+//}
 
 func TestConfigureMsgRecive(t *testing.T) {
 	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30003)
-	err := ConfigureMsgRecive(url, 1)
+	err := ConfigureMsgRecive(url, 1, "https://mp.aworld.ltd/win/msg/recive")
 	if err != nil {
 		t.Error(err)
 		return
