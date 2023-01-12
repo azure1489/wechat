@@ -33,7 +33,7 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 
 func TestSendTextMsg(t *testing.T) {
 	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
-	err := SendTextMsg(url, "25984983467352819@openim", "test")
+	err := SendTextMsg(url, "filehelper", "test")
 	if err != nil {
 		t.Error(err)
 		return
@@ -78,7 +78,7 @@ func TestSendPicMsg(t *testing.T) {
 
 func TestConfigureMsgRecive(t *testing.T) {
 	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30003)
-	err := ConfigureMsgRecive(url, 1, "https://mp.aworld.ltd/win/msg/recive")
+	err := ConfigureMsgRecive(url, 1, "")
 	if err != nil {
 		t.Error(err)
 		return
