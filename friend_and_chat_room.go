@@ -22,6 +22,8 @@ func GetFriendAndChatRoomList(url string) (*model.FriendAndChatRoomResult, error
 		return nil, err
 	}
 
+	//fmt.Println("resultBody:", string(resultBody))
+
 	friendAndChatRoom := model.FriendAndChatRoomResult{}
 	err = json.Unmarshal(resultBody, &friendAndChatRoom)
 	if err != nil {

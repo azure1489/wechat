@@ -1,34 +1,42 @@
 package wechat
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"testing"
 )
 
 func TestGetFriendAndChatRoomList(t *testing.T) {
-	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
+	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30003)
 	friendAndChatRooms, err := GetFriendAndChatRoomList(url)
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	if len(friendAndChatRooms.Friends) > 0 {
-		for _, friend := range friendAndChatRooms.Friends {
-			friendStatus, err := CheckFriendStatus(url, friend.Wxid)
-			if err != nil {
-				t.Error(err)
-				return
-			}
-			if friendStatus != 1 {
-				log.Println("wxid:", friend.Wxid)
-				log.Println("非好友 friendStatus:", friendStatus)
-				log.Println("昵称:", friend.Nickname)
-				log.Println("头像:", friend.Headimg)
-			}
-		}
-	}
+
+	bf := bytes.NewBuffer([]byte{})
+	jsonEncoder := json.NewEncoder(bf)
+	jsonEncoder.SetEscapeHTML(false)
+	jsonEncoder.Encode(friendAndChatRooms)
+
+	fmt.Println("data:", bf.String())
+
+	//if len(friendAndChatRooms.Friends) > 0 {
+	//	for _, friend := range friendAndChatRooms.Friends {
+	//		friendStatus, err := CheckFriendStatus(url, friend.Wxid)
+	//		if err != nil {
+	//			t.Error(err)
+	//			return
+	//		}
+	//		if friendStatus != 1 {
+	//			log.Println("wxid:", friend.Wxid)
+	//			log.Println("非好友 friendStatus:", friendStatus)
+	//			log.Println("昵称:", friend.Nickname)
+	//			log.Println("头像:", friend.Headimg)
+	//		}
+	//	}
+	//}
 }
 
 func TestSendTextMsg(t *testing.T) {
