@@ -101,3 +101,11 @@ type GetFriendOrChatroomDetailInfoResultChatroomItemMember struct {
 	Nickname string `json:"nickname,omitempty"`
 	Fromsouc string `json:"fromsouc,omitempty"`
 }
+
+type MarkAsReadSessionReq struct {
+	GidOrWxid string `json:"gidorwxid"`
+}
+
+type MarkAsReadSessionResult struct {
+	MarkAsReadSession string `json:"MarkAsReadSession"`
+}

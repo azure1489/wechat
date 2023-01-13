@@ -144,3 +144,33 @@ func GetFriendOrChatroomDetailInfo(url string, wxidorgid string) (*model.GetFrie
 
 	return &commonResult, nil
 }
+
+// MarkAsReadSession 标为已读会话 https://www.showdoc.com.cn/WeChatProject/9219474016553735
+func MarkAsReadSession(url string, gidOrWxid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.MarkAsReadSessionReq{
+		GidOrWxid: gidOrWxid,
+	}
+
+	resultBody, err := client.DoPost("/MarkAsReadSession", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.MarkAsReadSessionResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.MarkAsReadSession != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
