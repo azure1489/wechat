@@ -1,7 +1,7 @@
 @echo off
 chcp 65001
 
-set tagV=v0.0.3
+set tagV=v0.0.4
 
 echo "------------%tagV%------------------------------"
 
