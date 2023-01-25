@@ -39,6 +39,42 @@ type SendVideoMsgResult struct {
 	SendVideoMsg string `json:"SendVideoMsg"`
 }
 
+type SendGIFMsgReq struct {
+	Wxid    string `json:"wxid"`
+	GifPath string `json:"gifpath"`
+}
+
+type SendGIFMsgResult struct {
+	SendGIFMsg string `json:"SendGIFMsg"`
+}
+
+type SendLocationMsgReq struct {
+	Wxid string `json:"wxid"`
+	Msg  string `json:"msg"`
+}
+
+type SendLocationMsgResult struct {
+	SendLocationMsg string `json:"SendLocationMsg"`
+}
+
+type SendPatMsgReq struct {
+	Wxid string `json:"wxid"`
+	Gid  string `json:"gid"`
+}
+
+type SendPatMsgResult struct {
+	SendPatMsg string `json:"SendPatMsg"`
+}
+
+type SendVoiceMsgReq struct {
+	Wxid     string `json:"wxid"`
+	VoiceHex string `json:"voice_hex"`
+}
+
+type SendVoiceMsgResult struct {
+	SendVoiceMsg string `json:"SendVoiceMsg"`
+}
+
 type ConfigureMsgReciveFullURLReq struct {
 	Url string `json:"url"`
 }
@@ -93,4 +129,89 @@ type SendDIYMsgReq struct {
 
 type SendDIYMsgResult struct {
 	SendDIYMsg string `json:"SendDIYMsg"`
+}
+
+type SendCardMsgReq struct {
+	Towxid   string `json:"towxid"`
+	Fromwxid string `json:"fromwxid"`
+	Nickname string `json:"nickname"`
+}
+
+type SendCardMsgResult struct {
+	SendCardMsg string `json:"SendCardMsg"`
+}
+
+type FowardEssayMsgReq struct {
+	Towxid  string `json:"towxid"`
+	Title   string `json:"title"`
+	Desc    string `json:"desc"`
+	URL     string `json:"url"`
+	Imgpath string `json:"imgpath"`
+}
+
+type FowardEssayMsgResult struct {
+	FowardEssayMsg string `json:"FowardEssayMsg"`
+}
+
+type FowardAppMsgReq struct {
+	Towxid  string `json:"towxid"`
+	Imgpath string `json:"imgpath"`
+	XML     string `json:"xml"`
+}
+
+type FowardAppMsgResult struct {
+	FowardAppMsg string `json:"FowardAppMsg"`
+}
+
+type FowardMusicMsgReq struct {
+	Towxid  string `json:"towxid"`
+	Imgpath string `json:"imgpath"`
+	Title   string `json:"title"`
+	Desc    string `json:"desc"`
+	URL     string `json:"url"`
+	Dataurl string `json:"dataurl"`
+}
+
+type FowardMusicMsgResult struct {
+	FowardMusicMsg string `json:"FowardMusicMsg"`
+}
+
+type FowardXMLMsgReq struct {
+	Type    string `json:"type"`
+	Towxid  string `json:"towxid"`
+	Imgpath string `json:"imgpath"`
+	XML     string `json:"xml"`
+}
+
+type FowardXMLMsgResult struct {
+	FowardXMLMsg string `json:"FowardXMLMsg"`
+}
+
+type SendAtMsgReq struct {
+	Gid  string `json:"gid"`
+	Wxid string `json:"wxid"`
+	Msg  string `json:"msg"`
+	Desc string `json:"desc"`
+}
+
+type SendAtMsgResult struct {
+	SendAtMsg string `json:"SendAtMsg"`
+}
+
+type SendAtAllMsgReq struct {
+	Gid string `json:"gid"`
+	Msg string `json:"msg"`
+}
+
+type SendAtAllMsgResult struct {
+	SendAtAllMsg string `json:"SendAtAllMsg"`
+}
+
+type ForwardAllMsgReq struct {
+	Msgid string `json:"msgid"`
+	Wxid  string `json:"wxid"`
+}
+
+type ForwardAllMsgResult struct {
+	ForwardAllMsg string `json:"ForwardAllMsg"`
 }

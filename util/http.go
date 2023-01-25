@@ -73,3 +73,28 @@ func (w *HttpClient) DoPost(model string, postBody interface{}) ([]byte, error) 
 
 	return body, nil
 }
+
+func (w *HttpClient) DoGet(model string) ([]byte, error) {
+
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", w.Url, model), nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := (&http.Client{Timeout: w.Timeout}).Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("response status code=%d, body=%s", resp.StatusCode, string(body))
+	}
+
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
