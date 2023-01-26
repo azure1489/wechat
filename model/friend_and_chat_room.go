@@ -109,3 +109,69 @@ type MarkAsReadSessionReq struct {
 type MarkAsReadSessionResult struct {
 	MarkAsReadSession string `json:"MarkAsReadSession"`
 }
+
+type InitContactResult struct {
+	InitContact string                       `json:"InitContact"`
+	Batch       []InitContactResultBatchItem `json:"batch"`
+}
+
+type InitContactResultBatchItem struct {
+	Number string `json:"number"`
+	List   string `json:"list"`
+}
+
+type GetCurrentChatObjectInfoResult struct {
+	Wxid     string `json:"wxid"`
+	V3       string `json:"v3"`
+	Nickname string `json:"nickname"`
+	Name     string `json:"name"`
+	Headurl  string `json:"headurl"`
+}
+
+type SwitchCurrentChatObjectReq struct {
+	WxidOrGid string `json:"wxidorgid"`
+}
+
+type SwitchCurrentChatObjectResult struct {
+	SwitchCurrentChatObject string `json:"SwitchCurrentChatObject"`
+}
+
+type TurnOnDoNotDisturbReq struct {
+	GidOrWxid string `json:"gidorwxid"`
+}
+
+type TurnOnDoNotDisturbResult struct {
+	TurnOnDoNotDisturb string `json:"TurnOnDoNotDisturb"`
+}
+
+type TurnOffDoNotDisturbReq struct {
+	GidOrWxid string `json:"gidorwxid"`
+}
+
+type TurnOffDoNotDisturbResult struct {
+	TurnOffDoNotDisturb string `json:"TurnOffDoNotDisturb"`
+}
+
+type SaveToContactReq struct {
+	GidOrWxid string `json:"gidorwxid"`
+}
+
+type SaveToContactResult struct {
+	SaveToContact string `json:"SaveToContact"`
+}
+
+type RemoveToContactReq struct {
+	GidOrWxid string `json:"gidorwxid"`
+}
+
+type RemoveToContactResult struct {
+	RemoveToContact string `json:"RemoveToContact"`
+}
+
+type MarkAsNoReadSessionReq struct {
+	GidOrWxid string `json:"gidorwxid"`
+}
+
+type MarkAsNoReadSessionResult struct {
+	MarkAsNoReadSession string `json:"MarkAsNoReadSession"`
+}

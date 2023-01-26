@@ -3,10 +3,11 @@ package wechat
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/azure1489/wechat/model"
-	"github.com/azure1489/wechat/util"
 	"strings"
 	"time"
+
+	"github.com/azure1489/wechat/model"
+	"github.com/azure1489/wechat/util"
 )
 
 // GetFriendAndChatRoomList 获取好友和群清单 https://www.showdoc.com.cn/WeChatProject/8995071288617868
@@ -169,6 +170,234 @@ func MarkAsReadSession(url string, gidOrWxid string) error {
 	}
 
 	if commonResult.MarkAsReadSession != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// InitContact 初始化通讯录 https://www.showdoc.com.cn/WeChatProject/9730605278628502
+func InitContact(url string) (*[]model.InitContactResultBatchItem, error) {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return nil, err
+	}
+
+	resultBody, err := client.DoPost("/InitContact", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	commonResult := model.InitContactResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return nil, err
+	}
+
+	if commonResult.InitContact != "1" {
+		return nil, fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return &commonResult.Batch, nil
+}
+
+// GetCurrentChatObjectInfo 获取当前聊天对象信息 https://www.showdoc.com.cn/WeChatProject/9019586393938696
+func GetCurrentChatObjectInfo(url string) (*model.GetCurrentChatObjectInfoResult, error) {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return nil, err
+	}
+
+	resultBody, err := client.DoPost("/GetCurrentChatObjectInfo", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	commonResult := model.GetCurrentChatObjectInfoResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return &commonResult, nil
+}
+
+// SwitchCurrentChatObject 切换当前聊天对象 https://www.showdoc.com.cn/WeChatProject/9019589526757527
+func SwitchCurrentChatObject(url string, wxidOrGid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.SwitchCurrentChatObjectReq{
+		WxidOrGid: wxidOrGid,
+	}
+
+	resultBody, err := client.DoPost("/SwitchCurrentChatObject", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.SwitchCurrentChatObjectResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.SwitchCurrentChatObject != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// TurnOnDoNotDisturb 开启消息免打扰 https://www.showdoc.com.cn/WeChatProject/9063347648143133
+func TurnOnDoNotDisturb(url string, gidOrWxid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.TurnOnDoNotDisturbReq{
+		GidOrWxid: gidOrWxid,
+	}
+
+	resultBody, err := client.DoPost("/TurnOnDoNotDisturb", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.TurnOnDoNotDisturbResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.TurnOnDoNotDisturb != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// TurnOffDoNotDisturb 关闭消息免打扰 https://www.showdoc.com.cn/WeChatProject/9063348367251383
+func TurnOffDoNotDisturb(url string, gidOrWxid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.TurnOffDoNotDisturbReq{
+		GidOrWxid: gidOrWxid,
+	}
+
+	resultBody, err := client.DoPost("/TurnOffDoNotDisturb", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.TurnOffDoNotDisturbResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.TurnOffDoNotDisturb != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// SaveToContact 保存到通讯录 https://www.showdoc.com.cn/WeChatProject/9063365453994960
+func SaveToContact(url string, gidOrWxid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.SaveToContactReq{
+		GidOrWxid: gidOrWxid,
+	}
+
+	resultBody, err := client.DoPost("/SaveToContact", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.SaveToContactResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.SaveToContact != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// RemoveToContact 从通讯录移除 https://www.showdoc.com.cn/WeChatProject/9063365712246544
+func RemoveToContact(url string, gidOrWxid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.RemoveToContactReq{
+		GidOrWxid: gidOrWxid,
+	}
+
+	resultBody, err := client.DoPost("/RemoveToContact", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.RemoveToContactResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.RemoveToContact != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// MarkAsNoReadSession 标为未读会话 https://www.showdoc.com.cn/WeChatProject/9644356701774840
+func MarkAsNoReadSession(url string, gidOrWxid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.MarkAsNoReadSessionReq{
+		GidOrWxid: gidOrWxid,
+	}
+
+	resultBody, err := client.DoPost("/MarkAsNoReadSession", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.MarkAsNoReadSessionResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.MarkAsNoReadSession != "1" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
 
