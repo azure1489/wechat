@@ -762,7 +762,7 @@ func GetMsgStruct(url string, msgId string) (*model.GetMsgStructResult, error) {
 	return &commonResult, nil
 }
 
-// DownPic4ID 下载图片 https://www.showdoc.com.cn/WeChatProject/9682774769136221
+// DownPic4ID 下载图片_使用文件id和key https://www.showdoc.com.cn/WeChatProject/9745105666381249
 func DownPic4ID(url string, req model.DownPic4IDReq) error {
 	timeout := time.Second * 60
 	client, err := util.NewClient(url, timeout)
@@ -782,6 +782,62 @@ func DownPic4ID(url string, req model.DownPic4IDReq) error {
 	}
 
 	if commonResult.DownPic4ID != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// DownFileorPic 下载图片_使用服务器消息ID https://www.showdoc.com.cn/WeChatProject/9364507487384330
+func DownFileorPic(url string, msgId string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.DownFileorPicReq{
+		MsgId: msgId,
+	}
+
+	resultBody, err := client.DoPost("/DownFileorPic", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.DownFileorPicResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.DownFileorPic != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// ClearAllChatMsg 清空聊天记录 https://www.showdoc.com.cn/WeChatProject/9584482852044275
+func ClearAllChatMsg(url string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/ClearAllChatMsg", nil)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.ClearAllChatMsgResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.ClearAllChatMsg != "1" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
 

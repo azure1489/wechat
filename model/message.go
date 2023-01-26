@@ -262,3 +262,15 @@ type DownPic4IDReq struct {
 type DownPic4IDResult struct {
 	DownPic4ID string `json:"DownPic4ID"`
 }
+
+type DownFileorPicReq struct {
+	MsgId string `json:"msg_id"`
+}
+
+type DownFileorPicResult struct {
+	DownFileorPic string `json:"DownFileorPic"`
+}
+
+type ClearAllChatMsgResult struct {
+	ClearAllChatMsg string `json:"ClearAllChatMsg"`
+}
