@@ -215,3 +215,50 @@ type ForwardAllMsgReq struct {
 type ForwardAllMsgResult struct {
 	ForwardAllMsg string `json:"ForwardAllMsg"`
 }
+
+type DecodePicReq struct {
+	OriPath  string `json:"oripath"`
+	SavePath string `json:"savepath"`
+}
+
+type DecodePicResult struct {
+	DecodePic string `json:"DecodePic"`
+}
+
+type CollectionReq struct {
+	Fromwxid   string `json:"fromwxid"`
+	Transferid string `json:"transferid"`
+}
+
+type CollectionResult struct {
+	Collection string `json:"Collection"`
+}
+
+type UnCollectionReq struct {
+	Fromwxid   string `json:"fromwxid"`
+	Transferid string `json:"transferid"`
+}
+
+type UnCollectionResult struct {
+	UnCollection string `json:"UnCollection"`
+}
+
+type GetMsgStructReq struct {
+	MsgId string `json:"msg_id"`
+}
+
+type GetMsgStructResult struct {
+	Msgtype string `json:"msgtype"`
+	Towxid  string `json:"towxid"`
+	Content string `json:"content"`
+}
+
+type DownPic4IDReq struct {
+	Topath string `json:"topath"`
+	Aeskey string `json:"aeskey"`
+	Fileid string `json:"fileid"`
+}
+
+type DownPic4IDResult struct {
+	DownPic4ID string `json:"DownPic4ID"`
+}

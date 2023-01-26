@@ -590,6 +590,37 @@ func GetGIFURL(url string, msgXml string) (string, error) {
 	return commonResult.GetGIFURL, nil
 }
 
+// DecodePic 解密图片 https://www.showdoc.com.cn/WeChatProject/8929707428199536
+func DecodePic(url string, oriPath, savePath string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.DecodePicReq{
+		OriPath:  oriPath,
+		SavePath: savePath,
+	}
+
+	resultBody, err := client.DoPost("/DecodePic", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.DecodePicResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.DecodePic != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
 // DownPic 下载图片 https://www.showdoc.com.cn/WeChatProject/9682774769136221
 func DownPic(url string, toPath, msgXml string) error {
 	timeout := time.Second * 60
@@ -641,4 +672,118 @@ func GetUnReadMsgNum(url string) (string, error) {
 	}
 
 	return commonResult.GetUnReadMsgNum, nil
+}
+
+// Collection 确认收款 https://www.showdoc.com.cn/WeChatProject/8929685205004781
+func Collection(url string, fromwxid, transferid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.CollectionReq{
+		Fromwxid:   fromwxid,
+		Transferid: transferid,
+	}
+
+	resultBody, err := client.DoPost("/Collection", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.CollectionResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.Collection != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// UnCollection 退还转账 https://www.showdoc.com.cn/WeChatProject/9652344490820665
+func UnCollection(url string, fromwxid, transferid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.UnCollectionReq{
+		Fromwxid:   fromwxid,
+		Transferid: transferid,
+	}
+
+	resultBody, err := client.DoPost("/UnCollection", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.UnCollectionResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.UnCollection != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// GetMsgStruct 获取消息内容 https://www.showdoc.com.cn/WeChatProject/9364487555891575
+func GetMsgStruct(url string, msgId string) (*model.GetMsgStructResult, error) {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return nil, err
+	}
+
+	req := model.GetMsgStructReq{
+		MsgId: msgId,
+	}
+
+	resultBody, err := client.DoPost("/GetMsgStruct", req)
+	if err != nil {
+		return nil, err
+	}
+
+	commonResult := model.GetMsgStructResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return &commonResult, nil
+}
+
+// DownPic4ID 下载图片 https://www.showdoc.com.cn/WeChatProject/9682774769136221
+func DownPic4ID(url string, req model.DownPic4IDReq) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/DownPic4ID", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.DownPic4IDResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.DownPic4ID != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
 }
