@@ -298,7 +298,7 @@ func UndoStarTag(url string, wxid string) error {
 	return nil
 }
 
-// SetContactRole 取消星标朋友 https://www.showdoc.com.cn/WeChatProject/9644721002325179
+// SetContactRole 设置朋友权限 https://www.showdoc.com.cn/WeChatProject/9644721002325179
 func SetContactRole(url string, wxid, role string) error {
 	timeout := time.Second * 60
 	client, err := util.NewClient(url, timeout)

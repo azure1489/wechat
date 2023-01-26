@@ -152,3 +152,62 @@ type QueryChatRoomMemberNickNameReq struct {
 type QueryChatRoomMemberNickNameResult struct {
 	Nickname string `json:"nickname"`
 }
+
+type ChatRoomMemberBatchDeleteReq struct {
+	Gid      string `json:"gid"`
+	WxidList string `json:"wxidlist"`
+}
+
+type ChatRoomMemberBatchDeleteResult struct {
+	ChatRoomMemberBatchDelete string `json:"ChatRoomMemberBatchDelete"`
+}
+
+type ChangeChatRoomNicknameBySelfReq struct {
+	Gid      string `json:"gid"`
+	Wxid     string `json:"wxid"`
+	Nickname string `json:"nickname"`
+}
+
+type ChangeChatRoomNicknameBySelfResult struct {
+	ChangeChatRoomNicknameBySelf string `json:"ChangeChatRoomNicknameBySelf"`
+}
+
+type QuitChatRoomReq struct {
+	Gid string `json:"gid"`
+}
+
+type QuitChatRoomResult struct {
+	QuitChatRoom string `json:"QuitChatRoom"`
+}
+
+type DisplayChatRoomMemberNickNameReq struct {
+	Gid string `json:"gid"`
+}
+
+type DisplayChatRoomMemberNickNameResult struct {
+	DisplayChatRoomMemberNickName string `json:"DisplayChatRoomMemberNickName"`
+}
+
+type TurnOffDisplayChatRoomMemberNickNameReq struct {
+	Gid string `json:"gid"`
+}
+
+type TurnOffDisplayChatRoomMemberNickNameResult struct {
+	TurnOffDisplayChatRoomMemberNickName string `json:"TurnOffDisplayChatRoomMemberNickName"`
+}
+
+type CollapseChatReq struct {
+	Gid string `json:"gid"`
+}
+
+type CollapseChatResult struct {
+	CollapseChat string `json:"CollapseChat"`
+}
+
+type UncollapseChatReq struct {
+	Gid string `json:"gid"`
+}
+
+type UncollapseChatResult struct {
+	UncollapseChat string `json:"UncollapseChat"`
+}

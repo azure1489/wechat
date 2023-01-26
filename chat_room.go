@@ -414,3 +414,210 @@ func QueryChatRoomMemberNickName(url string, gid, wxid string) (string, error) {
 
 	return commonResult.Nickname, nil
 }
+
+// ChatRoomMemberBatchDelete 群成员批量删除 https://www.showdoc.com.cn/WeChatProject/8993612184500147
+func ChatRoomMemberBatchDelete(url string, gid string, wxidList []string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.ChatRoomMemberBatchDeleteReq{
+		Gid:      gid,
+		WxidList: strings.Join(wxidList, ","),
+	}
+
+	resultBody, err := client.DoPost("/ChatRoomMemberBatchDelete", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.ChatRoomMemberBatchDeleteResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.ChatRoomMemberBatchDelete != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// ChangeChatRoomNicknameBySelf 修改自己的群昵称 https://www.showdoc.com.cn/WeChatProject/9019580625786730
+func ChangeChatRoomNicknameBySelf(url string, req model.ChangeChatRoomNicknameBySelfReq) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/ChangeChatRoomNicknameBySelf", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.ChangeChatRoomNicknameBySelfResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.ChangeChatRoomNicknameBySelf != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// QuitChatRoom 退出群聊 https://www.showdoc.com.cn/WeChatProject/9002651226705549
+func QuitChatRoom(url string, gid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.QuitChatRoomReq{
+		Gid: gid,
+	}
+
+	resultBody, err := client.DoPost("/QuitChatRoom", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.QuitChatRoomResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.QuitChatRoom != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// DisplayChatRoomMemberNickName 显示群成员昵称 https://www.showdoc.com.cn/WeChatProject/9063349491429947
+func DisplayChatRoomMemberNickName(url string, gid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.DisplayChatRoomMemberNickNameReq{
+		Gid: gid,
+	}
+
+	resultBody, err := client.DoPost("/DisplayChatRoomMemberNickName", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.DisplayChatRoomMemberNickNameResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.DisplayChatRoomMemberNickName != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// TurnOffDisplayChatRoomMemberNickName 关闭显示群成员昵称 https://www.showdoc.com.cn/WeChatProject/9063350057038457
+func TurnOffDisplayChatRoomMemberNickName(url string, gid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.TurnOffDisplayChatRoomMemberNickNameReq{
+		Gid: gid,
+	}
+
+	resultBody, err := client.DoPost("/TurnOffDisplayChatRoomMemberNickName", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.TurnOffDisplayChatRoomMemberNickNameResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.TurnOffDisplayChatRoomMemberNickName != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// CollapseChat 折叠该群聊 https://www.showdoc.com.cn/WeChatProject/9063366035200767
+func CollapseChat(url string, gid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.CollapseChatReq{
+		Gid: gid,
+	}
+
+	resultBody, err := client.DoPost("/CollapseChat", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.CollapseChatResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.CollapseChat != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// UncollapseChat 取消折叠该群聊 https://www.showdoc.com.cn/WeChatProject/9063366996691400
+func UncollapseChat(url string, gid string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(url, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.UncollapseChatReq{
+		Gid: gid,
+	}
+
+	resultBody, err := client.DoPost("/UncollapseChat", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.UncollapseChatResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.UncollapseChat != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
