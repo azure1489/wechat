@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package protobuf;
+
+option go_package = "./ipc";
+
+message TimelineGetFristPageResult{
+    string Havenewmsg = 1;
+    repeated TimelineGetFristPageResultDataItem Data = 2;
+}
+
+message TimelineGetFristPageResultDataItem {
+    string MsgidFull10 = 1;
+    string MsgidFull16 = 2;
+    string Msgid1 = 3;
+    string Msgid2 = 4;
+    string Msgtime = 5;
+    string Wxid = 6;
+    string Nickname = 7;
+    string Content = 8;
+}

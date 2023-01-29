@@ -66,6 +66,7 @@ func (w *HttpClient) DoPost(model string, postBody interface{}) ([]byte, error) 
 	}
 
 	defer resp.Body.Close()
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err

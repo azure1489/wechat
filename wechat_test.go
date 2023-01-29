@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+
+	"github.com/azure1489/wechat/protobuf/ipc"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestGetFriendAndChatRoomList(t *testing.T) {
@@ -183,4 +186,95 @@ func TestSendDIYMsg(t *testing.T) {
 		t.Error(err)
 		return
 	}
+}
+
+func TestTimelineGetFristPage(t *testing.T) {
+	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
+	info, err := TimelineGetFristPage(url)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	text, err := json.Marshal(info)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	fmt.Println(string(text))
+}
+
+func TestGetFriendTimeline(t *testing.T) {
+	url := fmt.Sprintf("http://%s:%d", "10.211.4.239", 30001)
+	info, err := GetFriendTimeline(url, "xiaoming709959")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	bf := bytes.NewBuffer([]byte{})
+	jsonEncoder := json.NewEncoder(bf)
+	jsonEncoder.SetEscapeHTML(false)
+	jsonEncoder.Encode(info)
+	// fmt.Println(bf.String())
+
+	// text, err := json.Marshal(info)
+	// if err != nil {
+	// 	t.Error(err)
+	// 	return
+	// }
+
+	fmt.Println(bf.String())
+}
+
+func TestProtocolBuffer(t *testing.T) {
+	// MessageEnvelope是models.pb.go的结构体
+	oldData := ipc.TimelineGetFristPageResult{
+		Havenewmsg: "1",
+	}
+
+	items := make([]*ipc.TimelineGetFristPageResultDataItem, 0)
+
+	item := &ipc.TimelineGetFristPageResultDataItem{
+		MsgidFull10: "1",
+		MsgidFull16: "2",
+		Msgid1:      "3",
+		Msgid2:      "4",
+		Msgtime:     "5",
+		Wxid:        "6",
+		Nickname:    "7",
+		Content:     "8",
+	}
+
+	items = append(items, item)
+
+	item = &ipc.TimelineGetFristPageResultDataItem{
+		MsgidFull10: "1a",
+		MsgidFull16: "2b",
+		Msgid1:      "3c",
+		Msgid2:      "4d",
+		Msgtime:     "5e",
+		Wxid:        "6f",
+		Nickname:    "7g",
+		Content:     "8h",
+	}
+
+	items = append(items, item)
+
+	oldData.Data = items
+
+	data, err := proto.Marshal(&oldData)
+	if err != nil {
+		fmt.Println("marshal error: ", err.Error())
+	}
+	fmt.Println("marshal data : ", data)
+	fmt.Println("marshal data : ", string(data))
+
+	newData := &ipc.TimelineGetFristPageResult{}
+	err = proto.Unmarshal(data, newData)
+	if err != nil {
+		fmt.Println("unmarshal err:", err)
+	}
+	fmt.Println("unmarshal data : ", newData)
+
 }
