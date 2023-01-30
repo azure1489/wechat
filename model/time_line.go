@@ -17,6 +17,7 @@ type TimelineGetFristPageResultDataItem struct {
 
 type GetFriendTimelineReq struct {
 	Wxid string `json:"wxid"`
+	Id   string `json:"id,omitempty"`
 }
 
 type GetFriendTimelineResult struct {

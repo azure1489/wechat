@@ -1,16 +1,15 @@
 package wechat
 
 import (
+	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"time"
 
+	"github.com/axgle/mahonia"
 	"github.com/azure1489/wechat/model"
-	"github.com/azure1489/wechat/protobuf/ipc"
 	"github.com/azure1489/wechat/util"
-	"github.com/pkg/errors"
-	"google.golang.org/protobuf/proto"
 )
 
 // TimelineGetFristPage 刷新并获取朋友圈第一页的内容，如果朋友圈有新动态则返回10条数据 https://www.showdoc.com.cn/WeChatProject/8929083282065703
@@ -26,9 +25,35 @@ func TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataIt
 		return nil, err
 	}
 
+	// m := mahonia.NewDecoder("utf8")
+
+	// m.Translate(resultBody,true)
+
+	bArr, err := hex.DecodeString(string(resultBody))
+	if err != nil {
+		return nil, err
+	}
+
+	r := bytes.Runes(bArr)
+
+	// res := ""
+	for _, b := range r {
+		// res = fmt.Sprintf("%s%.8b", res, b)
+		fmt.Print(string(b))
+	}
+
+	// srcCoder := mahonia.NewDecoder(text)
+	// tagCoder := mahonia.NewDecoder(tagCode)
+	// _, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
+	// result := string(cdata)
+
+	// text = ConvertToString(text, "utf-8", "utf-8")
+
+	// fmt.Println("body:" + text)
+
 	// proto.Marshal(req)
 
-	// fmt.Println("body:" + string(resultBody))
+	// fmt.Println("body:\n" + text)
 
 	// jsonpbMarshaler := &jsonpb.Marshaler{
 	// 	EnumsAsInts:  true, // 是否将枚举值设定为整数，而不是字符串类型
@@ -40,39 +65,148 @@ func TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataIt
 
 	// jsonData, err := jsonpbMarshaler.MarshalToString(protoMessage)
 
-	// 十六进制形式打印
-	// for _, b := range resultBody {
-	// 	// fmt.Println("%02X", b & 0xFF);
-	// 	fmt.Printf("%#x\n", )
-
-	// }
-
 	// src = dst1
-	maxDeLen := hex.DecodedLen(len(resultBody))
-	dst := make([]byte, maxDeLen)
-	// n, err := hex.Decode(dst1, src)
+	// maxDeLen := hex.DecodedLen(len(resultBody))
+	// dst := make([]byte, maxDeLen)
+	// // n, err := hex.Decode(dst1, src)
 
-	// var dst []byte
-	n, err := hex.Decode(dst, resultBody)
-	if err != nil {
-		return nil, err
-	}
+	// // var dst []byte
+	// n, err := hex.Decode(dst, resultBody)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	// dst2 :=
 
-	fmt.Printf("解码后的数据为:%s\n", string(dst[:n]))
+	fmt.Println("解码后的数据为:")
 
-	newData := &ipc.TimelineGetFristPageResult{}
-	err = proto.UnmarshalOptions{
-		DiscardUnknown: true,
-		Merge:          true,
-		AllowPartial:   true,
-	}.Unmarshal(dst[:n], newData)
-	if err != nil {
-		// fmt.Println("unmarshal data err : ", err.Error())
-		return nil, errors.Cause(err)
-	}
-	fmt.Println("unmarshal data : ", newData)
+	fmt.Println(" ---------- ")
+	// 十六进制形式打印
+	// for _, b := range dst[:n] {
+	// 	fmt.Printf("uint8 UTF-8 %d \n", b)
+	// 	fmt.Printf("utf-8 %q \n", b)
+	// }
+
+	// utf8.DecodeRune()
+
+	// utf8bs := make([]byte, 0)
+	// bs := make([]byte, 4)
+	// for index, b := range dst[:n] {
+	// 	if (index + 1) % 4 == 0 {
+
+	// 	} else {
+
+	// 	}
+	// }
+
+	// testInt := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}
+
+	// testInt2 := make([][]byte, 0)
+	// testInt3 := make([]byte, 0)
+	// byteLan := 4
+
+	// for index, r := range dst[:n] {
+	// 	// fmt.Println("(index+1)%4:", (index+1)%4)
+	// 	if (index+1)%byteLan != 0 {
+	// 		testInt3 = append(testInt3, r)
+	// 	} else {
+	// 		testInt3 = append(testInt3, r)
+	// 		testInt2 = append(testInt2, testInt3)
+	// 		testInt3 = make([]byte, 0)
+	// 	}
+	// 	if index == len(dst[:n])-1 {
+	// 		testInt2 = append(testInt2, testInt3)
+	// 	}
+	// }
+
+	// for _, r := range testInt2 {
+	// 	fmt.Print(string(r))
+	// }
+
+	// s := dst[:n]
+
+	// t := make([]rune, utf16.(s))
+	// i := 0
+	// for len(s) > 0 {
+	// 	r, l := utf8.DecodeRune(s)
+	// 	t[i] = r
+	// 	i++
+	// 	s = s[l:]
+	// }
+
+	// textRunes := t
+
+	// for _, test := range textRunes {
+	// 	fmt.Print(string(test))
+	// }
+
+	// fmt.Print(string(t))
+
+	// utf8bs := make([]byte, 0)
+	// for _, r := range textRune {
+	// 	bs := make([]byte, 4)
+	// 	w := utf8.EncodeRune(bs, r)
+	// 	utf8bs = append(utf8bs, bs[:w]...)
+	// }
+	// fmt.Println(string(utf8bs))
+
+	// test,size := utf8.DecodeRune(dst[:n])
+	// r, w := utf8.DecodeRune(dst)
+	// fmt.Printf("%x ", r)
+	// fmt.Print(string(r))
+	// //     // fmt.Printf("%x ", r)
+	// // 	fmt.Print(string(v))
+
+	// 	decoder := unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM).NewDecoder()
+	// 	// 	bs2, err := decoder.Bytes(bs[:])
+	// for _, b := range dst[:n] {
+	// // 	// fmt.Printf("%d:%s|", k, string(v))
+	// // 	fmt.Println(utf8.DecodeLastRune(b))
+	// }
+
+	// text := string(dst[:n])
+
+	// text = ConvertToString(text, "utf-8", "utf-16")
+
+	// fmt.Println(text)
+
+	// textRune := []rune(text)
+	// // textLen := len(textRune)
+	// // fmt.Println("len:" + strconv.FormatInt(int64(textLen), 10))
+	// // for _, v := range textRune {
+
+	// // 	fmt.Print(string(v))
+	// // }
+
+	// // bs := []byte(text)
+	// // for len(bs) > 0 {
+	// //     r, w := utf8.DecodeRune(bs)
+	// //     // fmt.Printf("%x ", r)
+	// // 	fmt.Print(string(v))
+	// //     bs = bs[w:]
+	// // }
+
+	// utf8bs := make([]byte, 0)
+	// for _, r := range textRune {
+	// 	bs := make([]byte, 4)
+	// 	w := utf8.EncodeRune(bs, r)
+	// 	utf8bs = append(utf8bs, bs[:w]...)
+	// }
+	// fmt.Println(string(utf8bs))
+
+	fmt.Println("\n ---------- ")
+
+	// newData := &ipc.TimelineGetFristPageResult{}
+	// err = proto.UnmarshalOptions{
+	// 	DiscardUnknown: true,
+	// 	Merge:          true,
+	// 	AllowPartial:   true,
+	// }.Unmarshal(dst[:n], newData)
+	// if err != nil {
+	// 	// fmt.Println("unmarshal data err : ", err.Error())
+	// 	return nil, errors.Cause(err)
+	// }
+	// fmt.Println("unmarshal data : ", newData)
 
 	// commonResult := model.TimelineGetFristPageResult{}
 	// err = json.Unmarshal(resultBody, &commonResult)
@@ -85,6 +219,15 @@ func TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataIt
 	// }
 
 	return nil, nil
+}
+
+func ConvertToString(src string, srcCode string, tagCode string) string {
+	srcCoder := mahonia.NewDecoder(srcCode)
+	srcResult := srcCoder.ConvertString(src)
+	tagCoder := mahonia.NewDecoder(tagCode)
+	_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
+	result := string(cdata)
+	return result
 }
 
 // GetFriendTimeline 获取指定好友的首页朋友圈(返回最近10条记录) https://www.showdoc.com.cn/WeChatProject/9155297161590672

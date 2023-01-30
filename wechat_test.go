@@ -2,6 +2,7 @@ package wechat
 
 import (
 	"bytes"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -256,7 +257,7 @@ func TestProtocolBuffer(t *testing.T) {
 		Msgtime:     "5e",
 		Wxid:        "6f",
 		Nickname:    "7g",
-		Content:     "8h",
+		Content:     "8h中午",
 	}
 
 	items = append(items, item)
@@ -267,14 +268,47 @@ func TestProtocolBuffer(t *testing.T) {
 	if err != nil {
 		fmt.Println("marshal error: ", err.Error())
 	}
-	fmt.Println("marshal data : ", data)
-	fmt.Println("marshal data : ", string(data))
+	// fmt.Println("marshal data : ", data)
 
+	text := string(data)
+	fmt.Println("text : ", text)
+	hexDataStr := hex.EncodeToString(data)
+	fmt.Println("hex.EncodeToString : ", hexDataStr)
+
+	newBytes, _ := hex.DecodeString(hexDataStr)
 	newData := &ipc.TimelineGetFristPageResult{}
-	err = proto.Unmarshal(data, newData)
+	err = proto.Unmarshal(newBytes, newData)
 	if err != nil {
 		fmt.Println("unmarshal err:", err)
 	}
 	fmt.Println("unmarshal data : ", newData)
 
+}
+
+func TestCount(t *testing.T) {
+
+	testInt := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}
+
+	testInt2 := make([][]int, 0)
+	testInt3 := make([]int, 0)
+
+	for index, r := range testInt {
+		// fmt.Println("(index+1)%4:", (index+1)%4)
+		if (index+1)%4 != 0 {
+			fmt.Println("(index+1)%4 == 0:", r)
+			testInt3 = append(testInt3, r)
+		} else {
+			fmt.Println("(index+1)%4 != 0:", r)
+			testInt3 = append(testInt3, r)
+			testInt2 = append(testInt2, testInt3)
+			testInt3 = make([]int, 0)
+		}
+		if index == len(testInt)-1 {
+			testInt2 = append(testInt2, testInt3)
+		}
+	}
+
+	for _, r := range testInt2 {
+		fmt.Println("testInt2:", r)
+	}
 }
