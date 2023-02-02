@@ -13,7 +13,7 @@ import (
 // CreateChatRoom 创建群聊 https://www.showdoc.com.cn/WeChatProject/9019609319630104
 func (w *Wechat) CreateChatRoom(wxidList []string) (string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return "", err
 	}
@@ -43,7 +43,7 @@ func (w *Wechat) CreateChatRoom(wxidList []string) (string, error) {
 // AddFriendToChatRoom 添加好友进群(40人以下) https://www.showdoc.com.cn/WeChatProject/9020971162414036
 func (w *Wechat) AddFriendToChatRoom(gid string, wxidList []string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (w *Wechat) AddFriendToChatRoom(gid string, wxidList []string) error {
 // InviteFriendToChatRoom 邀请好友进群(40人以上) https://www.showdoc.com.cn/WeChatProject/9021493538921140
 func (w *Wechat) InviteFriendToChatRoom(gid, wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -105,7 +105,7 @@ func (w *Wechat) InviteFriendToChatRoom(gid, wxid string) error {
 // AgreeJoinGroup 同意加入群聊 https://www.showdoc.com.cn/WeChatProject/9032882631445023
 func (w *Wechat) AgreeJoinGroup(groupAccessUrl string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -135,7 +135,7 @@ func (w *Wechat) AgreeJoinGroup(groupAccessUrl string) error {
 // ChatRoomEditMark 修改群聊备注 https://www.showdoc.com.cn/WeChatProject/8994766712410900
 func (w *Wechat) ChatRoomEditMark(gid, mark string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -166,7 +166,7 @@ func (w *Wechat) ChatRoomEditMark(gid, mark string) error {
 // ChatRoomEditName 修改群聊名称 https://www.showdoc.com.cn/WeChatProject/8993745484621751
 func (w *Wechat) ChatRoomEditName(gid, gname string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -197,7 +197,7 @@ func (w *Wechat) ChatRoomEditName(gid, gname string) error {
 // ChatRoomEditAnnouncement 修改群聊公告（群主身份才可以使用） https://www.showdoc.com.cn/WeChatProject/8994689342748667
 func (w *Wechat) ChatRoomEditAnnouncement(req model.ChatRoomEditAnnouncementReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -223,7 +223,7 @@ func (w *Wechat) ChatRoomEditAnnouncement(req model.ChatRoomEditAnnouncementReq)
 // ChatRoomVoip 群聊多人语音 https://www.showdoc.com.cn/WeChatProject/9019559882256250
 func (w *Wechat) ChatRoomVoip(gid string, wxidList []string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -254,7 +254,7 @@ func (w *Wechat) ChatRoomVoip(gid string, wxidList []string) error {
 // QueryChatRoomOwnerWxid 查询群主微信ID https://www.showdoc.com.cn/WeChatProject/9019577323953766
 func (w *Wechat) QueryChatRoomOwnerWxid(gid string) (string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return "", err
 	}
@@ -280,7 +280,7 @@ func (w *Wechat) QueryChatRoomOwnerWxid(gid string) (string, error) {
 // GetChatroomMemberDetailInfo 网络获取群成员详细信息,可以获取群成员微信号 https://www.showdoc.com.cn/WeChatProject/9158592965427244
 func (w *Wechat) GetChatroomMemberDetailInfo(gid, wxid string) (*model.GetChatroomMemberDetailInfoResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +307,7 @@ func (w *Wechat) GetChatroomMemberDetailInfo(gid, wxid string) (*model.GetChatro
 // GetChatrooMmemberDetail 批量获取群成员详细邀请信息,可以获取群成员是由谁邀请进来的 https://www.showdoc.com.cn/WeChatProject/9745666070753468
 func (w *Wechat) GetChatrooMmemberDetail(gid string) (*model.GetChatrooMmemberDetailResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -333,7 +333,7 @@ func (w *Wechat) GetChatrooMmemberDetail(gid string) (*model.GetChatrooMmemberDe
 // QueryChatRoomMemberCount 本地查询群成员总数(如果查询不到则需要先点一下群聊或者调用网络获取好友或群详细信息) https://www.showdoc.com.cn/WeChatProject/9019566491411017
 func (w *Wechat) QueryChatRoomMemberCount(gid string) (string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return "", err
 	}
@@ -359,7 +359,7 @@ func (w *Wechat) QueryChatRoomMemberCount(gid string) (string, error) {
 // BatchGetChatRoomMemberWxid 批量获取群成员微信ID https://www.showdoc.com.cn/WeChatProject/9021207508542836
 func (w *Wechat) BatchGetChatRoomMemberWxid(gid string) ([]string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -391,7 +391,7 @@ func (w *Wechat) BatchGetChatRoomMemberWxid(gid string) ([]string, error) {
 // QueryChatRoomMemberNickName 查询群成员昵称 https://www.showdoc.com.cn/WeChatProject/9019565404784998
 func (w *Wechat) QueryChatRoomMemberNickName(gid, wxid string) (string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return "", err
 	}
@@ -418,7 +418,7 @@ func (w *Wechat) QueryChatRoomMemberNickName(gid, wxid string) (string, error) {
 // ChatRoomMemberBatchDelete 群成员批量删除 https://www.showdoc.com.cn/WeChatProject/8993612184500147
 func (w *Wechat) ChatRoomMemberBatchDelete(gid string, wxidList []string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -449,7 +449,7 @@ func (w *Wechat) ChatRoomMemberBatchDelete(gid string, wxidList []string) error 
 // ChangeChatRoomNicknameBySelf 修改自己的群昵称 https://www.showdoc.com.cn/WeChatProject/9019580625786730
 func (w *Wechat) ChangeChatRoomNicknameBySelf(req model.ChangeChatRoomNicknameBySelfReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -475,7 +475,7 @@ func (w *Wechat) ChangeChatRoomNicknameBySelf(req model.ChangeChatRoomNicknameBy
 // QuitChatRoom 退出群聊 https://www.showdoc.com.cn/WeChatProject/9002651226705549
 func (w *Wechat) QuitChatRoom(gid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -505,7 +505,7 @@ func (w *Wechat) QuitChatRoom(gid string) error {
 // DisplayChatRoomMemberNickName 显示群成员昵称 https://www.showdoc.com.cn/WeChatProject/9063349491429947
 func (w *Wechat) DisplayChatRoomMemberNickName(gid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -535,7 +535,7 @@ func (w *Wechat) DisplayChatRoomMemberNickName(gid string) error {
 // TurnOffDisplayChatRoomMemberNickName 关闭显示群成员昵称 https://www.showdoc.com.cn/WeChatProject/9063350057038457
 func (w *Wechat) TurnOffDisplayChatRoomMemberNickName(gid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -565,7 +565,7 @@ func (w *Wechat) TurnOffDisplayChatRoomMemberNickName(gid string) error {
 // CollapseChat 折叠该群聊 https://www.showdoc.com.cn/WeChatProject/9063366035200767
 func (w *Wechat) CollapseChat(gid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -595,7 +595,7 @@ func (w *Wechat) CollapseChat(gid string) error {
 // UncollapseChat 取消折叠该群聊 https://www.showdoc.com.cn/WeChatProject/9063366996691400
 func (w *Wechat) UncollapseChat(gid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}

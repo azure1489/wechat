@@ -12,7 +12,7 @@ import (
 // AddNewFriend 添加新好友 https://www.showdoc.com.cn/WeChatProject/8961754683625021
 func (w *Wechat) AddNewFriend(req model.AddNewFriendReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (w *Wechat) AddNewFriend(req model.AddNewFriendReq) error {
 // DeleteFriend 删除好友 https://www.showdoc.com.cn/WeChatProject/8981501348113066
 func (w *Wechat) DeleteFriend(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -68,7 +68,7 @@ func (w *Wechat) DeleteFriend(wxid string) error {
 // BlackFriend 拉黑好友 https://www.showdoc.com.cn/WeChatProject/9745604340432390
 func (w *Wechat) BlackFriend(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -98,7 +98,7 @@ func (w *Wechat) BlackFriend(wxid string) error {
 // VerifyFriend 同意好友申请 https://www.showdoc.com.cn/WeChatProject/8996001801759077
 func (w *Wechat) VerifyFriend(req model.VerifyFriendReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -124,7 +124,7 @@ func (w *Wechat) VerifyFriend(req model.VerifyFriendReq) error {
 // VoiceCallFriend 好友语音聊天 https://www.showdoc.com.cn/WeChatProject/9019318364312888
 func (w *Wechat) VoiceCallFriend(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -154,7 +154,7 @@ func (w *Wechat) VoiceCallFriend(wxid string) error {
 // VideoCallFriend 好友视频聊天 https://www.showdoc.com.cn/WeChatProject/9019318842372957
 func (w *Wechat) VideoCallFriend(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -184,7 +184,7 @@ func (w *Wechat) VideoCallFriend(wxid string) error {
 // QueryBodyInfo 网络查询陌生人信息 https://www.showdoc.com.cn/WeChatProject/8982367120882654
 func (w *Wechat) QueryBodyInfo(serachwhat string) (*model.QueryBodyInfoResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +210,7 @@ func (w *Wechat) QueryBodyInfo(serachwhat string) (*model.QueryBodyInfoResult, e
 // EditFriendMark 修改好友备注 https://www.showdoc.com.cn/WeChatProject/9020497967635095
 func (w *Wechat) EditFriendMark(wxid, mark string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -241,7 +241,7 @@ func (w *Wechat) EditFriendMark(wxid, mark string) error {
 // SetStarTag 标为星标朋友 https://www.showdoc.com.cn/WeChatProject/9078593012203121
 func (w *Wechat) SetStarTag(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -271,7 +271,7 @@ func (w *Wechat) SetStarTag(wxid string) error {
 // UndoStarTag 取消星标朋友 https://www.showdoc.com.cn/WeChatProject/9078594588816258
 func (w *Wechat) UndoStarTag(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -301,7 +301,7 @@ func (w *Wechat) UndoStarTag(wxid string) error {
 // SetContactRole 设置朋友权限 https://www.showdoc.com.cn/WeChatProject/9644721002325179
 func (w *Wechat) SetContactRole(wxid, role string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}

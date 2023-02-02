@@ -13,7 +13,7 @@ import (
 // GetFriendAndChatRoomList 获取好友和群清单 https://www.showdoc.com.cn/WeChatProject/8995071288617868
 func (w *Wechat) GetFriendAndChatRoomList(url string) (*model.FriendAndChatRoomResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (w *Wechat) GetFriendAndChatRoomList(url string) (*model.FriendAndChatRoomR
 // StickyChat 置顶聊天 https://www.showdoc.com.cn/WeChatProject/9063350563096436
 func (w *Wechat) StickyChat(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (w *Wechat) StickyChat(wxid string) error {
 // UnpinChat 取消置顶聊天 https://www.showdoc.com.cn/WeChatProject/9063351366305816
 func (w *Wechat) UnpinChat(wxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func (w *Wechat) UnpinChat(wxid string) error {
 // BatchGetContactBriefInfo 批量获取联系人简明信息(一次最多传100个id) https://www.showdoc.com.cn/WeChatProject/9333452323089279
 func (w *Wechat) BatchGetContactBriefInfo(wxids []string) (*[]model.ContactBriefInfo, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +123,7 @@ func (w *Wechat) BatchGetContactBriefInfo(wxids []string) (*[]model.ContactBrief
 // GetFriendOrChatroomDetailInfo 方法_网络获取好友或群详细信息,好友则返回好友信息，群聊则返回群成员数量。成员微信id，成员昵称 https://www.showdoc.com.cn/WeChatProject/9157629212860224
 func (w *Wechat) GetFriendOrChatroomDetailInfo(wxidorgid string) (*model.GetFriendOrChatroomDetailInfoResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -149,7 +149,7 @@ func (w *Wechat) GetFriendOrChatroomDetailInfo(wxidorgid string) (*model.GetFrie
 // MarkAsReadSession 标为已读会话 https://www.showdoc.com.cn/WeChatProject/9219474016553735
 func (w *Wechat) MarkAsReadSession(gidOrWxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -179,7 +179,7 @@ func (w *Wechat) MarkAsReadSession(gidOrWxid string) error {
 // InitContact 初始化通讯录 https://www.showdoc.com.cn/WeChatProject/9730605278628502
 func (w *Wechat) InitContact(url string) (*[]model.InitContactResultBatchItem, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func (w *Wechat) InitContact(url string) (*[]model.InitContactResultBatchItem, e
 // GetCurrentChatObjectInfo 获取当前聊天对象信息 https://www.showdoc.com.cn/WeChatProject/9019586393938696
 func (w *Wechat) GetCurrentChatObjectInfo(url string) (*model.GetCurrentChatObjectInfoResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -227,7 +227,7 @@ func (w *Wechat) GetCurrentChatObjectInfo(url string) (*model.GetCurrentChatObje
 // SwitchCurrentChatObject 切换当前聊天对象 https://www.showdoc.com.cn/WeChatProject/9019589526757527
 func (w *Wechat) SwitchCurrentChatObject(wxidOrGid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -257,7 +257,7 @@ func (w *Wechat) SwitchCurrentChatObject(wxidOrGid string) error {
 // TurnOnDoNotDisturb 开启消息免打扰 https://www.showdoc.com.cn/WeChatProject/9063347648143133
 func (w *Wechat) TurnOnDoNotDisturb(gidOrWxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -287,7 +287,7 @@ func (w *Wechat) TurnOnDoNotDisturb(gidOrWxid string) error {
 // TurnOffDoNotDisturb 关闭消息免打扰 https://www.showdoc.com.cn/WeChatProject/9063348367251383
 func (w *Wechat) TurnOffDoNotDisturb(gidOrWxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -317,7 +317,7 @@ func (w *Wechat) TurnOffDoNotDisturb(gidOrWxid string) error {
 // SaveToContact 保存到通讯录 https://www.showdoc.com.cn/WeChatProject/9063365453994960
 func (w *Wechat) SaveToContact(gidOrWxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -347,7 +347,7 @@ func (w *Wechat) SaveToContact(gidOrWxid string) error {
 // RemoveToContact 从通讯录移除 https://www.showdoc.com.cn/WeChatProject/9063365712246544
 func (w *Wechat) RemoveToContact(gidOrWxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}
@@ -377,7 +377,7 @@ func (w *Wechat) RemoveToContact(gidOrWxid string) error {
 // MarkAsNoReadSession 标为未读会话 https://www.showdoc.com.cn/WeChatProject/9644356701774840
 func (w *Wechat) MarkAsNoReadSession(gidOrWxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
 		return err
 	}

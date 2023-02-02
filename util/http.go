@@ -19,12 +19,13 @@ type HttpClient struct {
 	Timeout time.Duration
 }
 
-func NewClient(ip, port, url string, timeout time.Duration) (*HttpClient, error) {
+func NewClient(ip, port, url, secret string, timeout time.Duration) (*HttpClient, error) {
 	w := &HttpClient{
 		Url:     url,
 		Timeout: timeout,
 		Ip:      ip,
 		Port:    port,
+		Secret:  secret,
 	}
 	return w, nil
 }
@@ -78,7 +79,6 @@ func (w *HttpClient) DoPost(model string, postBody interface{}) ([]byte, error) 
 	}
 
 	appId := "uEVq0SDj34HwVltpNKzdgxmK"
-	// appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
 
 	signText := appId + jsonText + w.Secret
 	//
@@ -118,7 +118,6 @@ func (w *HttpClient) DoGet(model string) ([]byte, error) {
 	jsonText := model
 
 	appId := "uEVq0SDj34HwVltpNKzdgxmK"
-	// appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
 
 	signText := appId + jsonText + w.Secret
 	//
