@@ -1,21 +1,22 @@
 package wechat
 
 import (
-	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"time"
 
-	"github.com/axgle/mahonia"
 	"github.com/azure1489/wechat/model"
+	"github.com/azure1489/wechat/protobuf/ipc"
 	"github.com/azure1489/wechat/util"
+	"github.com/pkg/errors"
+	"google.golang.org/protobuf/proto"
 )
 
 // TimelineGetFristPage 刷新并获取朋友圈第一页的内容，如果朋友圈有新动态则返回10条数据 https://www.showdoc.com.cn/WeChatProject/8929083282065703
-func TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataItem, error) {
+func (w *Wechat) TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataItem, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -25,22 +26,44 @@ func TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataIt
 		return nil, err
 	}
 
+	// proto.Unmarshal()
+
 	// m := mahonia.NewDecoder("utf8")
 
 	// m.Translate(resultBody,true)
 
-	bArr, err := hex.DecodeString(string(resultBody))
+	maxDeLen := hex.DecodedLen(len(resultBody))
+	dst := make([]byte, maxDeLen)
+	n, err := hex.Decode(dst, resultBody)
 	if err != nil {
 		return nil, err
 	}
+	decodeData := dst[:n]
 
-	r := bytes.Runes(bArr)
+	// bArr, err := hex.DecodeString(string(resultBody))
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	// res := ""
-	for _, b := range r {
-		// res = fmt.Sprintf("%s%.8b", res, b)
-		fmt.Print(string(b))
-	}
+	// e := unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM)
+	// es, _, err := transform.Bytes(e.NewEncoder(), decodeData)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// enc := mahonia.NewEncoder("gbk")
+	//converts a  string from UTF-8 to gbk encoding.
+	// fmt.Println(enc.ConvertString(string(decodeData)))
+
+	// fmt.Println(string(decodeData))
+
+	// r := bytes.Runes(bArr)
+
+	// // res := ""
+	// for _, b := range r {
+	// 	// res = fmt.Sprintf("%s%.8b", res, b)
+	// 	fmt.Print(string(b))
+	// }
 
 	// srcCoder := mahonia.NewDecoder(text)
 	// tagCoder := mahonia.NewDecoder(tagCode)
@@ -196,17 +219,17 @@ func TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataIt
 
 	fmt.Println("\n ---------- ")
 
-	// newData := &ipc.TimelineGetFristPageResult{}
-	// err = proto.UnmarshalOptions{
-	// 	DiscardUnknown: true,
-	// 	Merge:          true,
-	// 	AllowPartial:   true,
-	// }.Unmarshal(dst[:n], newData)
-	// if err != nil {
-	// 	// fmt.Println("unmarshal data err : ", err.Error())
-	// 	return nil, errors.Cause(err)
-	// }
-	// fmt.Println("unmarshal data : ", newData)
+	dataInfo := &ipc.TimelineGetFristPageResult{}
+	err = proto.UnmarshalOptions{
+		Merge:          true,
+		AllowPartial:   true,
+		DiscardUnknown: true,
+	}.Unmarshal(decodeData, dataInfo)
+	if err != nil {
+		// fmt.Println("unmarshal data err : ", err.Error())
+		return nil, errors.Cause(err)
+	}
+	fmt.Println("unmarshal data : ", dataInfo)
 
 	// commonResult := model.TimelineGetFristPageResult{}
 	// err = json.Unmarshal(resultBody, &commonResult)
@@ -221,19 +244,10 @@ func TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataIt
 	return nil, nil
 }
 
-func ConvertToString(src string, srcCode string, tagCode string) string {
-	srcCoder := mahonia.NewDecoder(srcCode)
-	srcResult := srcCoder.ConvertString(src)
-	tagCoder := mahonia.NewDecoder(tagCode)
-	_, cdata, _ := tagCoder.Translate([]byte(srcResult), true)
-	result := string(cdata)
-	return result
-}
-
 // GetFriendTimeline 获取指定好友的首页朋友圈(返回最近10条记录) https://www.showdoc.com.cn/WeChatProject/9155297161590672
-func GetFriendTimeline(url string, wxid string) (*[]model.GetFriendTimelineResultDataItem, error) {
+func (w *Wechat) GetFriendTimeline(wxid string) (*[]model.GetFriendTimelineResultDataItem, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return nil, err
 	}

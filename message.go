@@ -12,9 +12,9 @@ import (
 )
 
 // SendTextMsg 发送文本消息 https://www.showdoc.com.cn/WeChatProject/8929112442643628
-func SendTextMsg(url string, wxid, msg string) error {
+func (w *Wechat) SendTextMsg(wxid, msg string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -43,9 +43,9 @@ func SendTextMsg(url string, wxid, msg string) error {
 }
 
 // SendPicMsg 发送图片消息 https://www.showdoc.com.cn/WeChatProject/8929124214624404
-func SendPicMsg(url string, wxid, picPath, diyFilename string) error {
+func (w *Wechat) SendPicMsg(wxid, picPath, diyFilename string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -75,9 +75,9 @@ func SendPicMsg(url string, wxid, picPath, diyFilename string) error {
 }
 
 // SendFileMsg 发送文件消息 https://www.showdoc.com.cn/WeChatProject/8929125290388797
-func SendFileMsg(url string, wxid, filepath, diyFilename string) error {
+func (w *Wechat) SendFileMsg(wxid, filepath, diyFilename string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -107,9 +107,9 @@ func SendFileMsg(url string, wxid, filepath, diyFilename string) error {
 }
 
 // SendVideoMsg 发送视频消息 https://www.showdoc.com.cn/WeChatProject/8929126402335432
-func SendVideoMsg(url string, wxid, videoPath, diyFilename string) error {
+func (w *Wechat) SendVideoMsg(wxid, videoPath, diyFilename string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -139,9 +139,9 @@ func SendVideoMsg(url string, wxid, videoPath, diyFilename string) error {
 }
 
 // SendGIFMsg 发送GIF动画表情消息 https://www.showdoc.com.cn/WeChatProject/8929127822471500
-func SendGIFMsg(url string, wxid, gifPath string) error {
+func (w *Wechat) SendGIFMsg(wxid, gifPath string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -170,9 +170,9 @@ func SendGIFMsg(url string, wxid, gifPath string) error {
 }
 
 // SendLocationMsg 发送位置消息 https://www.showdoc.com.cn/WeChatProject/9167445492364225
-func SendLocationMsg(url string, wxid, msg string) error {
+func (w *Wechat) SendLocationMsg(wxid, msg string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -201,9 +201,9 @@ func SendLocationMsg(url string, wxid, msg string) error {
 }
 
 // SendPatMsg 发送拍一拍消息 https://www.showdoc.com.cn/WeChatProject/9644354859714189
-func SendPatMsg(url string, wxid, gid string) error {
+func (w *Wechat) SendPatMsg(wxid, gid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -232,9 +232,9 @@ func SendPatMsg(url string, wxid, gid string) error {
 }
 
 // SendVoiceMsg 发送拍一拍消息 https://www.showdoc.com.cn/WeChatProject/9606012038140554
-func SendVoiceMsg(url string, wxid, voiceHex string) error {
+func (w *Wechat) SendVoiceMsg(wxid, voiceHex string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -263,9 +263,9 @@ func SendVoiceMsg(url string, wxid, voiceHex string) error {
 }
 
 // SendDIYMsg 发送自定义消息 https://www.showdoc.com.cn/WeChatProject/9167460676535402
-func SendDIYMsg(url string, wxid, msgType, msg string) error {
+func (w *Wechat) SendDIYMsg(wxid, msgType, msg string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -295,9 +295,9 @@ func SendDIYMsg(url string, wxid, msgType, msg string) error {
 }
 
 // SendCardMsg 转发好友名片 https://www.showdoc.com.cn/WeChatProject/8929459103947241
-func SendCardMsg(url string, req model.SendCardMsgReq) error {
+func (w *Wechat) SendCardMsg(req model.SendCardMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -321,9 +321,9 @@ func SendCardMsg(url string, req model.SendCardMsgReq) error {
 }
 
 // FowardEssayMsg 转发文章消息 https://www.showdoc.com.cn/WeChatProject/8929539190505167
-func FowardEssayMsg(url string, req model.SendCardMsgReq) error {
+func (w *Wechat) FowardEssayMsg(req model.SendCardMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -347,9 +347,9 @@ func FowardEssayMsg(url string, req model.SendCardMsgReq) error {
 }
 
 // FowardAppMsg 转发小程序 https://www.showdoc.com.cn/WeChatProject/8929638412121701
-func FowardAppMsg(url string, req model.FowardAppMsgReq) error {
+func (w *Wechat) FowardAppMsg(req model.FowardAppMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -373,9 +373,9 @@ func FowardAppMsg(url string, req model.FowardAppMsgReq) error {
 }
 
 // FowardMusicMsg 转发网易云音乐 https://www.showdoc.com.cn/WeChatProject/8929642778231025
-func FowardMusicMsg(url string, req model.FowardMusicMsgReq) error {
+func (w *Wechat) FowardMusicMsg(req model.FowardMusicMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -399,9 +399,9 @@ func FowardMusicMsg(url string, req model.FowardMusicMsgReq) error {
 }
 
 // FowardXMLMsg 转发自定义XML消息 https://www.showdoc.com.cn/WeChatProject/9167364405161045
-func FowardXMLMsg(url string, req model.FowardMusicMsgReq) error {
+func (w *Wechat) FowardXMLMsg(req model.FowardMusicMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -425,9 +425,9 @@ func FowardXMLMsg(url string, req model.FowardMusicMsgReq) error {
 }
 
 // SendAtMsg 发送群@消息 群聊中使用 https://www.showdoc.com.cn/WeChatProject/8929229624237103
-func SendAtMsg(url string, req model.SendAtMsgReq) error {
+func (w *Wechat) SendAtMsg(req model.SendAtMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -451,9 +451,9 @@ func SendAtMsg(url string, req model.SendAtMsgReq) error {
 }
 
 // SendAtAllMsg 发送@所有人 消息 群聊中使用(本人必须是群主或群管理员，否则发送失败) https://www.showdoc.com.cn/WeChatProject/8981408454846254
-func SendAtAllMsg(url string, req model.SendAtAllMsgReq) error {
+func (w *Wechat) SendAtAllMsg(req model.SendAtAllMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -477,9 +477,9 @@ func SendAtAllMsg(url string, req model.SendAtAllMsgReq) error {
 }
 
 // ForwardAllMsg 转发任意消息（注意：无法转发语音） https://www.showdoc.com.cn/WeChatProject/9090147365509163
-func ForwardAllMsg(url string, req model.ForwardAllMsgReq) error {
+func (w *Wechat) ForwardAllMsg(req model.ForwardAllMsgReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -503,9 +503,9 @@ func ForwardAllMsg(url string, req model.ForwardAllMsgReq) error {
 }
 
 // ConfigureMsgRecive 开启/关闭实时消息接收功能。 https://www.showdoc.com.cn/WeChatProject/9204125262722344
-func ConfigureMsgRecive(url string, isEnable int, msgReciveFullURL string) error {
+func (w *Wechat) ConfigureMsgRecive(isEnable int, msgReciveFullURL string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -534,9 +534,9 @@ func ConfigureMsgRecive(url string, isEnable int, msgReciveFullURL string) error
 }
 
 // CheckFriendStatus 免打扰检测僵尸粉。 https://www.showdoc.com.cn/WeChatProject/9063410601712380
-func CheckFriendStatus(url string, wxid string) (int, error) {
+func (w *Wechat) CheckFriendStatus(wxid string) (int, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return 0, err
 	}
@@ -565,9 +565,9 @@ func CheckFriendStatus(url string, wxid string) (int, error) {
 }
 
 // GetGIFURL 获取GIF的访问URL https://www.showdoc.com.cn/WeChatProject/9690133784680867
-func GetGIFURL(url string, msgXml string) (string, error) {
+func (w *Wechat) GetGIFURL(msgXml string) (string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return "", err
 	}
@@ -591,9 +591,9 @@ func GetGIFURL(url string, msgXml string) (string, error) {
 }
 
 // DecodePic 解密图片 https://www.showdoc.com.cn/WeChatProject/8929707428199536
-func DecodePic(url string, oriPath, savePath string) error {
+func (w *Wechat) DecodePic(oriPath, savePath string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -622,9 +622,9 @@ func DecodePic(url string, oriPath, savePath string) error {
 }
 
 // DownPic 下载图片 https://www.showdoc.com.cn/WeChatProject/9682774769136221
-func DownPic(url string, toPath, msgXml string) error {
+func (w *Wechat) DownPic(toPath, msgXml string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -653,9 +653,9 @@ func DownPic(url string, toPath, msgXml string) error {
 }
 
 // GetUnReadMsgNum 获取未读消息总数 https://www.showdoc.com.cn/WeChatProject/9690385454945788
-func GetUnReadMsgNum(url string) (string, error) {
+func (w *Wechat) GetUnReadMsgNum() (string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return "", err
 	}
@@ -675,9 +675,9 @@ func GetUnReadMsgNum(url string) (string, error) {
 }
 
 // Collection 确认收款 https://www.showdoc.com.cn/WeChatProject/8929685205004781
-func Collection(url string, fromwxid, transferid string) error {
+func (w *Wechat) Collection(fromwxid, transferid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -706,9 +706,9 @@ func Collection(url string, fromwxid, transferid string) error {
 }
 
 // UnCollection 退还转账 https://www.showdoc.com.cn/WeChatProject/9652344490820665
-func UnCollection(url string, fromwxid, transferid string) error {
+func (w *Wechat) UnCollection(fromwxid, transferid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -737,9 +737,9 @@ func UnCollection(url string, fromwxid, transferid string) error {
 }
 
 // GetMsgStruct 获取消息内容 https://www.showdoc.com.cn/WeChatProject/9364487555891575
-func GetMsgStruct(url string, msgId string) (*model.GetMsgStructResult, error) {
+func (w *Wechat) GetMsgStruct(msgId string) (*model.GetMsgStructResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -763,9 +763,9 @@ func GetMsgStruct(url string, msgId string) (*model.GetMsgStructResult, error) {
 }
 
 // DownPic4ID 下载图片_使用文件id和key https://www.showdoc.com.cn/WeChatProject/9745105666381249
-func DownPic4ID(url string, req model.DownPic4IDReq) error {
+func (w *Wechat) DownPic4ID(req model.DownPic4IDReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -789,9 +789,9 @@ func DownPic4ID(url string, req model.DownPic4IDReq) error {
 }
 
 // DownFileorPic 下载图片_使用服务器消息ID https://www.showdoc.com.cn/WeChatProject/9364507487384330
-func DownFileorPic(url string, msgId string) error {
+func (w *Wechat) DownFileorPic(msgId string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -819,9 +819,9 @@ func DownFileorPic(url string, msgId string) error {
 }
 
 // ClearAllChatMsg 清空聊天记录 https://www.showdoc.com.cn/WeChatProject/9584482852044275
-func ClearAllChatMsg(url string) error {
+func (w *Wechat) ClearAllChatMsg(ip, port, url string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}

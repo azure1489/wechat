@@ -10,9 +10,9 @@ import (
 )
 
 // OpenInlineBrowser 打开内置浏览器 https://www.showdoc.com.cn/WeChatProject/8968098266210910
-func OpenInlineBrowser(url string, urlPath, toWxid string) error {
+func (w *Wechat) OpenInlineBrowser(urlPath, toWxid string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}

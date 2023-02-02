@@ -11,9 +11,9 @@ import (
 )
 
 // AgainStartWeChat 启动更多微信 https://www.showdoc.com.cn/WeChatProject/9063540299207309
-func AgainStartWeChat(url string, req model.AgainStartWeChatReq) error {
+func (w *Wechat) AgainStartWeChat(req model.AgainStartWeChatReq) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -37,9 +37,9 @@ func AgainStartWeChat(url string, req model.AgainStartWeChatReq) error {
 }
 
 // RefreshLoginQRCode 刷新登录二维码 https://www.showdoc.com.cn/WeChatProject/8966162223712985
-func RefreshLoginQRCode(url string) ([]byte, error) {
+func (w *Wechat) RefreshLoginQRCode(url string) ([]byte, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -53,9 +53,9 @@ func RefreshLoginQRCode(url string) ([]byte, error) {
 }
 
 // GetLoginQRCode 获取登录二维码图片 https://www.showdoc.com.cn/WeChatProject/9026367939952187
-func GetLoginQRCode(url string) (string, error) {
+func (w *Wechat) GetLoginQRCode(url string) (string, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return "", err
 	}
@@ -75,9 +75,9 @@ func GetLoginQRCode(url string) (string, error) {
 }
 
 // IsLoginStatus 获取微信登陆状态 https://www.showdoc.com.cn/WeChatProject/8991915897471323
-func IsLoginStatus(url string) error {
+func (w *Wechat) IsLoginStatus(url string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -101,9 +101,9 @@ func IsLoginStatus(url string) error {
 }
 
 // GetSelfLoginInfo 获取个人详细信息 https://www.showdoc.com.cn/WeChatProject/8929111706614173
-func GetSelfLoginInfo(url string) (*model.GetSelfLoginInfoResult, error) {
+func (w *Wechat) GetSelfLoginInfo(url string) (*model.GetSelfLoginInfoResult, error) {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -123,9 +123,9 @@ func GetSelfLoginInfo(url string) (*model.GetSelfLoginInfoResult, error) {
 }
 
 // Logout 退出微信 https://www.showdoc.com.cn/WeChatProject/9008665345790557
-func Logout(url string) error {
+func (w *Wechat) Logout(url string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
@@ -149,9 +149,9 @@ func Logout(url string) error {
 }
 
 // TerminateThisWeChat 结束微信 https://www.showdoc.com.cn/WeChatProject/9214210657048561
-func TerminateThisWeChat(url string) error {
+func (w *Wechat) TerminateThisWeChat(url string) error {
 	timeout := time.Second * 60
-	client, err := util.NewClient(url, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, timeout)
 	if err != nil {
 		return err
 	}
