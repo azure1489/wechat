@@ -21,8 +21,8 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 	//	"tid":"3708064405066220800","data":{"company_id":1635,"shop_id":1910,"branch_id":4,"tid":"3708064405066220800","oid":"3708064405066220800001","express_name":"%e9%a1%ba%e4%b8%b0%e9%80%9f%e8%bf%90","express_id":"7","waybill_no":"SF1651895583219","express_date":"12/13/2022 14:45:23","operate_user":"8642"},"timestamp":"1670942746960"}
 	//
 
-	url := fmt.Sprintf("http://%s:%d/api", "127.0.0.1", 8100)
-	ip := "10.211.4.239"
+	url := "https://app.aworld.ltd:9112/api"
+	ip := "127.0.0.1"
 	port := "30001"
 	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
 	friendAndChatRooms, err := NewWechat(ip, port, url, appSecret).GetFriendAndChatRoomList()
