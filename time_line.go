@@ -7,23 +7,20 @@ import (
 	"time"
 
 	"github.com/azure1489/wechat/model"
-	"github.com/azure1489/wechat/protobuf/ipc"
 	"github.com/azure1489/wechat/util"
-	"github.com/pkg/errors"
-	"google.golang.org/protobuf/proto"
 )
 
 // TimelineGetFristPage 刷新并获取朋友圈第一页的内容，如果朋友圈有新动态则返回10条数据 https://www.showdoc.com.cn/WeChatProject/8929083282065703
-func (w *Wechat) TimelineGetFristPage(url string) (*[]model.TimelineGetFristPageResultDataItem, error) {
+func (w *Wechat) TimelineGetFristPage(url string) (string, error) {
 	timeout := time.Second * 60
 	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	resultBody, err := client.DoPost("/TimelineGetFristPage", nil)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	// proto.Unmarshal()
@@ -36,7 +33,7 @@ func (w *Wechat) TimelineGetFristPage(url string) (*[]model.TimelineGetFristPage
 	dst := make([]byte, maxDeLen)
 	n, err := hex.Decode(dst, resultBody)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	decodeData := dst[:n]
 
@@ -219,17 +216,17 @@ func (w *Wechat) TimelineGetFristPage(url string) (*[]model.TimelineGetFristPage
 
 	fmt.Println("\n ---------- ")
 
-	dataInfo := &ipc.TimelineGetFristPageResult{}
-	err = proto.UnmarshalOptions{
-		Merge:          true,
-		AllowPartial:   true,
-		DiscardUnknown: true,
-	}.Unmarshal(decodeData, dataInfo)
-	if err != nil {
-		// fmt.Println("unmarshal data err : ", err.Error())
-		return nil, errors.Cause(err)
-	}
-	fmt.Println("unmarshal data : ", dataInfo)
+	// dataInfo := &ipc.TimelineGetFristPageResult{}
+	// err = proto.UnmarshalOptions{
+	// 	Merge:          true,
+	// 	AllowPartial:   true,
+	// 	DiscardUnknown: true,
+	// }.Unmarshal(decodeData, dataInfo)
+	// if err != nil {
+	// 	// fmt.Println("unmarshal data err : ", err.Error())
+	// 	return nil, errors.Cause(err)
+	// }
+	// fmt.Println("unmarshal data : ", dataInfo)
 
 	// commonResult := model.TimelineGetFristPageResult{}
 	// err = json.Unmarshal(resultBody, &commonResult)
@@ -241,7 +238,7 @@ func (w *Wechat) TimelineGetFristPage(url string) (*[]model.TimelineGetFristPage
 	// 	return &[]model.TimelineGetFristPageResultDataItem{}, nil
 	// }
 
-	return nil, nil
+	return string(decodeData), nil
 }
 
 // GetFriendTimeline 获取指定好友的首页朋友圈(返回最近10条记录) https://www.showdoc.com.cn/WeChatProject/9155297161590672
