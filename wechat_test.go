@@ -56,8 +56,8 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 }
 
 func TestSendTextMsg(t *testing.T) {
-	url := fmt.Sprintf("http://%s:%d/api", "127.0.0.1", 8100)
-	ip := "10.211.4.239"
+	url := fmt.Sprintf("http://%s:%d/api", "app.aworld.ltd", 9111)
+	ip := "127.0.0.1"
 	port := "30001"
 	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
 	err := NewWechat(ip, port, url, appSecret).SendTextMsg("filehelper", "123123123")
