@@ -25,7 +25,7 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 	ip := "10.211.4.239"
 	port := "30001"
 	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
-	friendAndChatRooms, err := NewWechat(ip, port, url, appSecret).GetFriendAndChatRoomList(url)
+	friendAndChatRooms, err := NewWechat(ip, port, url, appSecret).GetFriendAndChatRoomList()
 	if err != nil {
 		t.Error(err)
 		return

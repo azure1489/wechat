@@ -11,7 +11,7 @@ import (
 )
 
 // GetFriendAndChatRoomList 获取好友和群清单 https://www.showdoc.com.cn/WeChatProject/8995071288617868
-func (w *Wechat) GetFriendAndChatRoomList(url string) (*model.FriendAndChatRoomResult, error) {
+func (w *Wechat) GetFriendAndChatRoomList() (*model.FriendAndChatRoomResult, error) {
 	timeout := time.Second * 60
 	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
