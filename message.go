@@ -207,27 +207,22 @@ func (w *Wechat) SendPatMsg(wxid, gid string) error {
 	if err != nil {
 		return err
 	}
-
 	req := model.SendPatMsgReq{
 		Wxid: wxid,
 		Gid:  gid,
 	}
-
 	resultBody, err := client.DoPost("/SendLocationMsg", req)
 	if err != nil {
 		return err
 	}
-
 	commonResult := model.SendPatMsgResult{}
 	err = json.Unmarshal(resultBody, &commonResult)
 	if err != nil {
 		return err
 	}
-
 	if commonResult.SendPatMsg != "1" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
-
 	return nil
 }
 
