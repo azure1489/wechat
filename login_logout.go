@@ -36,6 +36,28 @@ func (w *Wechat) AgainStartWeChat(req model.AgainStartWeChatReq) error {
 	return nil
 }
 
+// AgainStartWeChat 获取微信进程总数 https://www.showdoc.com.cn/WeChatProject/9794632555004152
+func (w *Wechat) GetWeChatProcessNumber(req model.AgainStartWeChatReq) (*[]model.GetWeChatProcessNumberResultList, error) {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return nil, err
+	}
+
+	resultBody, err := client.DoPost("/Get_WeChatProcessNumber", req)
+	if err != nil {
+		return nil, err
+	}
+
+	commonResult := model.GetWeChatProcessNumberResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return &commonResult.List, nil
+}
+
 // RefreshLoginQRCode 刷新登录二维码 https://www.showdoc.com.cn/WeChatProject/8966162223712985
 func (w *Wechat) RefreshLoginQRCode(url string) ([]byte, error) {
 	timeout := time.Second * 60

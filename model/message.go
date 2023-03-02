@@ -9,6 +9,15 @@ type SendTextMsgResult struct {
 	Code string `json:"code"`
 }
 
+type SendTextMsgNoSrcReq struct {
+	WxidOrGid string `json:"wxidorgid"`
+	Msg       string `json:"msg"`
+}
+
+type SendTextMsgNoSrcResult struct {
+	SendTextMsgNoSrc string `json:"SendTextMsg_NoSrc"`
+}
+
 type SendPicMsgReq struct {
 	Wxid        string `json:"wxid"`
 	PicPath     string `json:"picpath"`
@@ -17,6 +26,19 @@ type SendPicMsgReq struct {
 
 type SendPicMsgResult struct {
 	SendPicMsg string `json:"SendPicMsg"`
+}
+
+type SendImgMsgNoSrcReq struct {
+	Wxidorgid string `json:"wxidorgid"`
+	Fileid    string `json:"fileid"`
+	Authkey   string `json:"authkey"`
+	Filemd5   string `json:"filemd5"`
+	Filesize  string `json:"filesize"`
+	Filecrc32 string `json:"filecrc32"`
+}
+
+type SendImgMsgNoSrcResult struct {
+	SendImgMsgNoSrc string `json:"SendImgMsg_NoSrc"`
 }
 
 type SendFileMsgReq struct {

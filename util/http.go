@@ -105,6 +105,8 @@ func (w *HttpClient) DoPost(model string, postBody interface{}) ([]byte, error) 
 		return nil, err
 	}
 
+	fmt.Println("body:", string(body))
+
 	return body, nil
 }
 
@@ -142,6 +144,8 @@ func (w *HttpClient) DoGet(model string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println("body:", string(body))
 
 	return body, nil
 }

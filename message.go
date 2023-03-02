@@ -16,6 +16,7 @@ func (w *Wechat) SendTextMsg(wxid, msg string) error {
 	timeout := time.Second * 60
 	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
+		fmt.Println("err:", err.Error())
 		return err
 	}
 
@@ -29,13 +30,44 @@ func (w *Wechat) SendTextMsg(wxid, msg string) error {
 		return err
 	}
 
-	commonResult := model.SendTextMsgResult{}
+	commonResult := []model.SendTextMsgResult{}
 	err = json.Unmarshal(resultBody, &commonResult)
 	if err != nil {
 		return err
 	}
 
-	if commonResult.Code != "0" {
+	if commonResult[0].Code != "0" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// SendTextMsgNoSrc 发送文本消息_无源 https://www.showdoc.com.cn/WeChatProject/9859692078921113
+func (w *Wechat) SendTextMsgNoSrc(wxid, msg string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.SendTextMsgNoSrcReq{
+		WxidOrGid: wxid,
+		Msg:       msg,
+	}
+
+	resultBody, err := client.DoPost("/SendTextMsg_NoSrc", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.SendTextMsgNoSrcResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.SendTextMsgNoSrc != "1" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
 
@@ -68,6 +100,32 @@ func (w *Wechat) SendPicMsg(wxid, picPath, diyFilename string) error {
 	}
 
 	if commonResult.SendPicMsg != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// SendImgMsgNoSrc 发送图片消息_无源,无需上传图片直接发送图片消息给对方 https://www.showdoc.com.cn/WeChatProject/9859693859851287
+func (w *Wechat) SendImgMsgNoSrc(req model.SendImgMsgNoSrcReq) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/SendImgMsg_NoSrc", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.SendImgMsgNoSrcResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.SendImgMsgNoSrc != "1" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
 

@@ -9,6 +9,18 @@ type AgainStartWeChatReq struct {
 	ProxyPwd   string `json:"Proxy_Pwd"`
 }
 
+type GetWeChatProcessNumberResult struct {
+	TotalNum string                             `json:"total_num"`
+	List     []GetWeChatProcessNumberResultList `json:"List"`
+}
+
+type GetWeChatProcessNumberResultList struct {
+	Index       int    `json:"Index"`
+	ProcessName string `json:"ProcessName"`
+	PID         int    `json:"PID"`
+	Par         string `json:"Par"`
+}
+
 type AgainStartWeChatResult struct {
 	AgainStartWeChat string `json:"AgainStartWeChat"`
 }

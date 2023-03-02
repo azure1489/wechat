@@ -56,11 +56,23 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 }
 
 func TestSendTextMsg(t *testing.T) {
-	url := fmt.Sprintf("https://%s:%d/api", "app.aworld.ltd", 9112)
+	url := "https://app.aworld.ltd:9112/api"
 	ip := "127.0.0.1"
 	port := "30001"
 	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
-	err := NewWechat(ip, port, url, appSecret).SendTextMsg("filehelper", "123123123")
+	err := NewWechat(ip, port, url, appSecret).SendTextMsg("filehelper", "e")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestSendTextMsgNoSrc(t *testing.T) {
+	url := "https://app.aworld.ltd:9112/api"
+	ip := "127.0.0.1"
+	port := "30001"
+	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
+	err := NewWechat(ip, port, url, appSecret).SendTextMsgNoSrc("filehelper", "e1")
 	if err != nil {
 		t.Error(err)
 		return
@@ -242,7 +254,7 @@ func TestTimelineGetFristPage(t *testing.T) {
 	ip := "10.211.4.239"
 	port := "30001"
 	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
-	info, err := NewWechat(ip, port, url, appSecret).TimelineGetFristPage(url)
+	info, err := NewWechat(ip, port, url, appSecret).TimelineGetFristPage()
 	if err != nil {
 		t.Error(err)
 		return

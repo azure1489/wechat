@@ -1,18 +1,33 @@
 package model
 
 type TimelineGetFristPageResult struct {
-	Havenewmsg string                               `json:"havenewmsg"`
-	Data       []TimelineGetFristPageResultDataItem `json:"data"`
+	Count string                               `json:"count"`
+	Data  []TimelineGetFristPageResultDataItem `json:"data"`
 }
 type TimelineGetFristPageResultDataItem struct {
-	MsgidFull10 string `json:"msgid_full_10"`
-	MsgidFull16 string `json:"msgid_full_16"`
-	Msgid1      string `json:"msgid_1"`
-	Msgid2      string `json:"msgid_2"`
-	Msgtime     string `json:"msgtime"`
-	Wxid        string `json:"wxid"`
-	Nickname    string `json:"nickname"`
-	Content     string `json:"content"`
+	ID         string `json:"id"`
+	Msgtime    string `json:"msgtime"`
+	Wxid       string `json:"wxid"`
+	Nickname   string `json:"nickname"`
+	Content    string `json:"content"`
+	CommentInc string `json:"comment_inc"`
+}
+
+type TimelineGetNextPageReq struct {
+	Id string `json:"id"`
+}
+
+type TimelineGetNextPageResult struct {
+	Count string                              `json:"count"`
+	Data  []TimelineGetNextPageResultDataItem `json:"data"`
+}
+type TimelineGetNextPageResultDataItem struct {
+	ID         string `json:"id"`
+	Msgtime    string `json:"msgtime"`
+	Wxid       string `json:"wxid"`
+	Nickname   string `json:"nickname"`
+	Content    string `json:"content"`
+	CommentInc string `json:"comment_inc"`
 }
 
 type GetFriendTimelineReq struct {
@@ -24,12 +39,11 @@ type GetFriendTimelineResult struct {
 	Data []GetFriendTimelineResultDataItem `json:"data"`
 }
 type GetFriendTimelineResultDataItem struct {
-	MsgidFull10 string `json:"msgid_full_10"`
-	MsgidFull16 string `json:"msgid_full_16"`
-	Msgid1      string `json:"msgid_1"`
-	Msgid2      string `json:"msgid_2"`
-	Msgtime     string `json:"msgtime"`
-	Wxid        string `json:"wxid"`
-	Nickname    string `json:"nickname"`
-	Content     string `json:"content"`
+	ID           string `json:"id"`
+	Msgtime      string `json:"msgtime"`
+	Wxid         string `json:"wxid"`
+	Nickname     string `json:"nickname"`
+	NicknameUTF8 string `json:"nickname_UTF8"`
+	Content      string `json:"content"`
+	CommentInc   string `json:"comment_inc"`
 }
