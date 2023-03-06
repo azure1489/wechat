@@ -54,6 +54,49 @@ func (c *HttpClient) GetMD5Encode(data string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+func (w *HttpClient) DoGet(model string) ([]byte, error) {
+
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", w.Url, model), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if w.Secret != "" {
+
+		jsonText := model
+
+		appId := "uEVq0SDj34HwVltpNKzdgxmK"
+
+		signText := appId + jsonText + w.Secret
+		//
+		signToLowerCase := w.GetMD5Encode(signText)
+
+		req.Header.Add("ip", w.Ip)
+		req.Header.Add("port", w.Port)
+		req.Header.Add("sign", signToLowerCase)
+	}
+
+	resp, err := (&http.Client{Timeout: w.Timeout}).Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("response status code=%d, body=%s", resp.StatusCode, string(body))
+	}
+
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println("body:", string(body))
+
+	return body, nil
+}
+
 func (w *HttpClient) DoPost(model string, postBody interface{}) ([]byte, error) {
 
 	var bodyReader io.Reader
@@ -78,15 +121,16 @@ func (w *HttpClient) DoPost(model string, postBody interface{}) ([]byte, error) 
 		return nil, err
 	}
 
-	appId := "uEVq0SDj34HwVltpNKzdgxmK"
+	if w.Secret != "" {
 
-	signText := appId + jsonText + w.Secret
-	//
-	signToLowerCase := w.GetMD5Encode(signText)
+		appId := "uEVq0SDj34HwVltpNKzdgxmK"
+		signText := appId + jsonText + w.Secret
+		signToLowerCase := w.GetMD5Encode(signText)
 
-	req.Header.Add("ip", w.Ip)
-	req.Header.Add("port", w.Port)
-	req.Header.Add("sign", signToLowerCase)
+		req.Header.Add("ip", w.Ip)
+		req.Header.Add("port", w.Port)
+		req.Header.Add("sign", signToLowerCase)
+	}
 
 	resp, err := (&http.Client{Timeout: w.Timeout}).Do(req)
 	if err != nil {
@@ -100,46 +144,6 @@ func (w *HttpClient) DoPost(model string, postBody interface{}) ([]byte, error) 
 
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	fmt.Println("body:", string(body))
-
-	return body, nil
-}
-
-func (w *HttpClient) DoGet(model string) ([]byte, error) {
-
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", w.Url, model), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	jsonText := model
-
-	appId := "uEVq0SDj34HwVltpNKzdgxmK"
-
-	signText := appId + jsonText + w.Secret
-	//
-	signToLowerCase := w.GetMD5Encode(signText)
-
-	req.Header.Add("ip", w.Ip)
-	req.Header.Add("port", w.Port)
-	req.Header.Add("sign", signToLowerCase)
-
-	resp, err := (&http.Client{Timeout: w.Timeout}).Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("response status code=%d, body=%s", resp.StatusCode, string(body))
-	}
-
-	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err

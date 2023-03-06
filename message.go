@@ -529,32 +529,6 @@ func (w *Wechat) SendAtAllMsg(req model.SendAtAllMsgReq) error {
 	return nil
 }
 
-// ForwardAllMsg 转发任意消息（注意：无法转发语音） https://www.showdoc.com.cn/WeChatProject/9090147365509163
-func (w *Wechat) ForwardAllMsg(req model.ForwardAllMsgReq) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
-	if err != nil {
-		return err
-	}
-
-	resultBody, err := client.DoPost("/ForwardAllMsg", req)
-	if err != nil {
-		return err
-	}
-
-	commonResult := model.ForwardAllMsgResult{}
-	err = json.Unmarshal(resultBody, &commonResult)
-	if err != nil {
-		return err
-	}
-
-	if commonResult.ForwardAllMsg != "1" {
-		return fmt.Errorf("提交失败, body=%s", string(resultBody))
-	}
-
-	return nil
-}
-
 // ConfigureMsgRecive 开启/关闭实时消息接收功能。 https://www.showdoc.com.cn/WeChatProject/9204125262722344
 func (w *Wechat) ConfigureMsgRecive(isEnable int, msgReciveFullURL string) error {
 	timeout := time.Second * 60
@@ -891,6 +865,62 @@ func (w *Wechat) ClearAllChatMsg(ip, port, url string) error {
 	}
 
 	if commonResult.ClearAllChatMsg != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// ForwardAllMsg 转发任意消息（注意：无法转发语音） https://www.showdoc.com.cn/WeChatProject/9090147365509163
+func (w *Wechat) ForwardAllMsg(req model.ForwardAllMsgReq) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/ForwardAllMsg", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.ForwardAllMsgResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.ForwardAllMsg != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// CheckFriendStatus 免打扰检测僵尸粉_异步并发 https://www.showdoc.com.cn/WeChatProject/9819211105903328
+func (w *Wechat) CheckFriendStatusSync(wxidList string) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return err
+	}
+
+	req := model.CheckFriendStatusSyncReq{
+		WxidList: wxidList,
+	}
+
+	resultBody, err := client.DoPost("/CheckFriendStatus_Sync", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.CheckFriendStatusSyncResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.Code != "0" && commonResult.IsSync != "1" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
 

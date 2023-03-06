@@ -296,3 +296,12 @@ type DownFileorPicResult struct {
 type ClearAllChatMsgResult struct {
 	ClearAllChatMsg string `json:"ClearAllChatMsg"`
 }
+
+type CheckFriendStatusSyncReq struct {
+	WxidList string `json:"wxidlist"`
+}
+
+type CheckFriendStatusSyncResult struct {
+	Code   string `json:"code"`
+	IsSync string `json:"is_sync"`
+}

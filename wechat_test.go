@@ -2,8 +2,10 @@ package wechat
 
 import (
 	"bytes"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"testing"
 )
 
@@ -56,11 +58,38 @@ func TestGetFriendAndChatRoomList(t *testing.T) {
 }
 
 func TestSendTextMsg(t *testing.T) {
-	url := "https://app.aworld.ltd:9112/api"
+	// url := "https://mp.aworld.ltd/wx/api"
+	// ip := "127.0.0.1"
+	// port := "30001"
+	// appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
+
+	url := "http://10.211.4.239:30001"
+	err := NewWechatEncryption(url).SendTextMsg("filehelper", "e123")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestSendVoiceMsg(t *testing.T) {
+
+	// Read Silk file
+	silkFile := "/Users/yuanhua/output_2.silk"
+	data, err := ioutil.ReadFile(silkFile)
+	if err != nil {
+		fmt.Println("Failed to read Silk file:", err)
+		return
+	}
+
+	// Convert audio data to hex string
+	hexString := hex.EncodeToString(data)
+	fmt.Println("Silk hexString:", hexString)
+
+	url := "https://.aworld.ltd:9112/api"
 	ip := "127.0.0.1"
 	port := "30001"
 	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
-	err := NewWechat(ip, port, url, appSecret).SendTextMsg("filehelper", "e")
+	err = NewWechat(ip, port, url, appSecret).SendVoiceMsg("filehelper", hexString)
 	if err != nil {
 		t.Error(err)
 		return
@@ -294,6 +323,20 @@ func TestGetFriendTimeline(t *testing.T) {
 	fmt.Println(bf.String())
 }
 
+func TestQueryDB(t *testing.T) {
+	url := "https://app.aworld.ltd:9112/api"
+	ip := "127.0.0.1"
+	port := "30001"
+	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
+	info, err := NewWechat(ip, port, url, appSecret).QueryDB("MSG0.db", "select * from MSG limit 2")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	fmt.Println(info)
+}
+
 // func TestProtocolBuffer(t *testing.T) {
 // 	// MessageEnvelope是models.pb.go的结构体
 // 	oldData := ipc.TimelineGetFristPageResult{
@@ -394,3 +437,11 @@ func TestCount(t *testing.T) {
 		fmt.Println("testInt2:", r)
 	}
 }
+
+// func TestInfo(t *testing.T) {
+
+// 	uuid := uuid.New()
+// 	key := uuid.String()
+
+// 	fmt.Println("key:", key)
+// }
