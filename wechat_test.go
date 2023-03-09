@@ -74,7 +74,7 @@ func TestSendTextMsg(t *testing.T) {
 func TestSendVoiceMsg(t *testing.T) {
 
 	// Read Silk file
-	silkFile := "/Users/yuanhua/output_2.silk"
+	silkFile := "/Users/yuanhua/Downloads/test02.silk"
 	data, err := ioutil.ReadFile(silkFile)
 	if err != nil {
 		fmt.Println("Failed to read Silk file:", err)
@@ -83,13 +83,10 @@ func TestSendVoiceMsg(t *testing.T) {
 
 	// Convert audio data to hex string
 	hexString := hex.EncodeToString(data)
-	fmt.Println("Silk hexString:", hexString)
+	// fmt.Println("Silk hexString:", hexString)
 
-	url := "https://.aworld.ltd:9112/api"
-	ip := "127.0.0.1"
-	port := "30001"
-	appSecret := "81fb6a51e232411c09575bb96bf71675980da0ac"
-	err = NewWechat(ip, port, url, appSecret).SendVoiceMsg("filehelper", hexString)
+	url := "http://10.211.4.239:30001"
+	err = NewWechatEncryption(url).SendVoiceMsg("wxid_3435654360314", hexString)
 	if err != nil {
 		t.Error(err)
 		return
