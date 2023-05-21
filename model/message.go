@@ -6,7 +6,8 @@ type SendTextMsgReq struct {
 }
 
 type SendTextMsgResult struct {
-	Code string `json:"code"`
+	Code    string `json:"code"`
+	Message string `json:"message"`
 }
 
 type SendTextMsgNoSrcReq struct {

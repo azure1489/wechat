@@ -36,7 +36,7 @@ func (w *Wechat) SendTextMsg(wxid, msg string) error {
 		return err
 	}
 
-	if commonResult[0].Code != "0" {
+	if commonResult[0].Message != "success" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
 
