@@ -815,6 +815,32 @@ func (w *Wechat) DownPic4ID(req model.DownPic4IDReq) error {
 	return nil
 }
 
+// DownVideo4ID 下载视频_使用文件id和key https://www.showdoc.com.cn/WeChatProject/9819195637839857
+func (w *Wechat) DownVideo4ID(req model.DownVideo4IDReq) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/DownVideo4ID", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.DownVideo4IDResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.DownVideo4ID != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
 // DownFileorPic 下载图片_使用服务器消息ID https://www.showdoc.com.cn/WeChatProject/9364507487384330
 func (w *Wechat) DownFileorPic(msgId string) error {
 	timeout := time.Second * 60

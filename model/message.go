@@ -202,7 +202,7 @@ type FowardMusicMsgResult struct {
 type FowardXMLMsgReq struct {
 	Type    string `json:"type"`
 	Towxid  string `json:"towxid"`
-	Imgpath string `json:"imgpath"`
+	Imgpath string `json:"imgpath,omitempty"`
 	XML     string `json:"xml"`
 }
 
@@ -282,8 +282,18 @@ type DownPic4IDReq struct {
 	Fileid string `json:"fileid"`
 }
 
+type DownVideo4IDReq struct {
+	Topath string `json:"topath"`
+	Aeskey string `json:"aeskey"`
+	Fileid string `json:"fileid"`
+}
+
 type DownPic4IDResult struct {
 	DownPic4ID string `json:"DownPic4ID"`
+}
+
+type DownVideo4IDResult struct {
+	DownVideo4ID string `json:"DownVideo4ID"`
 }
 
 type DownFileorPicReq struct {
