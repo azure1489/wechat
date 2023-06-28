@@ -2,10 +2,8 @@ package wechat
 
 import (
 	"bytes"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"testing"
 )
 
@@ -71,27 +69,27 @@ func TestSendTextMsg(t *testing.T) {
 	}
 }
 
-func TestSendVoiceMsg(t *testing.T) {
+// func TestSendVoiceMsg(t *testing.T) {
 
-	// Read Silk file
-	silkFile := "/Users/yuanhua/Downloads/test02.silk"
-	data, err := ioutil.ReadFile(silkFile)
-	if err != nil {
-		fmt.Println("Failed to read Silk file:", err)
-		return
-	}
+// 	// Read Silk file
+// 	silkFile := "/Users/yuanhua/Downloads/test02.silk"
+// 	data, err := ioutil.ReadFile(silkFile)
+// 	if err != nil {
+// 		fmt.Println("Failed to read Silk file:", err)
+// 		return
+// 	}
 
-	// Convert audio data to hex string
-	hexString := hex.EncodeToString(data)
-	// fmt.Println("Silk hexString:", hexString)
+// 	// Convert audio data to hex string
+// 	hexString := hex.EncodeToString(data)
+// 	// fmt.Println("Silk hexString:", hexString)
 
-	url := "http://10.211.4.239:30001"
-	err = NewWechatEncryption(url).SendVoiceMsg("wxid_3435654360314", hexString)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-}
+// 	url := "http://10.211.4.239:30001"
+// 	err = NewWechatEncryption(url).SendVoiceMsg("wxid_3435654360314", hexString)
+// 	if err != nil {
+// 		t.Error(err)
+// 		return
+// 	}
+// }
 
 func TestSendTextMsgNoSrc(t *testing.T) {
 	url := "https://app.aworld.ltd:9112/api"

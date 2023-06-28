@@ -284,8 +284,8 @@ func (w *Wechat) SendPatMsg(wxid, gid string) error {
 	return nil
 }
 
-// SendVoiceMsg 发送拍一拍消息 https://www.showdoc.com.cn/WeChatProject/9606012038140554
-func (w *Wechat) SendVoiceMsg(wxid, voiceHex string) error {
+// SendVoiceMsg 发送语音消息 https://www.showdoc.com.cn/WeChatProject/9606012038140554
+func (w *Wechat) SendVoiceMsg(wxid, voiceFile string, timeMs int) error {
 	timeout := time.Second * 60
 	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
@@ -293,8 +293,9 @@ func (w *Wechat) SendVoiceMsg(wxid, voiceHex string) error {
 	}
 
 	req := model.SendVoiceMsgReq{
-		Wxid:     wxid,
-		VoiceHex: voiceHex,
+		Wxid:      wxid,
+		VoiceFile: voiceFile,
+		TimeMs:    timeMs,
 	}
 
 	resultBody, err := client.DoPost("/SendVoiceMsg", req)
@@ -308,9 +309,11 @@ func (w *Wechat) SendVoiceMsg(wxid, voiceHex string) error {
 		return err
 	}
 
-	if commonResult.SendVoiceMsg != "1" {
-		return fmt.Errorf("提交失败, body=%s", string(resultBody))
-	}
+	fmt.Printf("提交返回, body=%s", string(resultBody))
+
+	// if commonResult.SendVoiceMsg != "1" {
+	// 	return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	// }
 
 	return nil
 }

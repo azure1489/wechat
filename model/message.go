@@ -90,12 +90,13 @@ type SendPatMsgResult struct {
 }
 
 type SendVoiceMsgReq struct {
-	Wxid     string `json:"wxid"`
-	VoiceHex string `json:"voice_hex"`
+	Wxid      string `json:"wxid"`
+	VoiceFile string `json:"voice_file"`
+	TimeMs    int    `json:"time_ms"`
 }
 
 type SendVoiceMsgResult struct {
-	SendVoiceMsg string `json:"SendVoiceMsg"`
+	MsgSvrID string `json:"MsgSvrID"`
 }
 
 type ConfigureMsgReciveFullURLReq struct {
