@@ -455,7 +455,33 @@ func (w *Wechat) FowardMusicMsg(req model.FowardMusicMsgReq) error {
 }
 
 // FowardXMLMsg 转发自定义XML消息 https://www.showdoc.com.cn/WeChatProject/9167364405161045
-func (w *Wechat) FowardXMLMsg(req model.FowardMusicMsgReq) error {
+func (w *Wechat) FowardXMLMsg(req model.FowardXMLMsgReq) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/FowardXMLMsg", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.FowardXMLMsgResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.FowardXMLMsg != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// SendQuoteMessage 发送引用消息 https://www.showdoc.com.cn/WeChatProject/10213975499481497
+func (w *Wechat) SendQuoteMessage(req model.SendQuoteMessageReq) error {
 	timeout := time.Second * 60
 	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
 	if err != nil {
@@ -526,6 +552,32 @@ func (w *Wechat) SendAtAllMsg(req model.SendAtAllMsgReq) error {
 	}
 
 	if commonResult.SendAtAllMsg != "1" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
+
+	return nil
+}
+
+// SendAtAllMsg 发送群@消息_无源 https://www.showdoc.com.cn/WeChatProject/10214843464900880
+func (w *Wechat) SendAtMsgNoSrc(req model.SendAtMsgNoSrcReq) error {
+	timeout := time.Second * 60
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	if err != nil {
+		return err
+	}
+
+	resultBody, err := client.DoPost("/SendAtMsg_NoSrc", req)
+	if err != nil {
+		return err
+	}
+
+	commonResult := model.MsgSvrIDResult{}
+	err = json.Unmarshal(resultBody, &commonResult)
+	if err != nil {
+		return err
+	}
+
+	if commonResult.MsgSvrID == "" {
 		return fmt.Errorf("提交失败, body=%s", string(resultBody))
 	}
 

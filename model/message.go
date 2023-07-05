@@ -207,6 +207,11 @@ type FowardXMLMsgReq struct {
 	XML     string `json:"xml"`
 }
 
+type SendQuoteMessageReq struct {
+	Towxid string `json:"towxid"`
+	XML    string `json:"xml"`
+}
+
 type FowardXMLMsgResult struct {
 	FowardXMLMsg string `json:"FowardXMLMsg"`
 }
@@ -227,8 +232,20 @@ type SendAtAllMsgReq struct {
 	Msg string `json:"msg"`
 }
 
+// 发送群@消息_无源 群聊中使用
+type SendAtMsgNoSrcReq struct {
+	Gid      string `json:"gid"`      // 群ID
+	Wxidlist string `json:"wxidlist"` // @的对方微信ID清单，多个wxid用逗号隔开
+	Msg      string `json:"msg"`      // 要发送的消息内容，可以不传该参数或留空
+}
+
 type SendAtAllMsgResult struct {
 	SendAtAllMsg string `json:"SendAtAllMsg"`
+}
+
+// 成功返回服务器消息ID结果
+type MsgSvrIDResult struct {
+	MsgSvrID string `json:"MsgSvrID"` // 成功返回服务器消息ID 失败返回1
 }
 
 type ForwardAllMsgReq struct {
