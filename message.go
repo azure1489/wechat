@@ -303,17 +303,17 @@ func (w *Wechat) SendVoiceMsg(wxid, voiceFile string, timeMs int) error {
 		return err
 	}
 
-	commonResult := model.SendVoiceMsgResult{}
+	commonResult := model.MsgSvrIDResult{}
 	err = json.Unmarshal(resultBody, &commonResult)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("提交返回, body=%s", string(resultBody))
+	// fmt.Printf("提交返回, body=%s", string(resultBody))
 
-	// if commonResult.SendVoiceMsg != "1" {
-	// 	return fmt.Errorf("提交失败, body=%s", string(resultBody))
-	// }
+	if commonResult.MsgSvrID == "" {
+		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	}
 
 	return nil
 }
