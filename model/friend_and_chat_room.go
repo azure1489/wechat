@@ -7,31 +7,37 @@ type FriendAndChatRoomResult struct {
 }
 
 type FriendItem struct {
-	Index    string `json:"index"`
-	Wxid     string `json:"wxid"`
-	Account  string `json:"account"`
-	Markname string `json:"markname"`
-	Nickname string `json:"nickname"`
-	Headimg  string `json:"headimg"`
-	V3       string `json:"v3"`
+	Index     string `json:"index"`
+	Wxid      string `json:"wxid"`     // 好友微信ID
+	Account   string `json:"account"`  // 好友微信号
+	Markname  string `json:"markname"` // 好友备注名称
+	Nickname  string `json:"nickname"` // 好友昵称
+	Headimg   string `json:"headimg"`  // 好友头像URL地址
+	V3        string `json:"v3"`
+	Sex       string `json:"sex"`       // 性别 0=未设置 1=男 2=女
+	Starrole  string `json:"starrole"`  // 星标 65/67=星标 1/3=未星标
+	Dontseeit string `json:"dontseeit"` // 1=开启了不让他看
+	Dontseeme string `json:"dontseeme"` // 1=开启了不看他 128/129=仅聊天
+	Lag       string `json:"lag"`       // 所属标签清单，多开会用逗号隔开
 }
 
 type ChatroomItem struct {
 	Index    string `json:"index"`
-	Gid      string `json:"gid"`
-	Markname string `json:"markname"`
-	Gname    string `json:"gname"`
-	V3       string `json:"v3"`
+	Gid      string `json:"gid"`      // 群ID
+	Markname string `json:"markname"` // 群备注名称
+	Gname    string `json:"gname"`    // 群名称
+	V3       string `json:"v3"`       // V3数据
 }
 
 type GhItem struct {
 	Index    string `json:"index"`
-	Wxid     string `json:"wxid"`
-	Account  string `json:"account"`
-	Markname string `json:"markname"`
-	Nickname string `json:"nickname"`
-	Headimg  string `json:"headimg"`
-	V3       string `json:"v3"`
+	Wxid     string `json:"wxid"`     // 公众号微信ID
+	Account  string `json:"account"`  // 微信号
+	Markname string `json:"markname"` // 备注名称
+	Nickname string `json:"nickname"` // 昵称
+	Headimg  string `json:"headimg"`  // 头像URL地址
+	V3       string `json:"v3"`       // V3数据
+
 }
 
 type StickyChatReq struct {
