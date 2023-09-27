@@ -58,7 +58,7 @@ func NewHttpClientService(ip, port, url, secret string, timeout time.Duration) H
 }
 
 type CommonResult struct {
-	Success string `json:"success"`
+	Code string `json:"code"`
 }
 
 func (w *HttpClientServiceImpl) JSON(body interface{}) []byte {
@@ -139,7 +139,7 @@ func (w *HttpClientServiceImpl) DoPost(model string, postBody interface{}) ([]by
 	}
 
 	url := fmt.Sprintf("%s%s", w.config.Url, model)
-	// fmt.Println("url:", url)
+	fmt.Println("url:", url)
 
 	req, err := http.NewRequest(http.MethodPost, url, bodyReader)
 	if err != nil {

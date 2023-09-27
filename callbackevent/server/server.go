@@ -23,8 +23,6 @@ func NewServer(body []byte) *Server {
 	}
 
 	var msgList []message.MsgItem
-	// sendorrecv: 1=收到的消息,2=发送的消息
-	sendorrecv := msgBody.Sendorrecv
 
 	if msgBody.Msglist != nil && len(msgBody.Msglist) > 0 {
 		msgList = msgBody.Msglist
@@ -32,17 +30,43 @@ func NewServer(body []byte) *Server {
 		msgList = append(msgList, msgBody.MsgItem)
 	}
 
-	for _, msgItem := range msgList {
+	// sendorrecv: 1=收到的消息,2=发送的消息
+	sendorrecv := msgBody.Sendorrecv
+	if sendorrecv == "1" {
+		// 收到的消息
+		for _, msgItem := range msgList {
 
-		msgType := message.MsgType(msgItem.Msgtype)
-		eventType := message.UnknownEvent
+			msgType := message.MsgType(msgItem.Msgtype)
+			eventType := message.UnknownEvent
 
-		switch msgType {
-		case message.MsgTypeText:
-			if sendorrecv == "1" {
+			switch msgType {
+			case message.MsgTypeText:
 				// PC发送文本消息
 				eventType = message.PCSendTextMsgEvent
-			} else if sendorrecv == "2" {
+			case message.MsgTypeImage:
+				// PC发送图片消息
+				eventType = message.PCSendImgMsgEvent
+			case message.MsgTypeFileOrAppShareLinkFile:
+				// PC发送文件/app消息
+				eventType = message.PCSendFileOrAppMsgEvent
+			case message.MsgTypeGif:
+
+			}
+
+			msgItem.EventType = eventType
+			msgItem.MsgType = msgType
+
+		}
+	} else if sendorrecv == "2" {
+		// 发送的消息
+
+		for _, msgItem := range msgList {
+
+			msgType := message.MsgType(msgItem.Msgtype)
+			eventType := message.UnknownEvent
+
+			switch msgType {
+			case message.MsgTypeText:
 				if msgItem.Msg == "PC发文本消息成功" {
 					// PC发文本消息成功
 					eventType = message.PCSendTextMsgSuccessEvent
@@ -50,12 +74,7 @@ func NewServer(body []byte) *Server {
 					// PC收到文本消息
 					eventType = message.PCRecvTextMsgEvent
 				}
-			}
-		case message.MsgTypeImage:
-			if sendorrecv == "1" {
-				// PC发送图片消息
-				eventType = message.PCSendImgMsgEvent
-			} else if sendorrecv == "2" {
+			case message.MsgTypeImage:
 				if msgItem.Msg == "PC发图片消息成功" {
 					// PC发图片消息成功
 					eventType = message.PCSendImgMsgSuccessEvent
@@ -63,12 +82,7 @@ func NewServer(body []byte) *Server {
 					// PC收到图片消息
 					eventType = message.PCRecvImgMsgEvent
 				}
-			}
-		case message.MsgTypeFileOrAppShareLinkFile:
-			if sendorrecv == "1" {
-				// PC发送文件/app消息
-				eventType = message.PCSendFileOrAppMsgEvent
-			} else if sendorrecv == "2" {
+			case message.MsgTypeFileOrAppShareLinkFile:
 				if msgItem.Msg == "PC发app/文件消息成功" {
 					// PC发文件/app消息成功
 					eventType = message.PCSendFileOrAppMsgSuccessEvent
@@ -76,14 +90,14 @@ func NewServer(body []byte) *Server {
 					// PC收到文件/app消息
 					eventType = message.PCRecallMsgEvent
 				}
+			case message.MsgTypeGif:
+
 			}
-		case message.MsgTypeGif:
+
+			msgItem.EventType = eventType
+			msgItem.MsgType = msgType
 
 		}
-
-		msgItem.EventType = eventType
-		msgItem.MsgType = msgType
-
 	}
 
 	srv.messageHandler = func() ([]message.MsgItem, error) {

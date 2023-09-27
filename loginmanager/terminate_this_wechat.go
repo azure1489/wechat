@@ -10,7 +10,7 @@ type TerminateThisWeChatResult struct {
 }
 
 // TerminateThisWeChat 结束微信 https://www.showdoc.com.cn/WeChatProject/9214210657048561
-func (l *LoginManagerServiceImpl) TerminateThisWeChat(url string) error {
+func (l *LoginManagerServiceImpl) TerminateThisWeChat() error {
 
 	resultBody, err := l.http.DoPost("/TerminateThisWeChat", nil)
 	if err != nil {

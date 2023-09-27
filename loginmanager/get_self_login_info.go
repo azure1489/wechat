@@ -20,7 +20,7 @@ type GetSelfLoginInfoResult struct {
 }
 
 // GetSelfLoginInfo 获取个人详细信息 https://www.showdoc.com.cn/WeChatProject/8929111706614173
-func (l *LoginManagerServiceImpl) GetSelfLoginInfo(url string) (*GetSelfLoginInfoResult, error) {
+func (l *LoginManagerServiceImpl) GetSelfLoginInfo() (*GetSelfLoginInfoResult, error) {
 
 	resultBody, err := l.http.DoPost("/GetSelfLoginInfo", nil)
 	if err != nil {

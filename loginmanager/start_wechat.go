@@ -27,7 +27,7 @@ type StartWechatResult struct {
 }
 
 // AgainStartWeChat 启动更多微信 https://www.showdoc.com.cn/WeChatProject/9063540299207309
-func (l *LoginManagerServiceImpl) StartWechat(req StartWechatReq) error {
+func (l *LoginManagerServiceImpl) StartWechat(req *StartWechatReq) error {
 	resultBody, err := l.http.DoPost("/StartWechat", req)
 	if err != nil {
 		return err

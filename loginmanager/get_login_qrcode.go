@@ -7,7 +7,7 @@ type GetLoginQRCodeResult struct {
 }
 
 // GetLoginQRCode 获取登录二维码图片 https://www.showdoc.com.cn/WeChatProject/9026367939952187
-func (l *LoginManagerServiceImpl) GetLoginQRCode(url string) (string, error) {
+func (l *LoginManagerServiceImpl) GetLoginQRCode() (string, error) {
 
 	resultBody, err := l.http.DoPost("/GetLoginQRCode", nil)
 	if err != nil {

@@ -5,12 +5,17 @@ import (
 	"fmt"
 )
 
+//	{
+//	    "code": "0",
+//	    "msg": "退出登录成功"
+//	}
 type LogoutResult struct {
-	Success string `json:"success"`
+	Code string `json:"code"`
+	Msg  string `json:"msg"`
 }
 
 // Logout 退出微信 https://www.showdoc.com.cn/WeChatProject/9008665345790557
-func (l *LoginManagerServiceImpl) Logout(url string) error {
+func (l *LoginManagerServiceImpl) Logout() error {
 
 	resultBody, err := l.http.DoPost("/Logout", nil)
 	if err != nil {
@@ -23,8 +28,8 @@ func (l *LoginManagerServiceImpl) Logout(url string) error {
 		return err
 	}
 
-	if commonResult.Success != "1" {
-		return fmt.Errorf("提交失败, body=%s", string(resultBody))
+	if commonResult.Code != "0" {
+		return fmt.Errorf(commonResult.Msg+", body=%s", string(resultBody))
 	}
 
 	return nil
