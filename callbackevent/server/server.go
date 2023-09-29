@@ -13,7 +13,7 @@ type Server struct {
 
 	RequestRawMsg  []byte
 	RequestMsg     *message.MsgBody
-	messageHandler func(*message.MsgBody) *message.Reply
+	messageHandler func(*message.MsgBody)
 }
 
 func NewServer(body []byte) *Server {
@@ -130,17 +130,11 @@ func NewServer(body []byte) *Server {
 
 // Serve 处理微信的请求消息
 func (srv *Server) Serve() error {
-
-	_, err := srv.handleRequest()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return srv.handleRequest()
 }
 
 // SetMessageHandler 设置用户自定义的回调方法
-func (srv *Server) SetMessageHandler(handler func(*message.MsgBody) *message.Reply) {
+func (srv *Server) SetMessageHandler(handler func(*message.MsgBody)) {
 	srv.messageHandler = handler
 }
 
@@ -157,19 +151,20 @@ func (srv *Server) getMessage() (interface{}, error) {
 }
 
 // HandleRequest 处理微信的请求
-func (srv *Server) handleRequest() (*message.Reply, error) {
+func (srv *Server) handleRequest() error {
 
 	var msg interface{}
 	msg, err := srv.getMessage()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	msgBody, success := msg.(*message.MsgBody)
 	if !success {
 		err = errors.New("消息类型转换失败")
-		return nil, err
+		return err
 	}
 	srv.RequestMsg = msgBody
-	reply := srv.messageHandler(msgBody)
-	return reply, nil
+	srv.messageHandler(msgBody)
+
+	return nil
 }
