@@ -7,6 +7,6 @@ git add .
 
 git commit -m "修改"
 
-git push origin master
+git push origin test
 
 echo "------------提交代码结束------------------------------"

@@ -23,6 +23,10 @@ const (
 	PCSendFileOrAppMsgEvent EventType = "PCSendFileOrAppMsgEvent"
 	// PC发出文件/app消息成功事件
 	PCSendFileOrAppMsgSuccessEvent EventType = "PCSendFileOrAppMsgSuccessEvent"
+	// PC发动态图片消息
+	PCSendGifImgMsgEvent EventType = "PCSendGifImgMsgEvent"
+	// PC发动态图片消息成功
+	PCSendGifImgMsgSuccessEvent EventType = "PCSendGifImgMsgSuccessEvent"
 	// PC发出视频消息事件
 	PCSendVideoMsgEvent EventType = "PCSendVideoMsgEvent"
 	// PC发出视频消息成功事件
@@ -39,8 +43,22 @@ const (
 	PCRecvVoiceMsgEvent EventType = "PCRecvVoiceMsgEvent"
 	// PC端收到的消息(视频消息)事件
 	PCRecvVideoMsgEvent EventType = "PCRecvVideoMsgEvent"
+	// PC发app/文件消息成功事件
+	PCRecvFileOrAppMsgEvent EventType = "PCRecvFileOrAppMsgEvent"
 	// PC端拉人进群通知
 	PCInviteInGroupEvent EventType = "PCInviteInGroupEvent"
+	// PC端收到名片消息
+	PCRecvShareCardMsgEvent EventType = "PCRecvShareCardMsgEvent"
+	// PC端收到位置消息
+	PCRecvLocationMsgEvent EventType = "PCRecvLocationMsgEvent"
+
+	// PC端收到开始共享位置消息
+	// PCRecvStartShareLocationMsgEvent EventType = "PCRecvStartShareLocationMsgEvent"
+	// PC端收到结束共享位置消息
+	PCRecvEndShareLocationMsgEvent EventType = "PCRecvEndShareLocationMsgEvent"
+	// PC端收到共享位置消息
+	PCRecvShareLocationMsgEvent EventType = "PCRecvShareLocationMsgEvent"
+
 	// 登录二维码刷新事件
 	PCLoginQrcodeRefreshEvent EventType = "PCLoginQrcodeRefreshEvent"
 	// 登陆微信事件
@@ -108,6 +126,8 @@ const (
 	MsgTypeGif MsgType = "47"
 	// MsgTypeLocation 表示位置消息
 	MsgTypeLocation MsgType = "48"
+	//  表示共享位置消息
+	MsgTypeShareLocation MsgType = "56"
 	// MsgTypeFileOrAppShareLinkFile 表示APP分享链接/文件
 	MsgTypeFileOrAppShareLinkFile MsgType = "49"
 	// MsgTypeVOIP 表示VOIP消息
@@ -139,12 +159,12 @@ const (
 )
 
 type MsgBody struct {
-	ServerPort string    `json:"ServerPort"`
-	Selfwxid   string    `json:"selfwxid"`
-	Sendorrecv string    `json:"sendorrecv"`
-	Msgnumber  string    `json:"msgnumber"`
-	Msglist    []MsgItem `json:"msglist"`
-	MsgItem
+	ServerPort string      `json:"ServerPort"`
+	SelfWxid   string      `json:"selfwxid"`
+	Sendorrecv string      `json:"sendorrecv"`
+	MsgNumber  string      `json:"msgnumber"`
+	Msglist    []CommonMsg `json:"msglist"`
+	CommonMsg
 }
 
 // 参数名	必选	类型	说明
@@ -165,42 +185,92 @@ type MsgBody struct {
 // voip_data	是	string	如果当前收到的是语音，则会显示语音数据。格式为16进制文本的.silk文件
 // revoke_msg	是	string	如果当前收到的是撤回的消息，则会显示撤回的内容
 // appletcode	否	string	返回小程序code，如果调用了GetMiniAppCode_Sync接口则会返回该数据
+
+// "time":"2023-09-27 15:48:23",
+// "msgtype":"1",
+// "msgsvrid":"9168006379603397754",
+// "msg":"C",
+// "msgsource":"<msgsource>\\n\\t<silence>1</silence>\\n\\t<membercount>192</membercount>\\n\\t<signature>v1_vy+YqGvH</signature>\\n\\t<tmp_node>\\n\\t\\t<publisher-id></publisher-id>\\n\\t</tmp_node>\\n</msgsource>\\n",
+// "fromtype":"2",
+// "fromgid":"25009802945@chatroom",
+// "fromgname":"",
+// "fromid":"wxid_nuy8ayquaxox22",
+// "fromname":"",
+// "toid":"azure1489",
+// "toname":""
+
+// "msgtype":"9998",
+// "msgsvrid":"",
+// "msg":"切换聊天对象",
+// "fromtype":"2",
+// "fromid":"5872694777@chatroom",
+// "fromgname":"test",
+
 type MsgItem struct {
-	Time       string `json:"time"`
-	Msgtype    string `json:"msgtype"`
-	Fromtype   string `json:"fromtype"`
-	Fromwxid   string `json:"fromwxid"`
-	Toid       string `json:"toid"`
-	Msg        string `json:"msg"`
-	Msgsvrid   string `json:"msgsvrid"`
-	ImgPath    string `json:"img_path"`
-	GifPath    string `json:"gif_path"`
-	FilePath   string `json:"file_path"`
-	VideoPath  string `json:"video_path"`
-	VoipData   string `json:"voip_data"`
-	ToNickName string `json:"tonickname"`
-	ToName     string `json:"toname"`
-	ToHead     string `json:"tohead"`
-	Gid        string `json:"gid"`
+	Time      string `json:"time"`      // 收到消息的时间
+	Msgtype   string `json:"msgtype"`   // 消息类型代码
+	Msgsvrid  string `json:"msgsvrid"`  // 服务器消息ID,用于撤回，或者下载图片/视频/文件
+	Msg       string `json:"msg"`       // 消息内容
+	MsgSource string `json:"msgsource"` // 消息源内容
+	Fromtype  string `json:"fromtype"`  // 个人消息=1 群消息=2
+	FromId    string `json:"fromid"`    // 发送方微信ID
+	FromName  string `json:"fromname"`  // 发送方昵称
+	// ----------------- 群消息 -----------------
+	FromGname string `json:"fromgname"` // 群名称
+	FromGid   string `json:"fromgid"`   // 群ID
+	// ----------------- 接收人 -----------------
+	ToId   string `json:"toid"`   // 接收人微信ID/群ID
+	ToName string `json:"toname"` // 接收人昵称
+	// ----------------- 文件路径 -----------------
+	ImgPath string `json:"img_path"`
+	// ----------------- "msgtype":"47" GIF动图 -----------------
+	GifPath string `json:"gif_path"`
+	// ----------------- "msgtype":"49" 文件/app消息 -----------------
+	AppName  string `json:"appname"` // 应用名称
+	FilePath string `json:"file_path"`
+
+	VideoPath string `json:"video_path"`
+	VoipData  string `json:"voip_data"`
+	// ----------------- 切换联系人事件 -----------------
+	Nickname   string `json:"nickname"`
+	V3         string `json:"v3"`
+	Label      string `json:"label"`
+	Head       string `json:"head"`
+	Timelinebg string `json:"timelinebg"`
+	Country    string `json:"country"`
+	// ----------------- 其他 -----------------
+	Index     string `json:"index"`
+	RevokeMsg string `json:"revoke_msg"`
+
+	Appletcode   string `json:"appletcode" `
+	Businesstype string `json:"businesstype"`
+	Businessdata string `json:"businessdata"`
+
 	// ----------------- 其他事件 -----------------
-	FromName     string `json:"fromname"`
 	SelfAccount  string `json:"selfaccount"`
 	QRCodeBase64 string `json:"qrcode_base64"`
-	FromgId      string `json:"fromgid"`
-	FromgName    string `json:"fromgname"`
-	// ----------------- 切换联系人事件 -----------------
-	ObjWxid     string `json:"obj_wxid"`
-	ObjAccount  string `json:"obj_account"`
-	Objv3       string `json:"obj_v3"`
-	ObjNickname string `json:"obj_nickname"`
-	ObjLabel    string `json:"obj_label"`
 	// ----------------- 其他 -----------------
-	Device       string    `json:"device"`
-	Index        string    `json:"index"`
-	RevokeMsg    string    `json:"revoke_msg"`
-	Appletcode   string    `json:"appletcode" `
-	Businesstype string    `json:"businesstype"`
-	Businessdata string    `json:"businessdata"`
-	MsgType      MsgType   `json:"-"`
-	EventType    EventType `json:"-"`
+	MsgType   MsgType   `json:"-"`
+	EventType EventType `json:"-"`
+}
+
+type CommonMsg struct {
+	Time     string `json:"time"`     // 收到消息的时间
+	MsgType  string `json:"msgtype"`  // 消息类型代码
+	MsgSvrid string `json:"msgsvrid"` // 服务器消息ID,用于撤回，或者下载图片/视频/文件
+	Msg      string `json:"msg"`      // 消息内容
+	FromType string `json:"fromtype"` // 个人消息=1 群消息=2
+	FromId   string `json:"fromid"`   // 发送方微信ID
+	FromName string `json:"fromname"` // 发送方昵称
+	Index    string `json:"index"`
+}
+
+type CommonGroupMsg struct {
+	FromGname string `json:"fromgname"` // 群名称
+	FromGid   string `json:"fromgid"`   // 群ID
+}
+
+type ToCommonMsg struct {
+	ToId   string `json:"toid"`   // 接收人微信ID/群ID
+	ToName string `json:"toname"` // 接收人昵称
 }
