@@ -252,6 +252,11 @@ func (srv *Server) handleRequest() error {
 						return err
 					}
 
+					log.Println("message.MsgTypeFileOrAppShareLinkFile:  appMsgXml内容:\n", appMsgXml)
+
+					log.Println("appMsgXml.Msg.AppMsg.Type:", appMsgXml.Msg.AppMsg.Type)
+					log.Println("appMsgXml.Msg.AppMsg.ReferMsg.Type:", appMsgXml.Msg.AppMsg.ReferMsg.Type)
+
 					if appMsgXml.Msg.AppMsg.Type == "57" && appMsgXml.Msg.AppMsg.ReferMsg.Type == "47" { // 引用消息
 						if msgItem["fromtype"] == "1" {
 							wcMsg := message.Quote{

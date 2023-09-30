@@ -45,11 +45,35 @@ type GroupQuote struct {
 //	<commenturl />
 //
 // </msg>"
+// type AppMsgXml struct {
+// 	Msg struct {
+// 		AppMsg struct {
+// 			Title    string `xml:"title"`
+// 			Type     string `xml:"type"`
+// 			ReferMsg struct {
+// 				Type        string `xml:"type"`
+// 				Svrid       string `xml:"svrid"`
+// 				Fromusr     string `xml:"fromusr"`
+// 				Chatusr     string `xml:"chatusr"`
+// 				DisplayName string `xml:"displayname"`
+// 				Content     string `xml:"content"`
+// 				MsgSource   string `xml:"msgsource"`
+// 				CreateTime  string `xml:"createtime"`
+// 			} `xml:"refermsg"`
+// 			FromUserName string `xml:"fromusername"`
+// 		} `xml:"appmsg"`
+// 	} `xml:"msg"`
+// }
+
 type AppMsgXml struct {
 	Msg struct {
 		AppMsg struct {
-			Title    string `xml:"title"`
-			Type     string `xml:"type"`
+			Title     string `xml:"title"`
+			Type      string `xml:"type"`
+			AppAttach struct {
+				CdnThumbAesKey string `xml:"cdnthumbaeskey"`
+				AesKey         string `xml:"aeskey"`
+			} `xml:"appattach"`
 			ReferMsg struct {
 				Type        string `xml:"type"`
 				Svrid       string `xml:"svrid"`
