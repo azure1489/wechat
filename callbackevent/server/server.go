@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
+	"log"
 
 	"github.com/azure1489/wechat/callbackevent/message"
 )
@@ -242,6 +243,7 @@ func (srv *Server) handleRequest() error {
 				}
 			case message.MsgTypeFileOrAppShareLinkFile: // "msgtype":"49",
 				msg := msgItem["msg"]
+				log.Println("message.MsgTypeFileOrAppShareLinkFile:  msg内容:\n", msg)
 				if msg != "PC发app/文件消息成功" {
 					var appMsgXml message.AppMsgXml
 					// 字符串转换为xml
