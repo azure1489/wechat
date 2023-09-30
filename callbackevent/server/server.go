@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
-	"log"
 
 	"github.com/azure1489/wechat/callbackevent/message"
 )
@@ -243,7 +242,7 @@ func (srv *Server) handleRequest() error {
 				}
 			case message.MsgTypeFileOrAppShareLinkFile: // "msgtype":"49",
 				msg := msgItem["msg"]
-				log.Println("message.MsgTypeFileOrAppShareLinkFile:  msg内容:\n", msg)
+				// log.Println("message.MsgTypeFileOrAppShareLinkFile:  msg内容:\n", msg)
 				if msg != "PC发app/文件消息成功" {
 					var appMsgXml message.AppMsgXml
 					// 字符串转换为xml
@@ -252,12 +251,12 @@ func (srv *Server) handleRequest() error {
 						return err
 					}
 
-					log.Println("message.MsgTypeFileOrAppShareLinkFile:  appMsgXml内容:\n", appMsgXml)
+					// log.Println("message.MsgTypeFileOrAppShareLinkFile:  appMsgXml内容:\n", appMsgXml)
 
-					log.Println("appMsgXml.AppMsg.Type:", appMsgXml.AppMsg.Type)
-					log.Println("appMsgXml.AppMsg.ReferMsg.Type:", appMsgXml.AppMsg.ReferMsg.Type)
+					// log.Println("appMsgXml.AppMsg.Type:", appMsgXml.AppMsg.Type)
+					// log.Println("appMsgXml.AppMsg.ReferMsg.Type:", appMsgXml.AppMsg.ReferMsg.Type)
 
-					if appMsgXml.AppMsg.Type == "57" && appMsgXml.AppMsg.ReferMsg.Type == "47" { // 引用消息
+					if appMsgXml.AppMsg.Type == "57" { // 引用消息
 						if msgItem["fromtype"] == "1" {
 							wcMsg := message.Quote{
 								CommonMsg: message.CommonMsg{
@@ -276,10 +275,11 @@ func (srv *Server) handleRequest() error {
 									ToId:   msgItem["toid"],
 									ToName: msgItem["toname"],
 								},
-								MsgSource:  appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
-								QuoteMsg:   appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
-								QuoteMsgId: appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
-								ReplyMsg:   appMsgXml.AppMsg.Title,              // 回复的消息内容
+								MsgSource:    appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
+								QuoteMsg:     appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
+								QuoteMsgType: appMsgXml.AppMsg.ReferMsg.Type,      // 引用的消息类型
+								QuoteMsgId:   appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
+								ReplyMsg:     appMsgXml.AppMsg.Title,              // 回复的消息内容
 							}
 							wcMsgItem := message.WcMsgItem{
 								EventType: message.PCRecvQuoteMsgEvent,
@@ -304,10 +304,11 @@ func (srv *Server) handleRequest() error {
 									ToId:   msgItem["toid"],
 									ToName: msgItem["toname"],
 								},
-								MsgSource:  appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
-								QuoteMsg:   appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
-								QuoteMsgId: appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
-								ReplyMsg:   appMsgXml.AppMsg.Title,              // 回复的消息内容
+								MsgSource:    appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
+								QuoteMsg:     appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
+								QuoteMsgType: appMsgXml.AppMsg.ReferMsg.Type,      // 引用的消息类型
+								QuoteMsgId:   appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
+								ReplyMsg:     appMsgXml.AppMsg.Title,              // 回复的消息内容
 								CommonGroupMsg: message.CommonGroupMsg{
 									FromGname: msgItem["fromgname"], // 群名称
 									FromGid:   msgItem["fromgid"],   // 群ID
