@@ -168,7 +168,7 @@ func (srv *Server) handleRequest() error {
 							},
 						}
 						wcMsgItem := message.WcMsgItem{
-							EventType: message.PCRecvTextMsgEvent,
+							EventType: message.PCRecvGroupTextMsgEvent,
 							MsgItem:   wcMsg,
 						}
 						msgItemList = append(msgItemList, wcMsgItem)
@@ -234,7 +234,7 @@ func (srv *Server) handleRequest() error {
 							},
 						}
 						wcMsgItem := message.WcMsgItem{
-							EventType: message.PCRecvImgMsgEvent,
+							EventType: message.PCRecvGroupImgMsgEvent,
 							MsgItem:   wcMsg,
 						}
 						msgItemList = append(msgItemList, wcMsgItem)
@@ -307,7 +307,7 @@ func (srv *Server) handleRequest() error {
 								},
 							}
 							wcMsgItem := message.WcMsgItem{
-								EventType: message.PCRecvQuoteMsgEvent,
+								EventType: message.PCRecvGroupQuoteMsgEvent,
 								MsgItem:   wcMsg,
 							}
 							msgItemList = append(msgItemList, wcMsgItem)
@@ -366,7 +366,7 @@ func (srv *Server) handleRequest() error {
 							},
 						}
 						wcMsgItem := message.WcMsgItem{
-							EventType: message.PCRecvGifImgMsgEvent,
+							EventType: message.PCRecvGroupGifImgMsgEvent,
 							MsgItem:   wcMsg,
 						}
 						msgItemList = append(msgItemList, wcMsgItem)
@@ -425,7 +425,7 @@ func (srv *Server) handleRequest() error {
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
-						EventType: message.PCRecvVideoMsgEvent,
+						EventType: message.PCRecvGroupVideoMsgEvent,
 						MsgItem:   wcMsg,
 					}
 					msgItemList = append(msgItemList, wcMsgItem)
@@ -484,7 +484,7 @@ func (srv *Server) handleRequest() error {
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
-						EventType: message.PCRecvVoiceMsgEvent,
+						EventType: message.PCRecvGroupVoiceMsgEvent,
 						MsgItem:   wcMsg,
 					}
 					msgItemList = append(msgItemList, wcMsgItem)
@@ -571,7 +571,7 @@ func (srv *Server) handleRequest() error {
 							},
 						}
 						wcMsgItem := message.WcMsgItem{
-							EventType: message.PCRecvRevokeMsgEvent,
+							EventType: message.PCRecvGroupRevokeMsgEvent,
 							MsgItem:   wcMsg,
 						}
 						msgItemList = append(msgItemList, wcMsgItem)

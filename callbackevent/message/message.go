@@ -43,13 +43,27 @@ const (
 	PCRecvVoiceMsgEvent EventType = "PCRecvVoiceMsgEvent"
 	// PC端收到的消息(视频消息)事件
 	PCRecvVideoMsgEvent EventType = "PCRecvVideoMsgEvent"
-	// PC发app/文件消息成功事件
-	PCRecvFileOrAppMsgEvent EventType = "PCRecvFileOrAppMsgEvent"
 	// PC发收到引用消息成功事件
 	PCRecvQuoteMsgEvent EventType = "PCRecvQuoteMsgEvent"
 	// PC端收到撤回消息事件
 	PCRecvRevokeMsgEvent EventType = "PCRecvRevokeMsgEvent"
+	// PC端接收文本消息事件
+	PCRecvGroupTextMsgEvent EventType = "PCRecvGroupTextMsgEvent"
+	// PC端接收图片消息事件
+	PCRecvGroupImgMsgEvent EventType = "PCRecvGroupImgMsgEvent"
+	// PC端收到的消息(GIF动图)事件
+	PCRecvGroupGifImgMsgEvent EventType = "PCRecvGroupGifImgMsgEvent"
+	// PC端收到的消息(语音消息)事件
+	PCRecvGroupVoiceMsgEvent EventType = "PCRecvGroupVoiceMsgEvent"
+	// PC端收到的消息(视频消息)事件
+	PCRecvGroupVideoMsgEvent EventType = "PCRecvGroupVideoMsgEvent"
+	// PC发收到引用消息成功事件
+	PCRecvGroupQuoteMsgEvent EventType = "PCRecvGroupQuoteMsgEvent"
+	// PC端收到撤回消息事件
+	PCRecvGroupRevokeMsgEvent EventType = "PCRecvGroupRevokeMsgEvent"
 
+	// PC发app/文件消息成功事件
+	PCRecvFileOrAppMsgEvent EventType = "PCRecvFileOrAppMsgEvent"
 	// PC端拉人进群通知
 	PCInviteInGroupEvent EventType = "PCInviteInGroupEvent"
 	// PC端收到名片消息
