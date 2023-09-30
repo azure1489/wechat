@@ -45,6 +45,8 @@ const (
 	PCRecvVideoMsgEvent EventType = "PCRecvVideoMsgEvent"
 	// PC发app/文件消息成功事件
 	PCRecvFileOrAppMsgEvent EventType = "PCRecvFileOrAppMsgEvent"
+	// PC发收到引用消息成功事件
+	PCRecvQuoteMsgEvent EventType = "PCRecvQuoteMsgEvent"
 	// PC端拉人进群通知
 	PCInviteInGroupEvent EventType = "PCInviteInGroupEvent"
 	// PC端收到名片消息
@@ -159,12 +161,34 @@ const (
 )
 
 type MsgBody struct {
-	ServerPort string      `json:"ServerPort"`
-	SelfWxid   string      `json:"selfwxid"`
-	Sendorrecv string      `json:"sendorrecv"`
-	MsgNumber  string      `json:"msgnumber"`
-	Msglist    []CommonMsg `json:"msglist"`
-	CommonMsg
+	ServerPort string              `json:"ServerPort"`
+	SelfWxid   string              `json:"selfwxid"`
+	Sendorrecv string              `json:"sendorrecv"`
+	MsgNumber  string              `json:"msgnumber"`
+	Msglist    []map[string]string `json:"msglist"`
+}
+
+type CommonMsg struct {
+	Time       string `json:"time"`     // 收到消息的时间
+	MsgType    string `json:"msgtype"`  // 消息类型代码
+	MsgSvrid   string `json:"msgsvrid"` // 服务器消息ID,用于撤回，或者下载图片/视频/文件
+	Msg        string `json:"msg"`      // 消息内容
+	FromType   string `json:"fromtype"` // 个人消息=1 群消息=2
+	FromId     string `json:"fromid"`   // 发送方微信ID
+	FromName   string `json:"fromname"` // 发送方昵称
+	Index      string `json:"index"`
+	ServerPort string `json:"ServerPort"`
+	SelfWxid   string `json:"selfwxid"`
+}
+
+type CommonGroupMsg struct {
+	FromGname string `json:"fromgname"` // 群名称
+	FromGid   string `json:"fromgid"`   // 群ID
+}
+
+type ToCommonMsg struct {
+	ToId   string `json:"toid"`   // 接收人微信ID/群ID
+	ToName string `json:"toname"` // 接收人昵称
 }
 
 // 参数名	必选	类型	说明
@@ -254,23 +278,14 @@ type MsgItem struct {
 	EventType EventType `json:"-"`
 }
 
-type CommonMsg struct {
-	Time     string `json:"time"`     // 收到消息的时间
-	MsgType  string `json:"msgtype"`  // 消息类型代码
-	MsgSvrid string `json:"msgsvrid"` // 服务器消息ID,用于撤回，或者下载图片/视频/文件
-	Msg      string `json:"msg"`      // 消息内容
-	FromType string `json:"fromtype"` // 个人消息=1 群消息=2
-	FromId   string `json:"fromid"`   // 发送方微信ID
-	FromName string `json:"fromname"` // 发送方昵称
-	Index    string `json:"index"`
-}
+// type WcMsgBody struct {
 
-type CommonGroupMsg struct {
-	FromGname string `json:"fromgname"` // 群名称
-	FromGid   string `json:"fromgid"`   // 群ID
-}
+// 	Sendorrecv string        `json:"sendorrecv"`
+// 	MsgNumber  string        `json:"msgnumber"`
+// 	Msglist    []interface{} `json:"msglist"`
+// }
 
-type ToCommonMsg struct {
-	ToId   string `json:"toid"`   // 接收人微信ID/群ID
-	ToName string `json:"toname"` // 接收人昵称
+type WcMsgItem struct {
+	EventType EventType   `json:"eventType"`
+	MsgItem   interface{} `json:"msgItem"`
 }
