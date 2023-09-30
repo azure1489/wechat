@@ -395,7 +395,7 @@ func (srv *Server) handleRequest() error {
 						VideoPath: msgItem["video_path"],
 					}
 					wcMsgItem := message.WcMsgItem{
-						EventType: message.PCRecvTextMsgEvent,
+						EventType: message.PCRecvVideoMsgEvent,
 						MsgItem:   wcMsg,
 					}
 					msgItemList = append(msgItemList, wcMsgItem)
@@ -425,7 +425,7 @@ func (srv *Server) handleRequest() error {
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
-						EventType: message.PCRecvTextMsgEvent,
+						EventType: message.PCRecvVideoMsgEvent,
 						MsgItem:   wcMsg,
 					}
 					msgItemList = append(msgItemList, wcMsgItem)
@@ -454,7 +454,7 @@ func (srv *Server) handleRequest() error {
 						VoiceHex: msgItem["voice_hex"],
 					}
 					wcMsgItem := message.WcMsgItem{
-						EventType: message.PCRecvTextMsgEvent,
+						EventType: message.PCRecvVoiceMsgEvent,
 						MsgItem:   wcMsg,
 					}
 					msgItemList = append(msgItemList, wcMsgItem)
@@ -484,7 +484,7 @@ func (srv *Server) handleRequest() error {
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
-						EventType: message.PCRecvTextMsgEvent,
+						EventType: message.PCRecvVoiceMsgEvent,
 						MsgItem:   wcMsg,
 					}
 					msgItemList = append(msgItemList, wcMsgItem)
@@ -538,7 +538,7 @@ func (srv *Server) handleRequest() error {
 							ReplaceMsg: sysMsgXml.SysMsg.RevokeMsg.ReplaceMsg,
 						}
 						wcMsgItem := message.WcMsgItem{
-							EventType: message.PCRecvTextMsgEvent,
+							EventType: message.PCRecvRevokeMsgEvent,
 							MsgItem:   wcMsg,
 						}
 						msgItemList = append(msgItemList, wcMsgItem)
@@ -571,7 +571,7 @@ func (srv *Server) handleRequest() error {
 							},
 						}
 						wcMsgItem := message.WcMsgItem{
-							EventType: message.PCRecvTextMsgEvent,
+							EventType: message.PCRecvRevokeMsgEvent,
 							MsgItem:   wcMsg,
 						}
 						msgItemList = append(msgItemList, wcMsgItem)

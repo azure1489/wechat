@@ -47,6 +47,9 @@ const (
 	PCRecvFileOrAppMsgEvent EventType = "PCRecvFileOrAppMsgEvent"
 	// PC发收到引用消息成功事件
 	PCRecvQuoteMsgEvent EventType = "PCRecvQuoteMsgEvent"
+	// PC端收到撤回消息事件
+	PCRecvRevokeMsgEvent EventType = "PCRecvRevokeMsgEvent"
+
 	// PC端拉人进群通知
 	PCInviteInGroupEvent EventType = "PCInviteInGroupEvent"
 	// PC端收到名片消息
