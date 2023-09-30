@@ -254,10 +254,10 @@ func (srv *Server) handleRequest() error {
 
 					log.Println("message.MsgTypeFileOrAppShareLinkFile:  appMsgXml内容:\n", appMsgXml)
 
-					log.Println("appMsgXml.Msg.AppMsg.Type:", appMsgXml.Msg.AppMsg.Type)
-					log.Println("appMsgXml.Msg.AppMsg.ReferMsg.Type:", appMsgXml.Msg.AppMsg.ReferMsg.Type)
+					log.Println("appMsgXml.AppMsg.Type:", appMsgXml.AppMsg.Type)
+					log.Println("appMsgXml.AppMsg.ReferMsg.Type:", appMsgXml.AppMsg.ReferMsg.Type)
 
-					if appMsgXml.Msg.AppMsg.Type == "57" && appMsgXml.Msg.AppMsg.ReferMsg.Type == "47" { // 引用消息
+					if appMsgXml.AppMsg.Type == "57" && appMsgXml.AppMsg.ReferMsg.Type == "47" { // 引用消息
 						if msgItem["fromtype"] == "1" {
 							wcMsg := message.Quote{
 								CommonMsg: message.CommonMsg{
@@ -276,10 +276,10 @@ func (srv *Server) handleRequest() error {
 									ToId:   msgItem["toid"],
 									ToName: msgItem["toname"],
 								},
-								MsgSource:  appMsgXml.Msg.AppMsg.ReferMsg.MsgSource, // 消息源内容
-								QuoteMsg:   appMsgXml.Msg.AppMsg.ReferMsg.Content,   // 引用的消息内容
-								QuoteMsgId: appMsgXml.Msg.AppMsg.ReferMsg.Svrid,     // 引用的消息id
-								ReplyMsg:   appMsgXml.Msg.AppMsg.Title,              // 回复的消息内容
+								MsgSource:  appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
+								QuoteMsg:   appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
+								QuoteMsgId: appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
+								ReplyMsg:   appMsgXml.AppMsg.Title,              // 回复的消息内容
 							}
 							wcMsgItem := message.WcMsgItem{
 								EventType: message.PCRecvQuoteMsgEvent,
@@ -304,10 +304,10 @@ func (srv *Server) handleRequest() error {
 									ToId:   msgItem["toid"],
 									ToName: msgItem["toname"],
 								},
-								MsgSource:  appMsgXml.Msg.AppMsg.ReferMsg.MsgSource, // 消息源内容
-								QuoteMsg:   appMsgXml.Msg.AppMsg.ReferMsg.Content,   // 引用的消息内容
-								QuoteMsgId: appMsgXml.Msg.AppMsg.ReferMsg.Svrid,     // 引用的消息id
-								ReplyMsg:   appMsgXml.Msg.AppMsg.Title,              // 回复的消息内容
+								MsgSource:  appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
+								QuoteMsg:   appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
+								QuoteMsgId: appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
+								ReplyMsg:   appMsgXml.AppMsg.Title,              // 回复的消息内容
 								CommonGroupMsg: message.CommonGroupMsg{
 									FromGname: msgItem["fromgname"], // 群名称
 									FromGid:   msgItem["fromgid"],   // 群ID
@@ -519,7 +519,7 @@ func (srv *Server) handleRequest() error {
 					return err
 				}
 
-				if sysMsgXml.SysMsg.Type == "revokemsg" {
+				if sysMsgXml.Type == "revokemsg" {
 					if msgItem["fromtype"] == "1" {
 						wcMsg := message.Revoke{
 							CommonMsg: message.CommonMsg{
@@ -539,10 +539,10 @@ func (srv *Server) handleRequest() error {
 								ToName: msgItem["toname"],
 							},
 							RevokeMsg:  msgItem["revoke_msg"],
-							Session:    sysMsgXml.SysMsg.RevokeMsg.Session,
-							MsgId:      sysMsgXml.SysMsg.RevokeMsg.MsgId,
-							NewMsgId:   sysMsgXml.SysMsg.RevokeMsg.NewMsgId,
-							ReplaceMsg: sysMsgXml.SysMsg.RevokeMsg.ReplaceMsg,
+							Session:    sysMsgXml.RevokeMsg.Session,
+							MsgId:      sysMsgXml.RevokeMsg.MsgId,
+							NewMsgId:   sysMsgXml.RevokeMsg.NewMsgId,
+							ReplaceMsg: sysMsgXml.RevokeMsg.ReplaceMsg,
 						}
 						wcMsgItem := message.WcMsgItem{
 							EventType: message.PCRecvRevokeMsgEvent,
@@ -568,10 +568,10 @@ func (srv *Server) handleRequest() error {
 								ToName: msgItem["toname"],
 							},
 							RevokeMsg:  msgItem["revoke_msg"],
-							Session:    sysMsgXml.SysMsg.RevokeMsg.Session,
-							MsgId:      sysMsgXml.SysMsg.RevokeMsg.MsgId,
-							NewMsgId:   sysMsgXml.SysMsg.RevokeMsg.NewMsgId,
-							ReplaceMsg: sysMsgXml.SysMsg.RevokeMsg.ReplaceMsg,
+							Session:    sysMsgXml.RevokeMsg.Session,
+							MsgId:      sysMsgXml.RevokeMsg.MsgId,
+							NewMsgId:   sysMsgXml.RevokeMsg.NewMsgId,
+							ReplaceMsg: sysMsgXml.RevokeMsg.ReplaceMsg,
 							CommonGroupMsg: message.CommonGroupMsg{
 								FromGname: msgItem["fromgname"], // 群名称
 								FromGid:   msgItem["fromgid"],   // 群ID

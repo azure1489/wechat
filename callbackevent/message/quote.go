@@ -1,5 +1,7 @@
 package message
 
+import "encoding/xml"
+
 // Quote 引用回复消息
 type Quote struct {
 	CommonMsg
@@ -66,27 +68,26 @@ type GroupQuote struct {
 // }
 
 type AppMsgXml struct {
-	Msg struct {
-		AppMsg struct {
-			Title     string `xml:"title"`
-			Type      string `xml:"type"`
-			AppAttach struct {
-				CdnThumbAesKey string `xml:"cdnthumbaeskey"`
-				AesKey         string `xml:"aeskey"`
-			} `xml:"appattach"`
-			ReferMsg struct {
-				Type        string `xml:"type"`
-				Svrid       string `xml:"svrid"`
-				Fromusr     string `xml:"fromusr"`
-				Chatusr     string `xml:"chatusr"`
-				DisplayName string `xml:"displayname"`
-				Content     string `xml:"content"`
-				MsgSource   string `xml:"msgsource"`
-				CreateTime  string `xml:"createtime"`
-			} `xml:"refermsg"`
-			FromUserName string `xml:"fromusername"`
-		} `xml:"appmsg"`
-	} `xml:"msg"`
+	XMLName xml.Name `xml:"msg"`
+	AppMsg  struct {
+		Title     string `xml:"title"`
+		Type      string `xml:"type"`
+		AppAttach struct {
+			CdnThumbAesKey string `xml:"cdnthumbaeskey"`
+			AesKey         string `xml:"aeskey"`
+		} `xml:"appattach"`
+		ReferMsg struct {
+			Type        string `xml:"type"`
+			Svrid       string `xml:"svrid"`
+			Fromusr     string `xml:"fromusr"`
+			Chatusr     string `xml:"chatusr"`
+			DisplayName string `xml:"displayname"`
+			Content     string `xml:"content"`
+			MsgSource   string `xml:"msgsource"`
+			CreateTime  string `xml:"createtime"`
+		} `xml:"refermsg"`
+		FromUserName string `xml:"fromusername"`
+	} `xml:"appmsg"`
 }
 
 // type QuoteXmlMsg struct {

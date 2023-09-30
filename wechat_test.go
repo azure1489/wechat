@@ -3,6 +3,7 @@ package wechat
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"testing"
 )
@@ -440,3 +441,106 @@ func TestCount(t *testing.T) {
 
 // 	fmt.Println("key:", key)
 // }
+
+// type AppMsgXml struct {
+// 	Msg struct {
+// 		AppMsg struct {
+// 			Title     string `xml:"title"`
+// 			Type      string `xml:"type"`
+// 			AppAttach struct {
+// 				CdnThumbAesKey string `xml:"cdnthumbaeskey"`
+// 				AesKey         string `xml:"aeskey"`
+// 			} `xml:"appattach"`
+// 			ReferMsg struct {
+// 				Type        string `xml:"type"`
+// 				Svrid       string `xml:"svrid"`
+// 				Fromusr     string `xml:"fromusr"`
+// 				Chatusr     string `xml:"chatusr"`
+// 				DisplayName string `xml:"displayname"`
+// 				Content     string `xml:"content"`
+// 				MsgSource   string `xml:"msgsource"`
+// 				CreateTime  string `xml:"createtime"`
+// 			} `xml:"refermsg"`
+// 			FromUserName string `xml:"fromusername"`
+// 		} `xml:"appmsg"`
+// 	} `xml:"msg"`
+// }
+
+func TestParseAppMsgXml(t *testing.T) {
+	xmlStr := `<?xml version="1.0"?>
+<msg>
+    <appmsg appid="" sdkver="0">
+        <title>国内也有</title>
+        <type>57</type>
+        <appattach>
+            <cdnthumbaeskey />
+            <aeskey />
+        </appattach>
+        <refermsg>
+            <type>1</type>
+            <svrid>4129133702561995268</svrid>
+            <fromusr>wxid_3435654360314</fromusr>
+            <chatusr />
+            <displayname>🌸Byo233😈</displayname>
+            <content>https://x.com/hu_lalalalala/status/1707956166565966103?s=20</content>
+            <msgsource>&lt;msgsource&gt;&lt;sequence_id&gt;895258913&lt;/sequence_id&gt;
+    &lt;alnode&gt;
+        &lt;cf&gt;3&lt;/cf&gt;
+    &lt;/alnode&gt;
+    &lt;signature&gt;v1_u44qb54s&lt;/signature&gt;
+    &lt;tmp_node&gt;
+        &lt;publisher-id&gt;&lt;/publisher-id&gt;
+    &lt;/tmp_node&gt;
+&lt;/msgsource&gt;
+</msgsource>
+            <createtime>1696089571</createtime>
+        </refermsg>
+    </appmsg>
+    <fromusername>azure1489</fromusername>
+    <scene>0</scene>
+    <appinfo>
+        <version>1</version>
+        <appname></appname>
+    </appinfo>
+    <commenturl></commenturl>
+</msg>`
+	var appMsg AppMsgXml
+	err := xml.Unmarshal([]byte(xmlStr), &appMsg)
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Printf("XML String: %s\n", xmlStr)
+	fmt.Printf("AppMsg: %+v\n", appMsg)
+	fmt.Printf("Title: %s, Type: %s, FromUserName: %s\n", appMsg.AppMsg.Title, appMsg.AppMsg.Type, appMsg.AppMsg.FromUserName)
+}
+
+type AppMsgXml struct {
+	XMLName xml.Name `xml:"msg"`
+	AppMsg  struct {
+		AppID     string `xml:"appid,attr"`
+		SDKVer    string `xml:"sdkver,attr"`
+		Title     string `xml:"title"`
+		Type      string `xml:"type"`
+		AppAttach struct {
+			CdnThumbAesKey string `xml:"cdnthumbaeskey"`
+			AesKey         string `xml:"aeskey"`
+		} `xml:"appattach"`
+		ReferMsg struct {
+			Type        string `xml:"type"`
+			Svrid       string `xml:"svrid"`
+			Fromusr     string `xml:"fromusr"`
+			Chatusr     string `xml:"chatusr"`
+			DisplayName string `xml:"displayname"`
+			Content     string `xml:"content"`
+			MsgSource   string `xml:"msgsource"`
+			CreateTime  string `xml:"createtime"`
+		} `xml:"refermsg"`
+		FromUserName string `xml:"fromusername"`
+	} `xml:"appmsg"`
+	Scene   int `xml:"scene"`
+	AppInfo struct {
+		Version string `xml:"version"`
+		AppName string `xml:"appname"`
+	} `xml:"appinfo"`
+	CommentURL string `xml:"commenturl"`
+}
