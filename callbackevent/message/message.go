@@ -186,16 +186,14 @@ type MsgBody struct {
 }
 
 type CommonMsg struct {
-	Time       string `json:"time"`     // 收到消息的时间
-	MsgType    string `json:"msgtype"`  // 消息类型代码
-	MsgSvrid   string `json:"msgsvrid"` // 服务器消息ID,用于撤回，或者下载图片/视频/文件
-	Msg        string `json:"msg"`      // 消息内容
-	FromType   string `json:"fromtype"` // 个人消息=1 群消息=2
-	FromId     string `json:"fromid"`   // 发送方微信ID
-	FromName   string `json:"fromname"` // 发送方昵称
-	Index      string `json:"index"`
-	ServerPort string `json:"ServerPort"`
-	SelfWxid   string `json:"selfwxid"`
+	Time     string `json:"time"`     // 收到消息的时间
+	MsgType  string `json:"msgtype"`  // 消息类型代码
+	MsgSvrid string `json:"msgsvrid"` // 服务器消息ID,用于撤回，或者下载图片/视频/文件
+	Msg      string `json:"msg"`      // 消息内容
+	FromType string `json:"fromtype"` // 个人消息=1 群消息=2
+	FromId   string `json:"fromid"`   // 发送方微信ID
+	FromName string `json:"fromname"` // 发送方昵称
+	Index    string `json:"index"`
 }
 
 type CommonGroupMsg struct {
@@ -303,6 +301,10 @@ type MsgItem struct {
 // }
 
 type WcMsgItem struct {
-	EventType EventType   `json:"eventType"`
-	MsgItem   interface{} `json:"msgItem"`
+	EventType  EventType `json:"eventType"`
+	ServerPort string    `json:"ServerPort"`
+	SelfWxid   string    `json:"selfwxid"`
+	CommonMsg
+	ToCommonMsg
+	MsgItem interface{} `json:"msgItem"`
 }

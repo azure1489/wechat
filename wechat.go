@@ -58,6 +58,6 @@ func NewWechatConfigEncryption(url string) *WechatConfig {
 }
 
 // GetOfficialAccount 获取微信公众号实例
-func GetCallBackEvent(body []byte) *server.Server {
+func GetCallBackServer(body []byte) *server.Server {
 	return server.NewServer(body)
 }
