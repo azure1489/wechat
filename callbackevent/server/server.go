@@ -130,7 +130,12 @@ func (srv *Server) handleRequest() error {
 
 		for _, msgItem := range msgList {
 
-			if msgBody.SelfWxid == interfaceToString(msgItem["fromid"]) {
+			fromid := interfaceToString(msgItem["fromid"])
+
+			log.Println(" ---------------- msgBody.SelfWxid:", msgBody.SelfWxid, " ---------------- ")
+			log.Println(" ---------------- fromid:", fromid, " ---------------- ")
+
+			if msgBody.SelfWxid == fromid {
 				continue
 			}
 
@@ -161,7 +166,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -186,7 +191,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -222,7 +227,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -250,7 +255,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -295,7 +300,7 @@ func (srv *Server) handleRequest() error {
 								Msg:        msgContent,
 								MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 								FromType:   fromtype,                               // 个人消息=1 群消息=2
-								FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+								FromId:     fromid,                                 // 发送方微信ID
 								FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 								Index:      interfaceToString(msgItem["index"]),
 								ServerPort: msgBody.ServerPort,
@@ -324,7 +329,7 @@ func (srv *Server) handleRequest() error {
 								Msg:        msgContent,
 								MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 								FromType:   fromtype,                               // 个人消息=1 群消息=2
-								FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+								FromId:     fromid,                                 // 发送方微信ID
 								FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 								Index:      interfaceToString(msgItem["index"]),
 								ServerPort: msgBody.ServerPort,
@@ -363,7 +368,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -388,7 +393,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -419,7 +424,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -445,7 +450,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -478,7 +483,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -504,7 +509,7 @@ func (srv *Server) handleRequest() error {
 							Msg:        msgContent,
 							MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 							FromType:   fromtype,                               // 个人消息=1 群消息=2
-							FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+							FromId:     fromid,                                 // 发送方微信ID
 							FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 							Index:      interfaceToString(msgItem["index"]),
 							ServerPort: msgBody.ServerPort,
@@ -556,7 +561,7 @@ func (srv *Server) handleRequest() error {
 								Msg:        msgContent,
 								MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 								FromType:   fromtype,                               // 个人消息=1 群消息=2
-								FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+								FromId:     fromid,                                 // 发送方微信ID
 								FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 								Index:      interfaceToString(msgItem["index"]),
 								ServerPort: msgBody.ServerPort,
@@ -585,7 +590,7 @@ func (srv *Server) handleRequest() error {
 								Msg:        msgContent,
 								MsgType:    interfaceToString(msgItem["msgtype"]),  // 消息类型代码
 								FromType:   fromtype,                               // 个人消息=1 群消息=2
-								FromId:     interfaceToString(msgItem["fromid"]),   // 发送方微信ID
+								FromId:     fromid,                                 // 发送方微信ID
 								FromName:   interfaceToString(msgItem["fromname"]), // 发送方昵称
 								Index:      interfaceToString(msgItem["index"]),
 								ServerPort: msgBody.ServerPort,
