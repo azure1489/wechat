@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
-	"log"
 
 	"github.com/azure1489/wechat/callbackevent/message"
 )
@@ -23,9 +22,9 @@ type Server struct {
 func NewServer(body []byte) *Server {
 	srv := new(Server)
 	srv.RequestRawMsg = body
-	log.Println(" ---------------- 收到消息开始 ---------------- ")
-	log.Println("收到消息内容:\n", string(body))
-	log.Println(" ---------------- 收到消息结束 ---------------- ")
+	// log.Println(" ---------------- 收到消息开始 ---------------- ")
+	// log.Println("收到消息内容:\n", string(body))
+	// log.Println(" ---------------- 收到消息结束 ---------------- ")
 	return srv
 }
 
@@ -193,8 +192,8 @@ func (srv *Server) handleRequest() error {
 					msgItemList = append(msgItemList, wcMsgItem)
 				}
 			case message.MsgTypeImage: // PC收到图片消息
-				log.Println(" ---------------- PC收到图片消息处理开始 ---------------- ")
-				log.Println(" ---------------- msgItem:\n", msgItem, "\n ---------------- ")
+				// log.Println(" ---------------- PC收到图片消息处理开始 ---------------- ")
+				// log.Println(" ---------------- msgItem:\n", msgItem, "\n ---------------- ")
 				if msgContent == "PC发图片消息成功" {
 					continue
 				}
@@ -259,7 +258,7 @@ func (srv *Server) handleRequest() error {
 					}
 					msgItemList = append(msgItemList, wcMsgItem)
 				}
-				log.Println(" ---------------- PC收到图片消息处理结束 ---------------- ")
+				// log.Println(" ---------------- PC收到图片消息处理结束 ---------------- ")
 			case message.MsgTypeFileOrAppShareLinkFile: // "msgtype":"49",
 				if msgContent == "PC发app/文件消息成功" {
 					continue
