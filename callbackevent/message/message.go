@@ -178,11 +178,11 @@ const (
 )
 
 type MsgBody struct {
-	ServerPort string              `json:"ServerPort"`
-	SelfWxid   string              `json:"selfwxid"`
-	Sendorrecv string              `json:"sendorrecv"`
-	MsgNumber  string              `json:"msgnumber"`
-	Msglist    []map[string]string `json:"msglist"`
+	ServerPort string                   `json:"ServerPort"`
+	SelfWxid   string                   `json:"selfwxid"`
+	Sendorrecv string                   `json:"sendorrecv"`
+	MsgNumber  string                   `json:"msgnumber"`
+	Msglist    []map[string]interface{} `json:"msglist"`
 }
 
 type CommonMsg struct {

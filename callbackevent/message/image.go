@@ -6,7 +6,7 @@ type Image struct {
 	ToCommonMsg
 	Info      string `json:"info"`
 	ImgPath   string `json:"img_path"`
-	ImgLen    string `json:"img_len"`
+	ImgLen    int    `json:"img_len"`
 	ImgBase64 string `json:"img_base64"`
 }
 
@@ -16,7 +16,7 @@ type GroupImage struct {
 	ToCommonMsg
 	Info      string `json:"info"`
 	ImgPath   string `json:"img_path"`
-	ImgLen    string `json:"img_len"`
+	ImgLen    int    `json:"img_len"`
 	ImgBase64 string `json:"img_base64"`
 	CommonGroupMsg
 }

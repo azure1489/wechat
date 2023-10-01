@@ -118,11 +118,11 @@ func (srv *Server) handleRequest() error {
 				continue
 			}
 
-			// msgtype := msgItem["msgtype"]
+			// msgtype :=
 
-			msgType := message.MsgType(msgItem["msgtype"])
+			msgType := message.MsgType(msgItem["msgtype"].(string))
 
-			fromtype := msgItem["fromtype"]
+			fromtype := msgItem["fromtype"].(string)
 
 			// 不能是自己发送的消息
 
@@ -130,7 +130,7 @@ func (srv *Server) handleRequest() error {
 			// 	fromtype = "2"
 			// }
 
-			msgContent := msgItem["msg"]
+			msgContent := msgItem["msg"].(string)
 
 			switch msgType {
 			case message.MsgTypeText:
@@ -140,22 +140,22 @@ func (srv *Server) handleRequest() error {
 				if fromtype == "1" {
 					wcMsg := message.Text{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						MsgSource: msgItem["msgsource"], // 消息源内容
+						MsgSource: msgItem["msgsource"].(string), // 消息源内容
 					}
 					wcMsgItem := message.WcMsgItem{
 						EventType: message.PCRecvTextMsgEvent,
@@ -165,25 +165,25 @@ func (srv *Server) handleRequest() error {
 				} else if fromtype == "2" {
 					wcMsg := message.GroupText{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						MsgSource: msgItem["msgsource"], // 消息源内容
+						MsgSource: msgItem["msgsource"].(string), // 消息源内容
 						CommonGroupMsg: message.CommonGroupMsg{
-							FromGname: msgItem["fromgname"], // 群名称
-							FromGid:   msgItem["fromgid"],   // 群ID
+							FromGname: msgItem["fromgname"].(string), // 群名称
+							FromGid:   msgItem["fromgid"].(string),   // 群ID
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
@@ -201,25 +201,25 @@ func (srv *Server) handleRequest() error {
 				if fromtype == "1" {
 					wcMsg := message.Image{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						Info:      msgItem["info"],       // 消息源内容
-						ImgLen:    msgItem["img_len"],    // 消息源内容
-						ImgPath:   msgItem["img_path"],   // 消息源内容
-						ImgBase64: msgItem["img_base64"], // 消息源内容
+						Info:      msgItem["info"].(string),       // 消息源内容
+						ImgLen:    msgItem["img_len"].(int),       // 消息源内容
+						ImgPath:   msgItem["img_path"].(string),   // 消息源内容
+						ImgBase64: msgItem["img_base64"].(string), // 消息源内容
 					}
 					wcMsgItem := message.WcMsgItem{
 						EventType: message.PCRecvImgMsgEvent,
@@ -229,28 +229,28 @@ func (srv *Server) handleRequest() error {
 				} else if fromtype == "2" {
 					wcMsg := message.GroupImage{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						Info:      msgItem["info"],       // 消息源内容
-						ImgLen:    msgItem["img_len"],    // 消息源内容
-						ImgPath:   msgItem["img_path"],   // 消息源内容
-						ImgBase64: msgItem["img_base64"], // 消息源内容
+						Info:      msgItem["info"].(string),       // 消息源内容
+						ImgLen:    msgItem["img_len"].(int),       // 消息源内容
+						ImgPath:   msgItem["img_path"].(string),   // 消息源内容
+						ImgBase64: msgItem["img_base64"].(string), // 消息源内容
 						CommonGroupMsg: message.CommonGroupMsg{
-							FromGname: msgItem["fromgname"], // 群名称
-							FromGid:   msgItem["fromgid"],   // 群ID
+							FromGname: msgItem["fromgname"].(string), // 群名称
+							FromGid:   msgItem["fromgid"].(string),   // 群ID
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
@@ -274,20 +274,20 @@ func (srv *Server) handleRequest() error {
 					if fromtype == "1" {
 						wcMsg := message.Quote{
 							CommonMsg: message.CommonMsg{
-								MsgSvrid:   msgItem["msgsvrid"],
-								Time:       msgItem["time"],
+								MsgSvrid:   msgItem["msgsvrid"].(string),
+								Time:       msgItem["time"].(string),
 								Msg:        msgContent,
-								MsgType:    msgItem["msgtype"],  // 消息类型代码
-								FromType:   fromtype,            // 个人消息=1 群消息=2
-								FromId:     msgItem["fromid"],   // 发送方微信ID
-								FromName:   msgItem["fromname"], // 发送方昵称
-								Index:      msgItem["index"],
+								MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+								FromType:   fromtype,                     // 个人消息=1 群消息=2
+								FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+								FromName:   msgItem["fromname"].(string), // 发送方昵称
+								Index:      msgItem["index"].(string),
 								ServerPort: msgBody.ServerPort,
 								SelfWxid:   msgBody.SelfWxid,
 							},
 							ToCommonMsg: message.ToCommonMsg{
-								ToId:   msgItem["toid"],
-								ToName: msgItem["toname"],
+								ToId:   msgItem["toid"].(string),
+								ToName: msgItem["toname"].(string),
 							},
 							MsgSource:    appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
 							QuoteMsg:     appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
@@ -303,20 +303,20 @@ func (srv *Server) handleRequest() error {
 					} else if fromtype == "2" {
 						wcMsg := message.GroupQuote{
 							CommonMsg: message.CommonMsg{
-								MsgSvrid:   msgItem["msgsvrid"],
-								Time:       msgItem["time"],
+								MsgSvrid:   msgItem["msgsvrid"].(string),
+								Time:       msgItem["time"].(string),
 								Msg:        msgContent,
-								MsgType:    msgItem["msgtype"],  // 消息类型代码
-								FromType:   fromtype,            // 个人消息=1 群消息=2
-								FromId:     msgItem["fromid"],   // 发送方微信ID
-								FromName:   msgItem["fromname"], // 发送方昵称
-								Index:      msgItem["index"],
+								MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+								FromType:   fromtype,                     // 个人消息=1 群消息=2
+								FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+								FromName:   msgItem["fromname"].(string), // 发送方昵称
+								Index:      msgItem["index"].(string),
 								ServerPort: msgBody.ServerPort,
 								SelfWxid:   msgBody.SelfWxid,
 							},
 							ToCommonMsg: message.ToCommonMsg{
-								ToId:   msgItem["toid"],
-								ToName: msgItem["toname"],
+								ToId:   msgItem["toid"].(string),
+								ToName: msgItem["toname"].(string),
 							},
 							MsgSource:    appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
 							QuoteMsg:     appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
@@ -324,8 +324,8 @@ func (srv *Server) handleRequest() error {
 							QuoteMsgId:   appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
 							ReplyMsg:     appMsgXml.AppMsg.Title,              // 回复的消息内容
 							CommonGroupMsg: message.CommonGroupMsg{
-								FromGname: msgItem["fromgname"], // 群名称
-								FromGid:   msgItem["fromgid"],   // 群ID
+								FromGname: msgItem["fromgname"].(string), // 群名称
+								FromGid:   msgItem["fromgid"].(string),   // 群ID
 							},
 						}
 						wcMsgItem := message.WcMsgItem{
@@ -342,22 +342,22 @@ func (srv *Server) handleRequest() error {
 				if fromtype == "1" {
 					wcMsg := message.Gif{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						GifPath: msgItem["gif_path"],
+						GifPath: msgItem["gif_path"].(string),
 					}
 					wcMsgItem := message.WcMsgItem{
 						EventType: message.PCRecvGifImgMsgEvent,
@@ -367,25 +367,25 @@ func (srv *Server) handleRequest() error {
 				} else if fromtype == "2" {
 					wcMsg := message.GroupGif{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						GifPath: msgItem["gif_path"],
+						GifPath: msgItem["gif_path"].(string),
 						CommonGroupMsg: message.CommonGroupMsg{
-							FromGname: msgItem["fromgname"], // 群名称
-							FromGid:   msgItem["fromgid"],   // 群ID
+							FromGname: msgItem["fromgname"].(string), // 群名称
+							FromGid:   msgItem["fromgid"].(string),   // 群ID
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
@@ -398,23 +398,23 @@ func (srv *Server) handleRequest() error {
 				if fromtype == "1" {
 					wcMsg := message.Video{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						Info:      msgItem["info"], // 消息源内容
-						VideoPath: msgItem["video_path"],
+						Info:      msgItem["info"].(string), // 消息源内容
+						VideoPath: msgItem["video_path"].(string),
 					}
 					wcMsgItem := message.WcMsgItem{
 						EventType: message.PCRecvVideoMsgEvent,
@@ -424,26 +424,26 @@ func (srv *Server) handleRequest() error {
 				} else if fromtype == "2" {
 					wcMsg := message.GroupVideo{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						Info:      msgItem["info"], // 消息源内容
-						VideoPath: msgItem["video_path"],
+						Info:      msgItem["info"].(string), // 消息源内容
+						VideoPath: msgItem["video_path"].(string),
 						CommonGroupMsg: message.CommonGroupMsg{
-							FromGname: msgItem["fromgname"], // 群名称
-							FromGid:   msgItem["fromgid"],   // 群ID
+							FromGname: msgItem["fromgname"].(string), // 群名称
+							FromGid:   msgItem["fromgid"].(string),   // 群ID
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
@@ -457,23 +457,23 @@ func (srv *Server) handleRequest() error {
 				if fromtype == "1" {
 					wcMsg := message.Voice{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						VoiceLen: msgItem["voice_len"],
-						VoiceHex: msgItem["voice_hex"],
+						VoiceLen: msgItem["voice_len"].(string),
+						VoiceHex: msgItem["voice_hex"].(string),
 					}
 					wcMsgItem := message.WcMsgItem{
 						EventType: message.PCRecvVoiceMsgEvent,
@@ -483,26 +483,26 @@ func (srv *Server) handleRequest() error {
 				} else if fromtype == "2" {
 					wcMsg := message.GroupVoice{
 						CommonMsg: message.CommonMsg{
-							MsgSvrid:   msgItem["msgsvrid"],
-							Time:       msgItem["time"],
+							MsgSvrid:   msgItem["msgsvrid"].(string),
+							Time:       msgItem["time"].(string),
 							Msg:        msgContent,
-							MsgType:    msgItem["msgtype"],  // 消息类型代码
-							FromType:   fromtype,            // 个人消息=1 群消息=2
-							FromId:     msgItem["fromid"],   // 发送方微信ID
-							FromName:   msgItem["fromname"], // 发送方昵称
-							Index:      msgItem["index"],
+							MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+							FromType:   fromtype,                     // 个人消息=1 群消息=2
+							FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+							FromName:   msgItem["fromname"].(string), // 发送方昵称
+							Index:      msgItem["index"].(string),
 							ServerPort: msgBody.ServerPort,
 							SelfWxid:   msgBody.SelfWxid,
 						},
 						ToCommonMsg: message.ToCommonMsg{
-							ToId:   msgItem["toid"],
-							ToName: msgItem["toname"],
+							ToId:   msgItem["toid"].(string),
+							ToName: msgItem["toname"].(string),
 						},
-						VoiceLen: msgItem["voice_len"],
-						VoiceHex: msgItem["voice_hex"],
+						VoiceLen: msgItem["voice_len"].(string),
+						VoiceHex: msgItem["voice_hex"].(string),
 						CommonGroupMsg: message.CommonGroupMsg{
-							FromGname: msgItem["fromgname"], // 群名称
-							FromGid:   msgItem["fromgid"],   // 群ID
+							FromGname: msgItem["fromgname"].(string), // 群名称
+							FromGid:   msgItem["fromgid"].(string),   // 群ID
 						},
 					}
 					wcMsgItem := message.WcMsgItem{
@@ -535,22 +535,22 @@ func (srv *Server) handleRequest() error {
 					if fromtype == "1" {
 						wcMsg := message.Revoke{
 							CommonMsg: message.CommonMsg{
-								MsgSvrid:   msgItem["msgsvrid"],
-								Time:       msgItem["time"],
+								MsgSvrid:   msgItem["msgsvrid"].(string),
+								Time:       msgItem["time"].(string),
 								Msg:        msgContent,
-								MsgType:    msgItem["msgtype"],  // 消息类型代码
-								FromType:   fromtype,            // 个人消息=1 群消息=2
-								FromId:     msgItem["fromid"],   // 发送方微信ID
-								FromName:   msgItem["fromname"], // 发送方昵称
-								Index:      msgItem["index"],
+								MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+								FromType:   fromtype,                     // 个人消息=1 群消息=2
+								FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+								FromName:   msgItem["fromname"].(string), // 发送方昵称
+								Index:      msgItem["index"].(string),
 								ServerPort: msgBody.ServerPort,
 								SelfWxid:   msgBody.SelfWxid,
 							},
 							ToCommonMsg: message.ToCommonMsg{
-								ToId:   msgItem["toid"],
-								ToName: msgItem["toname"],
+								ToId:   msgItem["toid"].(string),
+								ToName: msgItem["toname"].(string),
 							},
-							RevokeMsg:  msgItem["revoke_msg"],
+							RevokeMsg:  msgItem["revoke_msg"].(string),
 							Session:    sysMsgXml.RevokeMsg.Session,
 							MsgId:      sysMsgXml.RevokeMsg.MsgId,
 							NewMsgId:   sysMsgXml.RevokeMsg.NewMsgId,
@@ -564,29 +564,29 @@ func (srv *Server) handleRequest() error {
 					} else if fromtype == "2" {
 						wcMsg := message.GroupRevoke{
 							CommonMsg: message.CommonMsg{
-								MsgSvrid:   msgItem["msgsvrid"],
-								Time:       msgItem["time"],
+								MsgSvrid:   msgItem["msgsvrid"].(string),
+								Time:       msgItem["time"].(string),
 								Msg:        msgContent,
-								MsgType:    msgItem["msgtype"],  // 消息类型代码
-								FromType:   fromtype,            // 个人消息=1 群消息=2
-								FromId:     msgItem["fromid"],   // 发送方微信ID
-								FromName:   msgItem["fromname"], // 发送方昵称
-								Index:      msgItem["index"],
+								MsgType:    msgItem["msgtype"].(string),  // 消息类型代码
+								FromType:   fromtype,                     // 个人消息=1 群消息=2
+								FromId:     msgItem["fromid"].(string),   // 发送方微信ID
+								FromName:   msgItem["fromname"].(string), // 发送方昵称
+								Index:      msgItem["index"].(string),
 								ServerPort: msgBody.ServerPort,
 								SelfWxid:   msgBody.SelfWxid,
 							},
 							ToCommonMsg: message.ToCommonMsg{
-								ToId:   msgItem["toid"],
-								ToName: msgItem["toname"],
+								ToId:   msgItem["toid"].(string),
+								ToName: msgItem["toname"].(string),
 							},
-							RevokeMsg:  msgItem["revoke_msg"],
+							RevokeMsg:  msgItem["revoke_msg"].(string),
 							Session:    sysMsgXml.RevokeMsg.Session,
 							MsgId:      sysMsgXml.RevokeMsg.MsgId,
 							NewMsgId:   sysMsgXml.RevokeMsg.NewMsgId,
 							ReplaceMsg: sysMsgXml.RevokeMsg.ReplaceMsg,
 							CommonGroupMsg: message.CommonGroupMsg{
-								FromGname: msgItem["fromgname"], // 群名称
-								FromGid:   msgItem["fromgid"],   // 群ID
+								FromGname: msgItem["fromgname"].(string), // 群名称
+								FromGid:   msgItem["fromgid"].(string),   // 群ID
 							},
 						}
 						wcMsgItem := message.WcMsgItem{
