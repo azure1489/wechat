@@ -49,6 +49,8 @@ const (
 	PCRecvRevokeMsgEvent EventType = "PCRecvRevokeMsgEvent"
 	// PC端接收文本消息事件
 	PCRecvGroupTextMsgEvent EventType = "PCRecvGroupTextMsgEvent"
+	// PC端接收AT文本消息事件
+	PCRecvAtTextMsgEvent EventType = "PCRecvAtTextMsgEvent"
 	// PC端接收图片消息事件
 	PCRecvGroupImgMsgEvent EventType = "PCRecvGroupImgMsgEvent"
 	// PC端收到的消息(GIF动图)事件

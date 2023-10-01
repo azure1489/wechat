@@ -172,7 +172,7 @@ func (srv *Server) handleRequest() error {
 				Index:    interfaceToString(msgItem["index"]),
 			},
 			ToCommonMsg: message.ToCommonMsg{
-				ToId:   interfaceToString(msgItem["toid"]),
+				ToId:   toid,
 				ToName: interfaceToString(msgItem["toname"]),
 			},
 		}
@@ -190,6 +190,7 @@ func (srv *Server) handleRequest() error {
 				wcMsgItem.MsgItem = text
 				wcMsgItem.EventType = message.PCRecvTextMsgEvent
 			} else if fromtype == "2" {
+
 				groupText := message.GroupText{
 					Text: text, // 消息源内容
 					CommonGroupMsg: message.CommonGroupMsg{
@@ -197,8 +198,28 @@ func (srv *Server) handleRequest() error {
 						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 					},
 				}
-				wcMsgItem.MsgItem = groupText
-				wcMsgItem.EventType = message.PCRecvGroupTextMsgEvent
+
+				msgSource := text.MsgSource
+
+				var msgSourceXml message.MsgSourceXml
+				// 字符串转换为xml
+				err = xml.Unmarshal([]byte(msgSource), &msgSourceXml)
+				if err != nil {
+					return err
+				}
+
+				if msgSourceXml.AtUserList != "" {
+					atText := message.AtText{
+						AtUserList: strings.Split(msgSourceXml.AtUserList, ","),
+						GroupText:  groupText,
+					}
+					wcMsgItem.MsgItem = atText
+					wcMsgItem.EventType = message.PCRecvAtTextMsgEvent
+				} else {
+					wcMsgItem.MsgItem = groupText
+					wcMsgItem.EventType = message.PCRecvGroupTextMsgEvent
+				}
+
 			}
 		case message.MsgTypeImage: // PC收到图片消息
 			if msgContent == "PC发图片消息成功" {
