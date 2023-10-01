@@ -136,7 +136,10 @@ func (srv *Server) handleRequest() error {
 			log.Println(" ---------------- fromid:", fromid, " ---------------- ")
 
 			if msgBody.SelfWxid == fromid {
+				log.Println(" ---------------- 自己发送的消息 ---------------- ")
 				continue
+			} else {
+				log.Println(" ---------------- 别人发送的消息 ---------------- ")
 			}
 
 			// msgtype :=
