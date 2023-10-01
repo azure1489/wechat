@@ -1,6 +1,10 @@
 package wechat
 
-import "time"
+import (
+	"time"
+
+	"github.com/azure1489/wechat/callbackevent/server"
+)
 
 // Wechat is a struct.
 type Wechat struct {
@@ -51,4 +55,9 @@ func NewWechatConfigEncryption(url string) *WechatConfig {
 	return &WechatConfig{
 		Url: url,
 	}
+}
+
+// GetOfficialAccount 获取微信公众号实例
+func GetCallBackEvent(body []byte) *server.Server {
+	return server.NewServer(body)
 }
