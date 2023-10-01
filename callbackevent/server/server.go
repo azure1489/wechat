@@ -65,11 +65,11 @@ func interfaceToString(i interface{}) string {
 }
 
 // interface{} 转 sring
-func interfaceToint(i interface{}) int {
+func interfaceToFloat64(i interface{}) float64 {
 	if i == nil {
 		return 0
 	}
-	return i.(int)
+	return i.(float64)
 }
 
 // HandleRequest 处理微信的请求
@@ -233,7 +233,7 @@ func (srv *Server) handleRequest() error {
 							ToName: interfaceToString(msgItem["toname"]),
 						},
 						Info:      interfaceToString(msgItem["info"]),       // 消息源内容
-						ImgLen:    interfaceToint(msgItem["img_len"]),       // 消息源内容
+						ImgLen:    interfaceToFloat64(msgItem["img_len"]),   // 消息源内容
 						ImgPath:   interfaceToString(msgItem["img_path"]),   // 消息源内容
 						ImgBase64: interfaceToString(msgItem["img_base64"]), // 消息源内容
 					}
@@ -261,7 +261,7 @@ func (srv *Server) handleRequest() error {
 							ToName: interfaceToString(msgItem["toname"]),
 						},
 						Info:      interfaceToString(msgItem["info"]),       // 消息源内容
-						ImgLen:    interfaceToint(msgItem["img_len"]),       // 消息源内容
+						ImgLen:    interfaceToFloat64(msgItem["img_len"]),   // 消息源内容
 						ImgPath:   interfaceToString(msgItem["img_path"]),   // 消息源内容
 						ImgBase64: interfaceToString(msgItem["img_base64"]), // 消息源内容
 						CommonGroupMsg: message.CommonGroupMsg{
