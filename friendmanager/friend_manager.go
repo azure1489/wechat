@@ -7,7 +7,7 @@ import (
 
 type FriendManagerService interface {
 	// AddNewFriend 添加好友 add_new_friend.go
-	AddNewFriend(req *AddNewFriendReq) error
+	AddNewFriend(req AddNewFriendReq) (*AddNewFriendResult, error)
 	// DeleteFriend 删除好友 delete_friend.go
 	DeleteFriend(wxid string) error
 	// BlackFriend 拉黑好友 black_friend.go

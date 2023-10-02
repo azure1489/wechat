@@ -36,14 +36,14 @@ type GetFriendOrChatroomDetailInfoResult struct {
 }
 
 type GetFriendOrChatroomDetailInfoReq struct {
-	Wxid string `json:"wxid"`
+	WxidOrGid string `json:"wxidorgid"`
 }
 
-// 获取好友或群聊详情 https://www.showdoc.com.cn/WeChatProject/9157629212860224
-func (c *ContactManagerServiceImpl) GetFriendOrChatroomDetailInfo(wxid string) (*GetFriendOrChatroomDetailInfoResult, error) {
+// GetFriendOrChatroomDetailInfo 网络获取好友或群详细信息,好友则返回好友信息，群聊则返回群成员数量。成员微信id，成员昵称 https://www.showdoc.com.cn/WeChatProject/9157629212860224
+func (c *ContactManagerServiceImpl) GetFriendOrChatroomDetailInfo(wxidOrGid string) (*GetFriendOrChatroomDetailInfoResult, error) {
 
 	req := GetFriendOrChatroomDetailInfoReq{
-		Wxid: wxid,
+		WxidOrGid: wxidOrGid,
 	}
 
 	resultBody, err := c.http.DoPost("/GetFriendOrChatroomDetailInfo", req)
