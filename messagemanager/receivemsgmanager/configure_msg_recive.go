@@ -25,8 +25,13 @@ type ConfigureMsgReciveResult struct {
 	ConfigureMsgRecive string `json:"ConfigureMsgRecive"`
 }
 
-// ConfigureMsgRecive 配置消息接收 https://www.showdoc.com.cn/WeChatProject/10273567687375653
-func (l *ReceiveMsgManagerServiceImpl) ConfigureMsgRecive(req ConfigureMsgReciveReq) error {
+// ConfigureMsgRecive 配置消息接收 https://www.showdoc.com.cn/WeChatProject/9204125262722344
+func (l *ReceiveMsgManagerServiceImpl) ConfigureMsgRecive(isEnable, url string) error {
+
+	req := ConfigureMsgReciveReq{
+		IsEnable: isEnable,
+		URL:      url,
+	}
 
 	resultBody, err := l.http.DoPost("/ConfigureMsgRecive", req)
 	if err != nil {

@@ -6,8 +6,8 @@ import (
 )
 
 type ReceiveMsgManagerService interface {
-	// ConfigureMsgRecive 配置消息接收 https://www.showdoc.com.cn/WeChatProject/10273567687375653
-	ConfigureMsgRecive(req ConfigureMsgReciveReq) error
+	// ConfigureMsgRecive 配置消息接收 https://www.showdoc.com.cn/WeChatProject/9204125262722344
+	ConfigureMsgRecive(isEnable, url string) error
 }
 
 type ReceiveMsgManagerServiceImpl struct {
