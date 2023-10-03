@@ -1,4 +1,4 @@
-package sendmsmanager
+package sendmsgmanager
 
 import "encoding/json"
 

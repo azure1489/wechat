@@ -1,4 +1,4 @@
-package sendmsmanager
+package sendmsgmanager
 
 import (
 	"github.com/azure1489/wechat"
