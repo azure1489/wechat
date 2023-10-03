@@ -61,3 +61,7 @@ func NewWechatConfigEncryption(url string) *WechatConfig {
 func GetCallBackServer(body []byte) *server.Server {
 	return server.NewServer(body)
 }
+
+func NewContentMsgManagerService(config *WechatConfig) contentmsgmanager.ContentMsgManagerService {
+	return contentmsgmanager.NewContentMsgManagerService(config)
+}
