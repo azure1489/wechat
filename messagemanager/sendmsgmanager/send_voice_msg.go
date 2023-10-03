@@ -2,40 +2,37 @@ package sendmsgmanager
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 type SendVoiceMsgReq struct {
 	Wxid      string `json:"wxid"`
-	VoicePath string `json:"voicepath"`
+	VideoFile string `json:"voice_file"`
+	TimeMs    int    `json:"time_ms"`
 }
 
 type SendVoiceMsgResult struct {
-	SendVoiceMsg string `json:"SendVoiceMsg"`
+	MsgSvrID string `json:"MsgSvrID"`
 }
 
 // SendVoiceMsg 发送语音消息 https://www.showdoc.com.cn/WeChatProject/892913222925935
-func (l *SendMsgManagerServiceImpl) SendVoiceMsg(wxid, voicePath string) error {
+func (l *SendMsgManagerServiceImpl) SendVoiceMsg(wxid, videoFile string, timeMs int) (string, error) {
 
 	req := SendVoiceMsgReq{
 		Wxid:      wxid,
-		VoicePath: voicePath,
+		VideoFile: videoFile,
+		TimeMs:    timeMs,
 	}
 
 	resultBody, err := l.http.DoPost("/SendVoiceMsg", req)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	commonResult := SendVoiceMsgResult{}
 	err = json.Unmarshal(resultBody, &commonResult)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	if commonResult.SendVoiceMsg != "1" {
-		return fmt.Errorf("提交失败, body=%s", string(resultBody))
-	}
-
-	return nil
+	return commonResult.MsgSvrID, nil
 }

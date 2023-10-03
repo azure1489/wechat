@@ -21,7 +21,7 @@ type SendMsgManagerService interface {
 	// SendGIFMsg 发送GIF动画表情消息 https://www.showdoc.com.cn/WeChatProject/8929127822471500
 	SendGIFMsg(wxid, gifPath string) error
 	// SendVoiceMsg 发送语音消息 https://www.showdoc.com.cn/WeChatProject/892913222925935
-	SendVoiceMsg(wxid, voicePath string) error
+	SendVoiceMsg(wxid, videoFile string, timeMs int) (string, error)
 	// SendDiyMsg 发送自定义消息 https://www.showdoc.com.cn/WeChatProject/8929124214624404
 	SendDiyMsg(req SendDiyMsgReq) error
 	// ForwardVoiceMsg 转发语音消息 https://www.showdoc.com.cn/WeChatProject/10042262554089499
