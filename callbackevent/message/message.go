@@ -247,53 +247,53 @@ type ToCommonMsg struct {
 // "fromid":"5872694777@chatroom",
 // "fromgname":"test",
 
-type MsgItem struct {
-	Time      string `json:"time"`      // 收到消息的时间
-	Msgtype   string `json:"msgtype"`   // 消息类型代码
-	Msgsvrid  string `json:"msgsvrid"`  // 服务器消息ID,用于撤回，或者下载图片/视频/文件
-	Msg       string `json:"msg"`       // 消息内容
-	MsgSource string `json:"msgsource"` // 消息源内容
-	Fromtype  string `json:"fromtype"`  // 个人消息=1 群消息=2
-	FromId    string `json:"fromid"`    // 发送方微信ID
-	FromName  string `json:"fromname"`  // 发送方昵称
-	// ----------------- 群消息 -----------------
-	FromGname string `json:"fromgname"` // 群名称
-	FromGid   string `json:"fromgid"`   // 群ID
-	// ----------------- 接收人 -----------------
-	ToId   string `json:"toid"`   // 接收人微信ID/群ID
-	ToName string `json:"toname"` // 接收人昵称
-	// ----------------- 文件路径 -----------------
-	ImgPath string `json:"img_path"`
-	// ----------------- "msgtype":"47" GIF动图 -----------------
-	GifPath string `json:"gif_path"`
-	// ----------------- "msgtype":"49" 文件/app消息 -----------------
-	AppName  string `json:"appname"` // 应用名称
-	FilePath string `json:"file_path"`
+// type MsgItem struct {
+// 	Time      string `json:"time"`      // 收到消息的时间
+// 	Msgtype   string `json:"msgtype"`   // 消息类型代码
+// 	Msgsvrid  string `json:"msgsvrid"`  // 服务器消息ID,用于撤回，或者下载图片/视频/文件
+// 	Msg       string `json:"msg"`       // 消息内容
+// 	MsgSource string `json:"msgsource"` // 消息源内容
+// 	Fromtype  string `json:"fromtype"`  // 个人消息=1 群消息=2
+// 	FromId    string `json:"fromid"`    // 发送方微信ID
+// 	FromName  string `json:"fromname"`  // 发送方昵称
+// 	// ----------------- 群消息 -----------------
+// 	FromGname string `json:"fromgname"` // 群名称
+// 	FromGid   string `json:"fromgid"`   // 群ID
+// 	// ----------------- 接收人 -----------------
+// 	ToId   string `json:"toid"`   // 接收人微信ID/群ID
+// 	ToName string `json:"toname"` // 接收人昵称
+// 	// ----------------- 文件路径 -----------------
+// 	ImgPath string `json:"img_path"`
+// 	// ----------------- "msgtype":"47" GIF动图 -----------------
+// 	GifPath string `json:"gif_path"`
+// 	// ----------------- "msgtype":"49" 文件/app消息 -----------------
+// 	AppName  string `json:"appname"` // 应用名称
+// 	FilePath string `json:"file_path"`
 
-	VideoPath string `json:"video_path"`
-	VoipData  string `json:"voip_data"`
-	// ----------------- 切换联系人事件 -----------------
-	Nickname   string `json:"nickname"`
-	V3         string `json:"v3"`
-	Label      string `json:"label"`
-	Head       string `json:"head"`
-	Timelinebg string `json:"timelinebg"`
-	Country    string `json:"country"`
-	// ----------------- 其他 -----------------
-	Index     string `json:"index"`
-	RevokeMsg string `json:"revoke_msg"`
+// 	VideoPath string `json:"video_path"`
+// 	VoipData  string `json:"voip_data"`
+// 	// ----------------- 切换联系人事件 -----------------
+// 	Nickname   string `json:"nickname"`
+// 	V3         string `json:"v3"`
+// 	Label      string `json:"label"`
+// 	Head       string `json:"head"`
+// 	Timelinebg string `json:"timelinebg"`
+// 	Country    string `json:"country"`
+// 	// ----------------- 其他 -----------------
+// 	Index     string `json:"index"`
+// 	RevokeMsg string `json:"revoke_msg"`
 
-	Appletcode   string `json:"appletcode" `
-	Businesstype string `json:"businesstype"`
-	Businessdata string `json:"businessdata"`
+// 	Appletcode   string `json:"appletcode" `
+// 	Businesstype string `json:"businesstype"`
+// 	Businessdata string `json:"businessdata"`
 
-	// ----------------- 其他事件 -----------------
-	SelfAccount  string `json:"selfaccount"`
-	QRCodeBase64 string `json:"qrcode_base64"`
-	// ----------------- 其他 -----------------
-	MsgType   MsgType   `json:"-"`
-	EventType EventType `json:"-"`
-}
+// 	// ----------------- 其他事件 -----------------
+// 	SelfAccount  string `json:"selfaccount"`
+// 	QRCodeBase64 string `json:"qrcode_base64"`
+// 	// ----------------- 其他 -----------------
+// 	MsgType   MsgType   `json:"-"`
+// 	EventType EventType `json:"-"`
+// }
 
 // type WcMsgBody struct {
 

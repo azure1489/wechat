@@ -324,8 +324,8 @@ func (srv *Server) handleRequest() error {
 			}
 		case message.MsgTypeVoice: // "msgtype":"34", PC收到语音消息
 			voice := message.Voice{
-				VoiceLen:  interfaceToString(msgItem["voice_len"]),
-				VoiceData: interfaceToString(msgItem["voice_data"]),
+				VoiceLen: interfaceToString(msgItem["voice_len"]),
+				VoiceHex: interfaceToString(msgItem["voice_hex"]),
 			}
 			if fromtype == "1" {
 				wcMsgItem.MsgItem = voice
