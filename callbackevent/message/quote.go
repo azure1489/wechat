@@ -10,7 +10,7 @@ type Quote struct {
 }
 
 // GroupQuote 群引用回复消息
-type GroupQuote struct {
-	Quote
-	CommonGroupMsg
-}
+// type GroupQuote struct {
+// 	Quote
+// 	CommonGroupMsg
+// }

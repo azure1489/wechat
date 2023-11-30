@@ -1,6 +1,6 @@
 package message
 
 type AtText struct {
-	GroupText
+	// GroupText
 	AtUserList []string `json:"atUserList"`
 }

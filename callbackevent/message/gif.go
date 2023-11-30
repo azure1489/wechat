@@ -6,7 +6,7 @@ type Gif struct {
 }
 
 // GroupGif gif消息
-type GroupGif struct {
-	Gif
-	CommonGroupMsg
-}
+// type GroupGif struct {
+// 	Gif
+// 	CommonGroupMsg
+// }

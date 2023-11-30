@@ -308,5 +308,7 @@ type WcMsgItem struct {
 	SelfWxid   string    `json:"selfwxid"`
 	CommonMsg
 	ToCommonMsg
+	CommonGroupMsg
+	AtText
 	MsgItem interface{} `json:"msgItem"`
 }

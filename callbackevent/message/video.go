@@ -7,7 +7,7 @@ type Video struct {
 }
 
 // GroupVideo 视频消息
-type GroupVideo struct {
-	Video
-	CommonGroupMsg
-}
+// type GroupVideo struct {
+// 	Video
+// 	CommonGroupMsg
+// }

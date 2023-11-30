@@ -9,7 +9,7 @@ type Image struct {
 }
 
 // GroupImage 图片消息
-type GroupImage struct {
-	Image
-	CommonGroupMsg
-}
+// type GroupImage struct {
+// 	Image
+// 	CommonGroupMsg
+// }

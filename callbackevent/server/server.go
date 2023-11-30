@@ -186,18 +186,24 @@ func (srv *Server) handleRequest() error {
 			text := message.Text{
 				MsgSource: interfaceToString(msgItem["msgsource"]), // 消息源内容
 			}
+
+			wcMsgItem.MsgItem = text
+
 			if fromtype == "1" {
-				wcMsgItem.MsgItem = text
 				wcMsgItem.EventType = message.PCRecvTextMsgEvent
 			} else if fromtype == "2" {
-
-				groupText := message.GroupText{
-					Text: text, // 消息源内容
-					CommonGroupMsg: message.CommonGroupMsg{
-						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-					},
+				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+					FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+					FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 				}
+
+				// groupText := message.GroupText{
+				// 	Text: text, // 消息源内容
+				// 	CommonGroupMsg: message.CommonGroupMsg{
+				// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+				// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+				// 	},
+				// }
 
 				msgSource := text.MsgSource
 
@@ -209,14 +215,11 @@ func (srv *Server) handleRequest() error {
 				}
 
 				if msgSourceXml.AtUserList != "" {
-					atText := message.AtText{
+					wcMsgItem.AtText = message.AtText{
 						AtUserList: strings.Split(msgSourceXml.AtUserList, ","),
-						GroupText:  groupText,
 					}
-					wcMsgItem.MsgItem = atText
 					wcMsgItem.EventType = message.PCRecvAtTextMsgEvent
 				} else {
-					wcMsgItem.MsgItem = groupText
 					wcMsgItem.EventType = message.PCRecvGroupTextMsgEvent
 				}
 
@@ -233,18 +236,23 @@ func (srv *Server) handleRequest() error {
 				ImgBase64: interfaceToString(msgItem["img_base64"]), // 消息源内容
 			}
 
+			wcMsgItem.MsgItem = image
+
 			if fromtype == "1" {
-				wcMsgItem.MsgItem = image
 				wcMsgItem.EventType = message.PCRecvImgMsgEvent
 			} else if fromtype == "2" {
-				wcMsg := message.GroupImage{
-					Image: image,
-					CommonGroupMsg: message.CommonGroupMsg{
-						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-					},
+				// wcMsg := message.GroupImage{
+				// 	Image: image,
+				// 	CommonGroupMsg: message.CommonGroupMsg{
+				// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+				// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+				// 	},
+				// }
+				// wcMsgItem.MsgItem = wcMsg
+				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+					FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+					FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 				}
-				wcMsgItem.MsgItem = wcMsg
 				wcMsgItem.EventType = message.PCRecvGroupImgMsgEvent
 			}
 			// log.Println(" ---------------- PC收到图片消息处理结束 ---------------- ")
@@ -266,18 +274,23 @@ func (srv *Server) handleRequest() error {
 					QuoteMsgId:   appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
 					ReplyMsg:     appMsgXml.AppMsg.Title,              // 回复的消息内容
 				}
+				wcMsgItem.MsgItem = quote
+
 				if fromtype == "1" {
-					wcMsgItem.MsgItem = quote
 					wcMsgItem.EventType = message.PCRecvQuoteMsgEvent
 				} else if fromtype == "2" {
-					wcMsg := message.GroupQuote{ // 回复的消息内容
-						Quote: quote, // 引用的消息内容
-						CommonGroupMsg: message.CommonGroupMsg{
-							FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-							FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-						},
+					// wcMsg := message.GroupQuote{ // 回复的消息内容
+					// 	Quote: quote, // 引用的消息内容
+					// 	CommonGroupMsg: message.CommonGroupMsg{
+					// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+					// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+					// 	},
+					// }
+					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 					}
-					wcMsgItem.MsgItem = wcMsg
+					// wcMsgItem.MsgItem = wcMsg
 					wcMsgItem.EventType = message.PCRecvGroupQuoteMsgEvent
 				}
 			}
@@ -288,18 +301,23 @@ func (srv *Server) handleRequest() error {
 			gif := message.Gif{
 				GifPath: interfaceToString(msgItem["gif_path"]),
 			}
+			wcMsgItem.MsgItem = gif
+
 			if fromtype == "1" {
-				wcMsgItem.MsgItem = gif
 				wcMsgItem.EventType = message.PCRecvGifImgMsgEvent
 			} else if fromtype == "2" {
-				wcMsg := message.GroupGif{
-					Gif: gif,
-					CommonGroupMsg: message.CommonGroupMsg{
-						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-					},
+				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+					FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+					FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 				}
-				wcMsgItem.MsgItem = wcMsg
+				// wcMsg := message.GroupGif{
+				// 	Gif: gif,
+				// 	CommonGroupMsg: message.CommonGroupMsg{
+				// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+				// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+				// 	},
+				// }
+				// wcMsgItem.MsgItem = wcMsg
 				wcMsgItem.EventType = message.PCRecvGroupGifImgMsgEvent
 			}
 		case message.MsgTypeVideo: // "msgtype":"43", PC收到视频消息
@@ -308,18 +326,23 @@ func (srv *Server) handleRequest() error {
 				Info:      interfaceToString(msgItem["info"]), // 消息源内容
 				VideoPath: interfaceToString(msgItem["video_path"]),
 			}
+			wcMsgItem.MsgItem = video
+
 			if fromtype == "1" {
-				wcMsgItem.MsgItem = video
 				wcMsgItem.EventType = message.PCRecvVideoMsgEvent
 			} else if fromtype == "2" {
-				wcMsg := message.GroupVideo{
-					Video: video,
-					CommonGroupMsg: message.CommonGroupMsg{
-						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-					},
+				// wcMsg := message.GroupVideo{
+				// 	Video: video,
+				// 	CommonGroupMsg: message.CommonGroupMsg{
+				// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+				// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+				// 	},
+				// }
+				// wcMsgItem.MsgItem = wcMsg
+				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+					FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+					FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 				}
-				wcMsgItem.MsgItem = wcMsg
 				wcMsgItem.EventType = message.PCRecvGroupVideoMsgEvent
 			}
 		case message.MsgTypeVoice: // "msgtype":"34", PC收到语音消息
@@ -327,18 +350,23 @@ func (srv *Server) handleRequest() error {
 				VoiceLen: interfaceToString(msgItem["voice_len"]),
 				VoiceHex: interfaceToString(msgItem["voice_hex"]),
 			}
+			wcMsgItem.MsgItem = voice
+
 			if fromtype == "1" {
-				wcMsgItem.MsgItem = voice
 				wcMsgItem.EventType = message.PCRecvVoiceMsgEvent
 			} else if fromtype == "2" {
-				wcMsg := message.GroupVoice{
-					Voice: voice,
-					CommonGroupMsg: message.CommonGroupMsg{
-						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-					},
+				// wcMsg := message.GroupVoice{
+				// 	Voice: voice,
+				// 	CommonGroupMsg: message.CommonGroupMsg{
+				// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+				// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+				// 	},
+				// }
+				// wcMsgItem.MsgItem = wcMsg
+				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+					FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+					FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 				}
-				wcMsgItem.MsgItem = wcMsg
 				wcMsgItem.EventType = message.PCRecvGroupVoiceMsgEvent
 			}
 		case message.MsgTypeShareCard: // "msgtype":"42",
@@ -369,18 +397,23 @@ func (srv *Server) handleRequest() error {
 					NewMsgId:   sysMsgXml.RevokeMsg.NewMsgId,
 					ReplaceMsg: sysMsgXml.RevokeMsg.ReplaceMsg,
 				}
+				wcMsgItem.MsgItem = revoke
+
 				if fromtype == "1" {
-					wcMsgItem.MsgItem = revoke
 					wcMsgItem.EventType = message.PCRecvRevokeMsgEvent
 				} else if fromtype == "2" {
-					wcMsg := message.GroupRevoke{
-						Revoke: revoke,
-						CommonGroupMsg: message.CommonGroupMsg{
-							FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-							FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-						},
+					// wcMsg := message.GroupRevoke{
+					// 	Revoke: revoke,
+					// 	CommonGroupMsg: message.CommonGroupMsg{
+					// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+					// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+					// 	},
+					// }
+					// wcMsgItem.MsgItem = wcMsg
+					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
 					}
-					wcMsgItem.MsgItem = wcMsg
 					wcMsgItem.EventType = message.PCRecvGroupRevokeMsgEvent
 				}
 			}

@@ -6,8 +6,8 @@ type Voice struct {
 	VoiceHex string `json:"voice_hex"`
 }
 
-// GroupVoice 语音消息
-type GroupVoice struct {
-	Voice
-	CommonGroupMsg
-}
+// // GroupVoice 语音消息
+// type GroupVoice struct {
+// 	Voice
+// 	CommonGroupMsg
+// }

@@ -13,7 +13,7 @@ type Revoke struct {
 }
 
 // GroupRevoke 群撤回消息
-type GroupRevoke struct {
-	Revoke
-	CommonGroupMsg
-}
+// type GroupRevoke struct {
+// 	Revoke
+// 	CommonGroupMsg
+// }

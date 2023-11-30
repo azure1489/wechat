@@ -6,7 +6,7 @@ type Text struct {
 }
 
 // 群文本消息
-type GroupText struct {
-	Text
-	CommonGroupMsg
-}
+// type GroupText struct {
+// 	Text
+// 	CommonGroupMsg
+// }
