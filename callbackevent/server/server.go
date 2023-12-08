@@ -349,6 +349,7 @@ func (srv *Server) handleRequest() error {
 			voice := message.Voice{
 				VoiceLen:  interfaceToString(msgItem["voice_len"]),
 				VoiceData: interfaceToString(msgItem["voice_data"]),
+				VoiceHex:  interfaceToString(msgItem["voice_hex"]),
 			}
 			wcMsgItem.MsgItem = voice
 
