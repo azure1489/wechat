@@ -45,7 +45,7 @@ type LoginManagerServiceImpl struct {
 
 func NewLoginManagerService(config *wechat.WechatConfig) LoginManagerService {
 
-	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.Secret, config.Timeout)
+	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &LoginManagerServiceImpl{
 		// config: config,

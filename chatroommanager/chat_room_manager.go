@@ -69,7 +69,7 @@ type ChatRoomManagerServiceImpl struct {
 
 func NewChatRoomManagerService(config *wechat.WechatConfig) ChatRoomManagerService {
 
-	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.Secret, config.Timeout)
+	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &ChatRoomManagerServiceImpl{
 		// config: config,

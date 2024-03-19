@@ -3,7 +3,6 @@ package wechat
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/azure1489/wechat/model"
 	"github.com/azure1489/wechat/util"
@@ -11,8 +10,7 @@ import (
 
 // TimelineGetFristPage 刷新并获取朋友圈第一页的内容，如果朋友圈有新动态则返回10条数据 https://www.showdoc.com.cn/WeChatProject/8929083282065703
 func (w *Wechat) TimelineGetFristPage() (*[]model.TimelineGetFristPageResultDataItem, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -37,8 +35,7 @@ func (w *Wechat) TimelineGetFristPage() (*[]model.TimelineGetFristPageResultData
 
 // TimelineGetNextPage 朋友圈获取下一页内容 https://www.showdoc.com.cn/WeChatProject/8929087905557074
 func (w *Wechat) TimelineGetNextPage(id string) (*[]model.TimelineGetFristPageResultDataItem, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -67,8 +64,7 @@ func (w *Wechat) TimelineGetNextPage(id string) (*[]model.TimelineGetFristPageRe
 
 // GetFriendTimeline 获取指定好友的首页朋友圈(返回最近10条记录) https://www.showdoc.com.cn/WeChatProject/9155297161590672
 func (w *Wechat) GetFriendTimeline(wxid string) (*[]model.GetFriendTimelineResultDataItem, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -93,8 +89,7 @@ func (w *Wechat) GetFriendTimeline(wxid string) (*[]model.GetFriendTimelineResul
 
 // SendTimeline 转发朋友圈 https://www.showdoc.com.cn/WeChatProject/9137221496703083
 func (w *Wechat) SendTimeline(sendPyqXml string) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return err
 	}
@@ -123,8 +118,7 @@ func (w *Wechat) SendTimeline(sendPyqXml string) error {
 
 // TimelineLike 朋友圈点赞 https://www.showdoc.com.cn/WeChatProject/8929089716176919
 func (w *Wechat) TimelineLike(id string) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return err
 	}
@@ -153,8 +147,7 @@ func (w *Wechat) TimelineLike(id string) error {
 
 // TimelineUndoLike 朋友圈取消点赞 https://www.showdoc.com.cn/WeChatProject/8929091706495732
 func (w *Wechat) TimelineUndoLike(id string) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return err
 	}
@@ -183,8 +176,7 @@ func (w *Wechat) TimelineUndoLike(id string) error {
 
 // TimelineComment 朋友圈发表评论内容 https://www.showdoc.com.cn/WeChatProject/8929091996936675
 func (w *Wechat) TimelineComment(id, msg string) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return err
 	}
@@ -214,8 +206,7 @@ func (w *Wechat) TimelineComment(id, msg string) error {
 
 // TimelineDeleteComment 删除朋友圈评论内容 https://www.showdoc.com.cn/WeChatProject/8929092413429617
 func (w *Wechat) TimelineDeleteComment(id, index string) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return err
 	}
@@ -245,8 +236,7 @@ func (w *Wechat) TimelineDeleteComment(id, index string) error {
 
 // SwitchTimelineComment 开关朋友圈评论功能 https://www.showdoc.com.cn/WeChatProject/9020961696935450
 func (w *Wechat) SwitchTimelineComment(option string) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return err
 	}
@@ -275,8 +265,7 @@ func (w *Wechat) SwitchTimelineComment(option string) error {
 
 // TimelineUploadPic 朋友圈上传图片 https://www.showdoc.com.cn/WeChatProject/9851577390989318
 func (w *Wechat) TimelineUploadPic(option string) (*model.TimelineUploadPicResult, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return nil, err
 	}

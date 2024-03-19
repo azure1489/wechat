@@ -8,19 +8,19 @@ import (
 
 // Wechat is a struct.
 type Wechat struct {
-	Ip     string
-	Port   string
-	Url    string
-	Secret string
+	Ip            string
+	Port          string
+	Url           string
+	PublicKeyPath string
 }
 
 // NewWechat is a function that returns a pointer to a Wechat struct.
-func NewWechat(ip, port, url, secret string) *Wechat {
+func NewWechat(ip, port, url, publicKeyPath string) *Wechat {
 	return &Wechat{
-		Url:    url,
-		Ip:     ip,
-		Port:   port,
-		Secret: secret,
+		Url:           url,
+		Ip:            ip,
+		Port:          port,
+		PublicKeyPath: publicKeyPath,
 	}
 }
 
@@ -32,21 +32,21 @@ func NewWechatEncryption(url string) *Wechat {
 }
 
 type WechatConfig struct {
-	Ip      string
-	Port    string
-	Url     string
-	Secret  string
-	Timeout time.Duration
+	Ip            string
+	Port          string
+	Url           string
+	PublicKeyPath string
+	Timeout       time.Duration
 }
 
 // NewWechat is a function that returns a pointer to a Wechat struct.
-func NewWechatConfig(ip, port, url, secret string, timeout time.Duration) *WechatConfig {
+func NewWechatConfig(ip, port, url, publicKeyPath string, timeout time.Duration) *WechatConfig {
 	return &WechatConfig{
-		Url:     url,
-		Ip:      ip,
-		Port:    port,
-		Secret:  secret,
-		Timeout: timeout,
+		Url:           url,
+		Ip:            ip,
+		Port:          port,
+		PublicKeyPath: publicKeyPath,
+		Timeout:       timeout,
 	}
 }
 
@@ -61,4 +61,3 @@ func NewWechatConfigEncryption(url string) *WechatConfig {
 func GetCallBackServer(body []byte) *server.Server {
 	return server.NewServer(body)
 }
-

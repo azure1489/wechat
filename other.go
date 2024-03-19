@@ -2,7 +2,6 @@ package wechat
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/azure1489/wechat/model"
 	"github.com/azure1489/wechat/util"
@@ -10,8 +9,7 @@ import (
 
 // GetFileCrc32 取文件crc32 https://www.showdoc.com.cn/WeChatProject/10393196987937526
 func (w *Wechat) GetFileCrc32(req model.GetFileCrc32Req) (string, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return "", err
 	}

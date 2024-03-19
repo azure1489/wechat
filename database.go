@@ -2,7 +2,6 @@ package wechat
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/azure1489/wechat/model"
 	"github.com/azure1489/wechat/util"
@@ -10,8 +9,7 @@ import (
 
 // GetDBPwd 查询微信本地数据库密钥 https://www.showdoc.com.cn/WeChatProject/8962025006749060
 func (w *Wechat) GetDBPwd() (*model.GetDBPwdResult, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +30,7 @@ func (w *Wechat) GetDBPwd() (*model.GetDBPwdResult, error) {
 
 // GetDBHandleAndPath 取数据库操作句柄和文件名 https://www.showdoc.com.cn/WeChatProject/8984969039725273
 func (w *Wechat) GetDBHandleAndPath() (*[]model.GetDBHandleAndPathResultDataItem, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -54,8 +51,7 @@ func (w *Wechat) GetDBHandleAndPath() (*[]model.GetDBHandleAndPathResultDataItem
 
 // QueryDB 取数据库操作句柄和文件名 https://www.showdoc.com.cn/WeChatProject/8986208243971483
 func (w *Wechat) QueryDB(dbname, sql string) (string, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return "", err
 	}
@@ -81,8 +77,7 @@ func (w *Wechat) QueryDB(dbname, sql string) (string, error) {
 
 // QueryDB 取数据库操作句柄和文件名 https://www.showdoc.com.cn/WeChatProject/9159818632076714
 func (w *Wechat) QueryDBAllTable(dbname, sql string) (string, error) {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return "", err
 	}

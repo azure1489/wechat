@@ -3,7 +3,6 @@ package wechat
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/azure1489/wechat/model"
 	"github.com/azure1489/wechat/util"
@@ -11,8 +10,7 @@ import (
 
 // OpenInlineBrowser 打开内置浏览器 https://www.showdoc.com.cn/WeChatProject/8968098266210910
 func (w *Wechat) OpenInlineBrowser(urlPath, toWxid string) error {
-	timeout := time.Second * 60
-	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.Secret, timeout)
+	client, err := util.NewClient(w.Ip, w.Port, w.Url, w.PublicKeyPath, 0)
 	if err != nil {
 		return err
 	}

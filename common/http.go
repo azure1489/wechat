@@ -9,17 +9,17 @@ import (
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/azure1489/wechat/util/httptools"
 )
 
 type HttpClientConfig struct {
-	Ip      string
-	Port    string
-	Url     string
-	Secret  string
-	Timeout time.Duration
+	Ip            string
+	Port          string
+	Url           string
+	PublicKeyPath string
+	Timeout       time.Duration
 }
-
-const appId = "uEVq0SDj34HwVltpNKzdgxmK"
 
 // http请求接口
 type HttpClientService interface {
@@ -32,7 +32,7 @@ type HttpClientService interface {
 
 	Reader(postBody interface{}) ([]byte, error)
 
-	GetMD5Encode(data string) string
+	// GetMD5Encode(data string) string
 }
 
 // http请求默认实现(json传参)
@@ -41,14 +41,14 @@ type HttpClientServiceImpl struct {
 	// client *http.Client
 }
 
-func NewHttpClientService(ip, port, url, secret string, timeout time.Duration) HttpClientService {
+func NewHttpClientService(ip, port, url, publicKeyPath string, timeout time.Duration) HttpClientService {
 
 	hc := &HttpClientConfig{
-		Url:     url,
-		Ip:      ip,
-		Port:    port,
-		Secret:  secret,
-		Timeout: timeout,
+		Url:           url,
+		Ip:            ip,
+		Port:          port,
+		PublicKeyPath: publicKeyPath,
+		Timeout:       timeout,
 	}
 
 	return &HttpClientServiceImpl{
@@ -83,97 +83,94 @@ func (c *HttpClientServiceImpl) GetMD5Encode(data string) string {
 
 func (w *HttpClientServiceImpl) DoGet(model string) ([]byte, error) {
 
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", w.config.Url, model), nil)
+	var proxyBody httptools.ProxyBody
+
+	var err error
+
+	proxyBody.Domain = "http://" + w.config.Ip + ":" + w.config.Port
+	proxyBody.UrlPath = model
+	proxyBody.Method = "GET"
+
+	sendRequestBody, err := httptools.GetSendRequestBody(proxyBody, w.config.PublicKeyPath)
 	if err != nil {
 		return nil, err
 	}
 
-	if w.config.Secret != "" {
-
-		jsonText := model
-
-		signText := appId + jsonText + w.config.Secret
-		//
-		signToLowerCase := w.GetMD5Encode(signText)
-
-		req.Header.Add("ip", w.config.Ip)
-		req.Header.Add("port", w.config.Port)
-		req.Header.Add("sign", signToLowerCase)
+	req, err := http.NewRequest(http.MethodPost, w.config.Url, bytes.NewBuffer(sendRequestBody))
+	if err != nil {
+		return nil, err
 	}
 
 	resp, err := (&http.Client{Timeout: w.config.Timeout}).Do(req)
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
 		return nil, fmt.Errorf("response status code=%d, body=%s", resp.StatusCode, string(body))
 	}
 
-	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println("body:", string(body))
 
 	return body, nil
 }
 
 func (w *HttpClientServiceImpl) DoPost(model string, postBody interface{}) ([]byte, error) {
 
-	var bodyReader io.Reader
-	var err error
-
-	jsonText := ""
+	bodyStr := ""
 
 	if postBody != nil {
 		bs, err := json.Marshal(&postBody)
 		if err != nil {
 			return nil, err
 		}
-		bodyReader = bytes.NewReader(bs)
-		jsonText = string(bs)
+		bodyStr = string(bs)
+		// jsonText = string(bs)
 	}
 
-	url := fmt.Sprintf("%s%s", w.config.Url, model)
-	fmt.Println("url:", url)
+	var proxyBody httptools.ProxyBody
 
-	req, err := http.NewRequest(http.MethodPost, url, bodyReader)
+	var err error
+
+	proxyBody.Domain = "http://" + w.config.Ip + ":" + w.config.Port
+	proxyBody.UrlPath = model
+	proxyBody.Body = bodyStr
+	proxyBody.Method = "POST"
+	proxyBody.Headers = map[string][]string{
+		"Content-Type": {"application/json"},
+		// "Authorization": {"Bearer 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"},
+	}
+
+	sendRequestBody, err := httptools.GetSendRequestBody(proxyBody, w.config.PublicKeyPath)
 	if err != nil {
 		return nil, err
 	}
 
-	if w.config.Secret != "" {
-
-		signText := appId + jsonText + w.config.Secret
-		signToLowerCase := w.GetMD5Encode(signText)
-
-		req.Header.Add("ip", w.config.Ip)
-		req.Header.Add("port", w.config.Port)
-		req.Header.Add("sign", signToLowerCase)
+	req, err := http.NewRequest(http.MethodPost, w.config.Url, bytes.NewBuffer(sendRequestBody))
+	if err != nil {
+		return nil, err
 	}
 
 	resp, err := (&http.Client{Timeout: w.config.Timeout}).Do(req)
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
 		return nil, fmt.Errorf("response status code=%d, body=%s", resp.StatusCode, string(body))
 	}
 
-	defer resp.Body.Close()
-
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println("body:", string(body))
 
 	return body, nil
 }

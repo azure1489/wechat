@@ -37,7 +37,7 @@ type FriendManagerServiceImpl struct {
 
 func NewFriendManagerService(config *wechat.WechatConfig) FriendManagerService {
 
-	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.Secret, config.Timeout)
+	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &FriendManagerServiceImpl{
 		// config: config,

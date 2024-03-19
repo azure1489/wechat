@@ -10,11 +10,11 @@ import (
 
 func TestAddNewFriend(t *testing.T) {
 	config := wechat.WechatConfig{
-		Ip:      "172.16.153.169",
-		Port:    "30001",
-		Url:     "https://api.aworld.net.cn/wx",
-		Secret:  "81fb6a51e232411c09575bb96bf71675980da0ac",
-		Timeout: time.Second * 60,
+		Ip:            "172.16.153.169",
+		Port:          "30001",
+		Url:           "https://api.aworld.net.cn/wx",
+		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
+		Timeout:       time.Second * 60,
 	}
 
 	service := friendmanager.NewFriendManagerService(&config)
