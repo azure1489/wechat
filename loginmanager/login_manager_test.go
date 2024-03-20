@@ -11,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	// "github.com/Han-Ya-Jun/qrcode2console"
 	"github.com/azure1489/wechat"
 	"github.com/azure1489/wechat/loginmanager"
 )
@@ -21,7 +20,7 @@ func TestIsLoginStatus(t *testing.T) {
 	config := wechat.WechatConfig{
 		Ip:            "127.0.0.1",
 		Port:          "30001",
-		Url:           "https://proxy.aworld.ltd:9088/proxy",
+		Url:           "https://wx.aworld.ltd/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
@@ -38,9 +37,9 @@ func TestIsLoginStatus(t *testing.T) {
 // TestGetWeChatProcessNumber 测试获取微信进程总数
 func TestGetWeChatProcessNumber(t *testing.T) {
 	config := wechat.WechatConfig{
-		Ip:            "172.16.153.221",
+		Ip:            "127.0.0.1",
 		Port:          "29998",
-		Url:           "https://api.aworld.net.cn/wx",
+		Url:           "https://wx.aworld.ltd/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
