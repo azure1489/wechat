@@ -260,6 +260,7 @@ func (srv *Server) handleRequest() error {
 			if msgContent == "PC发app/文件消息成功" {
 				continue
 			}
+
 			var appMsgXml message.AppMsgXml
 			// 字符串转换为xml
 			err = xml.Unmarshal([]byte(msgContent), &appMsgXml)
@@ -307,7 +308,7 @@ func (srv *Server) handleRequest() error {
 					ObjectNonceId: channelsMsgXml.AppMsg.FinderFeed.ObjectNonceId,
 				}
 
-				wcMsgItem.EventType = message.PCRecvGroupQuoteMsgEvent
+				wcMsgItem.EventType = message.PCRecvChannelsMsgEvent
 				wcMsgItem.MsgItem = channelsMsg
 			}
 		case message.MsgTypeGif: // "msgtype":"47",

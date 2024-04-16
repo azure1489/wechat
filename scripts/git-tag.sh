@@ -2,7 +2,7 @@
 
 #GIT_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
 
-tagV=v1.3.1
+tagV=v1.3.2
 
 echo "------------$tagV------------------------------"
 
