@@ -12,3 +12,8 @@ type ProxyReq struct {
 	EncryptedAESKey string `json:"encryptedAESKey"`
 	EncryptedData   string `json:"encryptedData"`
 }
+
+type StartAppReq struct {
+	AppPath string   `json:"appPath"`
+	Args    []string `json:"args"`
+}

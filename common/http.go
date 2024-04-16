@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
 
@@ -90,6 +91,8 @@ func (w *HttpClientServiceImpl) DoGet(model string) ([]byte, error) {
 	proxyBody.Domain = "http://" + w.config.Ip + ":" + w.config.Port
 	proxyBody.UrlPath = model
 	proxyBody.Method = "GET"
+
+	log.Println("Domain:" + proxyBody.Domain)
 
 	sendRequestBody, err := httptools.GetSendRequestBody(proxyBody, w.config.PublicKeyPath)
 	if err != nil {

@@ -49,6 +49,29 @@ import "encoding/xml"
 type AppMsgXml struct {
 	XMLName xml.Name `xml:"msg"`
 	AppMsg  struct {
+		// Title     string `xml:"title"`
+		Type string `xml:"type"`
+		// AppAttach struct {
+		// 	CdnThumbAesKey string `xml:"cdnthumbaeskey"`
+		// 	AesKey         string `xml:"aeskey"`
+		// } `xml:"appattach"`
+		// ReferMsg struct {
+		// 	Type        string `xml:"type"`
+		// 	Svrid       string `xml:"svrid"`
+		// 	Fromusr     string `xml:"fromusr"`
+		// 	Chatusr     string `xml:"chatusr"`
+		// 	DisplayName string `xml:"displayname"`
+		// 	Content     string `xml:"content"`
+		// 	MsgSource   string `xml:"msgsource"`
+		// 	CreateTime  string `xml:"createtime"`
+		// } `xml:"refermsg"`
+		// FromUserName string `xml:"fromusername"`
+	} `xml:"appmsg"`
+}
+
+type QuoteMsgXml struct {
+	XMLName xml.Name `xml:"msg"`
+	AppMsg  struct {
 		Title     string `xml:"title"`
 		Type      string `xml:"type"`
 		AppAttach struct {
@@ -90,3 +113,53 @@ type AppMsgXml struct {
 // 	Msgsource   string `xml:"msgsource"`
 // 	Createtime  string `xml:"createtime"`
 // }
+
+type ChannelsMsgXml struct {
+	XMLName xml.Name `xml:"msg"`
+	AppMsg  struct {
+		AppID     string `xml:"appid,attr"`
+		SdkVer    string `xml:"sdkver,attr"`
+		Title     string `xml:"title"`
+		Type      string `xml:"type"`
+		URL       string `xml:"url"`
+		AppAttach struct {
+			CdnThumbAesKey string `xml:"cdnthumbaeskey"`
+			AesKey         string `xml:"aeskey"`
+		} `xml:"appattach"`
+		FinderFeed struct {
+			ObjectId            string `xml:"objectId"`
+			FeedType            string `xml:"feedType"`
+			Nickname            string `xml:"nickname"`
+			Avatar              string `xml:"avatar"`
+			Desc                string `xml:"desc"`
+			MediaCount          string `xml:"mediaCount"`
+			ObjectNonceId       string `xml:"objectNonceId"`
+			LiveId              string `xml:"liveId"`
+			Username            string `xml:"username"`
+			AuthIconUrl         string `xml:"authIconUrl"`
+			AuthIconType        string `xml:"authIconType"`
+			ContactJumpInfoStr  string `xml:"contactJumpInfoStr"`
+			MediaList           string `xml:"mediaList"`
+			MegaVideo           string `xml:"megaVideo"`
+			BizUsername         string `xml:"bizUsername"`
+			BizNickname         string `xml:"bizNickname"`
+			BizAvatar           string `xml:"bizAvatar"`
+			BizUsernameV2       string `xml:"bizUsernameV2"`
+			BizAuthIconUrl      string `xml:"bizAuthIconUrl"`
+			BizAuthIconType     string `xml:"bizAuthIconType"`
+			EcSource            string `xml:"ecSource"`
+			LastGMsgID          string `xml:"lastGMsgID"`
+			ShareBypData        string `xml:"shareBypData"`
+			IsDebug             string `xml:"isDebug"`
+			ContentType         string `xml:"content_type"`
+			FinderForwardSource string `xml:"finderForwardSource"`
+		} `xml:"finderFeed"`
+	} `xml:"appmsg"`
+	FromUserName string `xml:"fromusername"`
+	Scene        string `xml:"scene"`
+	AppInfo      struct {
+		Version string `xml:"version"`
+		AppName string `xml:"appname"`
+	} `xml:"appinfo"`
+	CommentURL string `xml:"commenturl"`
+}

@@ -7,9 +7,9 @@ import (
 	"github.com/azure1489/wechat/util/encryptedtools"
 )
 
-func GetSendRequestBody(proxyBody ProxyBody, publicKeyPath string) ([]byte, error) {
+func GetSendRequestBody(req interface{}, publicKeyPath string) ([]byte, error) {
 
-	original, err := json.Marshal(proxyBody)
+	original, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
 	}

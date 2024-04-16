@@ -267,25 +267,25 @@ func (srv *Server) handleRequest() error {
 				return err
 			}
 			if appMsgXml.AppMsg.Type == "57" { // 引用消息
+
+				var quoteMsgXml message.QuoteMsgXml
+				// 字符串转换为xml
+				err = xml.Unmarshal([]byte(msgContent), &appMsgXml)
+				if err != nil {
+					return err
+				}
 				quote := message.Quote{
-					MsgSource:    appMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
-					QuoteMsg:     appMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
-					QuoteMsgType: appMsgXml.AppMsg.ReferMsg.Type,      // 引用的消息类型
-					QuoteMsgId:   appMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
-					ReplyMsg:     appMsgXml.AppMsg.Title,              // 回复的消息内容
+					MsgSource:    quoteMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
+					QuoteMsg:     quoteMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
+					QuoteMsgType: quoteMsgXml.AppMsg.ReferMsg.Type,      // 引用的消息类型
+					QuoteMsgId:   quoteMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
+					ReplyMsg:     quoteMsgXml.AppMsg.Title,              // 回复的消息内容
 				}
 				wcMsgItem.MsgItem = quote
 
 				if fromtype == "1" {
 					wcMsgItem.EventType = message.PCRecvQuoteMsgEvent
 				} else if fromtype == "2" {
-					// wcMsg := message.GroupQuote{ // 回复的消息内容
-					// 	Quote: quote, // 引用的消息内容
-					// 	CommonGroupMsg: message.CommonGroupMsg{
-					// 		FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
-					// 		FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
-					// 	},
-					// }
 					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
 						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
 						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
@@ -293,6 +293,22 @@ func (srv *Server) handleRequest() error {
 					// wcMsgItem.MsgItem = wcMsg
 					wcMsgItem.EventType = message.PCRecvGroupQuoteMsgEvent
 				}
+			} else if appMsgXml.AppMsg.Type == "51" { // 视频号消息
+
+				var channelsMsgXml message.ChannelsMsgXml
+				// 字符串转换为xml
+				err = xml.Unmarshal([]byte(msgContent), &channelsMsgXml)
+				if err != nil {
+					return err
+				}
+
+				channelsMsg := message.ChannelsMsg{
+					ObjectId:      channelsMsgXml.AppMsg.FinderFeed.ObjectId,
+					ObjectNonceId: channelsMsgXml.AppMsg.FinderFeed.ObjectNonceId,
+				}
+
+				wcMsgItem.EventType = message.PCRecvGroupQuoteMsgEvent
+				wcMsgItem.MsgItem = channelsMsg
 			}
 		case message.MsgTypeGif: // "msgtype":"47",
 			if msgContent == "PC发动态图片消息成功" {

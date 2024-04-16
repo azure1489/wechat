@@ -22,12 +22,12 @@ import "encoding/json"
 type GetWeChatProcessNumberResult struct {
 	TotalNum string `json:"total_num"`
 	List     []struct {
-		Index        int    `json:"Index"`
-		ProcessName  string `json:"ProcessName"`
-		PID          int    `json:"PID"`
-		Par          string `json:"Par"`
-		IsLogin      string `json:"IsLogin"`
-		IsWeChatLive string `json:"IsWeChatLive"`
+		Index       int    `json:"Index"`
+		ProcessName string `json:"ProcessName"`
+		PID         int    `json:"PID"`
+		Par         string `json:"Par"`
+		// IsLogin      string `json:"IsLogin"`
+		// IsWeChatLive string `json:"IsWeChatLive"`
 	} `json:"List"`
 }
 

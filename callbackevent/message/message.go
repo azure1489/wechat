@@ -45,6 +45,8 @@ const (
 	PCRecvVideoMsgEvent EventType = "PCRecvVideoMsgEvent"
 	// PC发收到引用消息成功事件
 	PCRecvQuoteMsgEvent EventType = "PCRecvQuoteMsgEvent"
+	// PC发收到视频号消息成功事件
+	PCRecvChannelsMsgEvent EventType = "PCRecvChannelsMsgEvent"
 	// PC端收到撤回消息事件
 	PCRecvRevokeMsgEvent EventType = "PCRecvRevokeMsgEvent"
 	// PC端接收文本消息事件

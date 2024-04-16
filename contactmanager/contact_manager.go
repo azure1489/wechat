@@ -10,7 +10,7 @@ type ContactManagerService interface {
 	// 初始化通讯录
 	InitContact() (*InitContactResult, error)
 
-	// 获取好友和群清单
+	// 获取好友和群清单 0=返回所有 1=返回好友 2=返回群 3=返回公众号 4=企业微信联系人 https://www.showdoc.com.cn/WeChatProject/8995071288617868
 	GetFriendAndChatRoomList(string) (*GetFriendAndChatRoomListResult, error)
 
 	// 批量获取联系人简明信息
