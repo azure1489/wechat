@@ -1,6 +1,8 @@
 package loginmanager
 
 import (
+	"time"
+
 	"github.com/azure1489/wechat"
 	"github.com/azure1489/wechat/common"
 )
@@ -36,11 +38,17 @@ type LoginManagerService interface {
 
 	// TerminateThisWeChat 结束微信 https://www.showdoc.com.cn/WeChatProject/9214210657048561
 	TerminateThisWeChat() error
+
+	// GetProcessPorts 获取进程端口
+	GetProcessPorts(url string, timeout time.Duration, process []string, publicKeyPath string) ([]string, error)
+
+	// GetWeChatPort 获取微信端口号
+	GetWeChatPort() ([]string, error)
 }
 
 type LoginManagerServiceImpl struct {
-	// config *wechat.WechatConfig
-	http common.HttpClientService
+	config *wechat.WechatConfig
+	http   common.HttpClientService
 }
 
 func NewLoginManagerService(config *wechat.WechatConfig) LoginManagerService {
@@ -48,7 +56,7 @@ func NewLoginManagerService(config *wechat.WechatConfig) LoginManagerService {
 	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &LoginManagerServiceImpl{
-		// config: config,
-		http: httpClientService,
+		config: config,
+		http:   httpClientService,
 	}
 }

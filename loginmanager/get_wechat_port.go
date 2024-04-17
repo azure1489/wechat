@@ -22,22 +22,9 @@ import (
 //	            "Par": "StartPort=30002"
 //	        }
 //	    ]
-//	}
-type GetWeChatProcessNumberResult struct {
-	TotalNum string `json:"total_num"`
-	List     []struct {
-		Index       int    `json:"Index"`
-		ProcessName string `json:"ProcessName"`
-		PID         int    `json:"PID"`
-		Par         string `json:"Par"`
-		Port        string `json:"Port"`
-		// IsLogin      string `json:"IsLogin"`
-		// IsWeChatLive string `json:"IsWeChatLive"`
-	} `json:"List"`
-}
 
-// GetWeChatProcessNumber 获取微信进程总数 https://www.showdoc.com.cn/WeChatProject/9794632555004152
-func (l *LoginManagerServiceImpl) GetWeChatProcessNumber() (*GetWeChatProcessNumberResult, error) {
+// GetWeChatPort 获取微信端口号
+func (l *LoginManagerServiceImpl) GetWeChatPort() ([]string, error) {
 
 	resultBody, err := l.http.DoPost("/Get_WeChatProcessNumber", nil)
 	if err != nil {
@@ -53,7 +40,7 @@ func (l *LoginManagerServiceImpl) GetWeChatProcessNumber() (*GetWeChatProcessNum
 	}
 
 	if commonResult.TotalNum == "0" || len(commonResult.List) == 0 {
-		return nil, nil
+		return []string{}, nil
 	}
 
 	urlStr := l.config.Url
@@ -66,15 +53,15 @@ func (l *LoginManagerServiceImpl) GetWeChatProcessNumber() (*GetWeChatProcessNum
 	newUrl := u.Scheme + "://" + u.Hostname() + ":" + u.Port() + "/process-ports"
 	// log.Println("newUrl:", newUrl)
 
+	pids := make([]string, 0)
 	for i := range commonResult.List {
-		ports, err := l.GetProcessPorts(newUrl, l.config.Timeout, []string{strconv.Itoa(commonResult.List[i].PID)}, l.config.PublicKeyPath)
-		if err != nil {
-			return nil, err
-		}
-		if len(ports) > 0 {
-			commonResult.List[i].Port = ports[0]
-		}
+		pids = append(pids, strconv.Itoa(commonResult.List[i].PID))
 	}
 
-	return &commonResult, nil
+	ports, err := l.GetProcessPorts(newUrl, l.config.Timeout, pids, l.config.PublicKeyPath)
+	if err != nil {
+		return nil, err
+	}
+
+	return ports, nil
 }

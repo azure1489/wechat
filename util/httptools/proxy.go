@@ -13,7 +13,10 @@ type ProxyReq struct {
 	EncryptedData   string `json:"encryptedData"`
 }
 
-type StartAppReq struct {
-	AppPath string   `json:"appPath"`
-	Args    []string `json:"args"`
+type ProcessPortsReq struct {
+	Process []string `json:"process"`
+}
+
+type ProcessPortsRes struct {
+	Ports []string `json:"ports"`
 }

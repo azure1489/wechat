@@ -18,21 +18,41 @@ import (
 
 // TestIsLoginStatus 测试获取微信登陆状态
 func TestIsLoginStatus(t *testing.T) {
-	config := wechat.WechatConfig{
-		Ip:            "127.0.0.1",
-		Port:          "30003",
-		Url:           "https://proxy.aworld.ltd:9088/proxy",
+
+	config2 := wechat.WechatConfig{
+		Ip:   "127.0.0.1",
+		Port: "29998",
+		// Url:  "https://proxy.aworld.ltd:9088/proxy",
+		Url:           "https://wx.aworld.ltd/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
 
-	service := loginmanager.NewLoginManagerService(&config)
-	result, err := service.IsLoginStatus()
+	service2 := loginmanager.NewLoginManagerService(&config2)
+	result2, err := service2.GetWeChatPort()
 	if err != nil {
 		t.Error(err)
 	}
-	// 当前微信在线状态 OnlineStatus: 0=请扫码登陆 1=请在手机上完成登录 2=正在登陆中 3=完登陆完成 4=正在退出微信 5=点击进入微信
-	t.Log("OnlineStatus:", result.OnlineStatus, ", LoginLoading:", result.LoginLoading, ", SelfWxid:", result.SelfWxid, ", NickName:", result.NickName)
+
+	for _, port := range result2 {
+		t.Log("port:", port)
+		config := wechat.WechatConfig{
+			Ip:   "127.0.0.1",
+			Port: port,
+			// Url:           "https://proxy.aworld.ltd:9088/proxy",
+			Url:           "https://wx.aworld.ltd/proxy",
+			PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
+			Timeout:       time.Second * 60,
+		}
+
+		service := loginmanager.NewLoginManagerService(&config)
+		result, err := service.IsLoginStatus()
+		if err != nil {
+			t.Error(err)
+		}
+		// 当前微信在线状态 OnlineStatus: 0=请扫码登陆 1=请在手机上完成登录 2=正在登陆中 3=完登陆完成 4=正在退出微信 5=点击进入微信
+		t.Log("OnlineStatus:", result.OnlineStatus, ", LoginLoading:", result.LoginLoading, ", SelfWxid:", result.SelfWxid, ", NickName:", result.NickName)
+	}
 
 }
 
@@ -40,9 +60,10 @@ func TestIsLoginStatus(t *testing.T) {
 func TestGetWeChatProcessNumber(t *testing.T) {
 
 	config := wechat.WechatConfig{
-		Ip:            "127.0.0.1",
-		Port:          "29998",
-		Url:           "https://proxy.aworld.ltd:9088/proxy",
+		Ip:   "127.0.0.1",
+		Port: "29998",
+		// Url:  "https://proxy.aworld.ltd:9088/proxy",
+		Url:           "https://wx.aworld.ltd/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
@@ -55,23 +76,45 @@ func TestGetWeChatProcessNumber(t *testing.T) {
 
 	log.Println("1总进程数：", result.TotalNum)
 
+	// pids := make([]string, 0)
 	for _, item := range result.List {
 		t.Log("Par:", item.Par)
 		t.Log("PID:", item.PID)
 		t.Log("ProcessName:", item.ProcessName)
-
+		t.Log("Port:", item.Port)
+		// pids = append(pids, strconv.Itoa(item.PID))
 	}
 
-	t.Log(result)
+	// urlStr := "https://proxy.aworld.ltd:9088/process-ports"
+
+	// u, err := url.Parse(urlStr)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// t.Log("hostname:" + u.Hostname())
+	// // url := "https://wx.aworld.ltd/process-ports"
+	// publicKeyPath := "/Users/azure/git/go-project/test-project/proxy-public.pem"
+
+	// ports, err := service.GetProcessPorts(urlStr, time.Second*60, pids, publicKeyPath)
+	// if err != nil {
+	// 	t.Error(err)
+	// }
+
+	// for _, port := range ports {
+	// 	t.Log("port:", port)
+	// }
+
+	// t.Log(result)
 
 }
 
 // GetPortOccupiedInfo 测试获取进程端口占用信息
 func TestGetPortOccupiedInfo(t *testing.T) {
 	config := wechat.WechatConfig{
-		Ip:            "127.0.0.1",
-		Port:          "29998",
-		Url:           "https://proxy.aworld.ltd:9088/proxy",
+		Ip:   "127.0.0.1",
+		Port: "29998",
+		// Url:           "https://proxy.aworld.ltd:9088/proxy",
+		Url:           "https://wx.aworld.ltd/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
@@ -84,7 +127,7 @@ func TestGetPortOccupiedInfo(t *testing.T) {
 		t.Error(err)
 	}
 
-	t.Log(result)
+	t.Log("result:" + result)
 }
 
 // TestStartWechat 测试启动更多微信
