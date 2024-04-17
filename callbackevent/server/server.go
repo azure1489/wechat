@@ -307,9 +307,19 @@ func (srv *Server) handleRequest() error {
 					ObjectId:      channelsMsgXml.AppMsg.FinderFeed.ObjectId,
 					ObjectNonceId: channelsMsgXml.AppMsg.FinderFeed.ObjectNonceId,
 				}
-
-				wcMsgItem.EventType = message.PCRecvChannelsMsgEvent
 				wcMsgItem.MsgItem = channelsMsg
+
+				if fromtype == "1" {
+					wcMsgItem.EventType = message.PCRecvChannelsMsgEvent
+				} else if fromtype == "2" {
+					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
+						FromGname: interfaceToString(msgItem["fromgname"]), // 群名称
+						FromGid:   interfaceToString(msgItem["fromgid"]),   // 群ID
+					}
+					// wcMsgItem.MsgItem = wcMsg
+					wcMsgItem.EventType = message.PCRecvGroupChannelsMsgEvent
+				}
+
 			}
 		case message.MsgTypeGif: // "msgtype":"47",
 			if msgContent == "PC发动态图片消息成功" {

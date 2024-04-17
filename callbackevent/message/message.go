@@ -65,6 +65,8 @@ const (
 	PCRecvGroupQuoteMsgEvent EventType = "PCRecvGroupQuoteMsgEvent"
 	// PC端收到撤回消息事件
 	PCRecvGroupRevokeMsgEvent EventType = "PCRecvGroupRevokeMsgEvent"
+	// PC发收到群视频号消息成功事件
+	PCRecvGroupChannelsMsgEvent EventType = "PCRecvGroupChannelsMsgEvent"
 
 	// PC发app/文件消息成功事件
 	PCRecvFileOrAppMsgEvent EventType = "PCRecvFileOrAppMsgEvent"
