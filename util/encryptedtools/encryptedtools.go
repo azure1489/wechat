@@ -2,7 +2,6 @@ package encryptedtools
 
 import (
 	"crypto/rand"
-	"log"
 	"os"
 
 	"github.com/azure1489/wechat/util/cryptotools"
@@ -26,8 +25,8 @@ func EncryptedData(original []byte, publicKeyPath string) ([]byte, []byte, error
 		return nil, nil, err
 	}
 
-	log.Printf("原始数据大小: %d bytes", len(original))
-	log.Printf("压缩后数据大小: %d bytes", len(compressedData))
+	// log.Printf("原始数据大小: %d bytes", len(original))
+	// log.Printf("压缩后数据大小: %d bytes", len(compressedData))
 
 	// 生成AES密钥
 	aesKey := make([]byte, 32) // 使用256位密钥
