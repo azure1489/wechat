@@ -19,8 +19,11 @@ import "encoding/xml"
 //
 //	"revoke_msg":"?",
 type SysMsgXml struct {
-	XMLName   xml.Name `xml:"sysmsg"`
-	Type      string   `xml:"type,attr"`
+	XMLName xml.Name `xml:"sysmsg"`
+	Type    string   `xml:"type,attr"`
+}
+
+type RevokeMsgXml struct {
 	RevokeMsg struct {
 		Session    string `xml:"session"`
 		MsgId      string `xml:"msgid"`

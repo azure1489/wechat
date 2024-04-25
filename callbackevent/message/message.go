@@ -63,10 +63,14 @@ const (
 	PCRecvGroupVideoMsgEvent EventType = "PCRecvGroupVideoMsgEvent"
 	// PC发收到引用消息成功事件
 	PCRecvGroupQuoteMsgEvent EventType = "PCRecvGroupQuoteMsgEvent"
-	// PC端收到撤回消息事件
+	// PC端收到群撤回消息事件
 	PCRecvGroupRevokeMsgEvent EventType = "PCRecvGroupRevokeMsgEvent"
 	// PC发收到群视频号消息成功事件
 	PCRecvGroupChannelsMsgEvent EventType = "PCRecvGroupChannelsMsgEvent"
+	// PC端收到付款消息事件
+	PCRecvPayMsgEvent EventType = "PCRecvPayMsgEvent"
+	// PC端收到群付款消息事件
+	PCRecvGroupPayMsgEvent EventType = "PCRecvGroupPayMsgEvent"
 
 	// PC发app/文件消息成功事件
 	PCRecvFileOrAppMsgEvent EventType = "PCRecvFileOrAppMsgEvent"
@@ -167,10 +171,10 @@ const (
 	MsgTypeSmallVideo MsgType = "62"
 	// MsgTypeSYSNOTICE 表示SYSNOTICE
 	MsgTypeSYSNOTICE MsgType = "9999"
-	// MsgTypeSystem 表示系统消息
-	MsgTypeSystem MsgType = "10000"
-	// MsgTypeRecall 表示撤回消息
-	MsgTypeRecall MsgType = "10002"
+	// MsgTypeSystem 表示系统消息0
+	MsgTypeSystem0 MsgType = "10000"
+	// MsgTypeRecall 表示系统消息2
+	MsgTypeSystem2 MsgType = "10002"
 	// MsgTypeLoginQRCodeRefreshEvent 表示登陆二维码刷新事件
 	MsgTypeLoginQRCodeRefreshEvent MsgType = "9995"
 	// MsgTypeLoginWeChatEvent 表示登陆微信事件
