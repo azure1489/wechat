@@ -4,6 +4,7 @@ package message
 type Gif struct {
 	GifPath string `json:"gif_path"`
 	Desc    string `json:"desc"`
+	CdnURL  string `json:"cdn_url"`
 }
 
 // GroupGif gif消息
