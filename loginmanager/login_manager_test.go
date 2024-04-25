@@ -157,9 +157,9 @@ func TestStartWechat(t *testing.T) {
 func TestRefreshLoginQRCode(t *testing.T) {
 	config := wechat.WechatConfig{
 		Ip:   "127.0.0.1",
-		Port: "30003",
-		// Url:           "https://wx.aworld.ltd/proxy",
-		Url:           "https://proxy.aworld.ltd:9088/proxy",
+		Port: "30002",
+		Url:  "https://wx.aworld.ltd/proxy",
+		// Url:           "https://proxy.aworld.ltd:9088/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
@@ -172,14 +172,6 @@ func TestRefreshLoginQRCode(t *testing.T) {
 
 	// 创建一个新的缓冲区，并将字节切片写入缓冲区
 	buf := bytes.NewBuffer(imgBytes)
-	// 转成png图片
-	// 1. 将字节缓冲区转换为图像
-	// 创建一个新的文件
-	// imgFile, err := os.Create("/Users/azure/Downloads/output.png")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer imgFile.Close()
 
 	// 从缓冲区解码PNG图像
 	img, err := png.Decode(buf)
@@ -212,67 +204,6 @@ func TestRefreshLoginQRCode(t *testing.T) {
 		panic(err)
 	}
 
-	// // 将图像编码为PNG并写入文件
-	// png.Encode(imgFile, img)
-
-	// // 创建JPG文件
-	// jpgFile, err := os.Create("/Users/azure/Downloads/output.jpg")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer jpgFile.Close()
-
-	// // 创建JPG编码选项，设置质量
-	// var opts jpeg.Options
-	// opts.Quality = 80
-
-	// // 将图像编码为JPG并写入文件
-	// err = jpeg.Encode(jpgFile, img, &opts)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// reader := bytes.NewReader(imgBytes)
-
-	// // 将字节数组转为图片
-	// img, _, err := image.Decode(reader)
-	// if err != nil {
-	// 	t.Fatal(err)
-	// }
-
-	// // 获取图片边界
-	// bounds := img.Bounds()
-
-	// // 创建一个带有白底的新图像
-	// whiteImage := image.NewRGBA(bounds)
-	// white := color.RGBA{255, 255, 255, 255}
-	// draw.Draw(whiteImage, whiteImage.Bounds(), &image.Uniform{white}, image.Point{}, draw.Src)
-
-	// // 将PNG图片绘制到白底图像上
-	// draw.Draw(whiteImage, bounds, img, bounds.Min, draw.Over)
-
-	// // 字节转成图片，显示二维码图片
-	// // 2. 将字节缓冲区写入临时文件（因为GTK需要从文件中读取）
-	// outFile, err := os.CreateTemp("", "example.*.jpg")
-	// if err != nil {
-	// 	println("Could not create temp file:", err)
-	// 	return
-	// }
-	// defer outFile.Close()
-
-	// // 将图像编码为JPG格式
-	// var opts jpeg.Options
-	// opts.Quality = 80
-	// err = jpeg.Encode(outFile, whiteImage, &opts)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// fmt.Println(outFile.Name())
-
-	// qr := qrcode2console.NewQRCode2ConsoleWithPath(outFile.Name())
-
-	// qr.Output()
 }
 
 // TestGetSelfLoginInfo 测试获取个人详细信息

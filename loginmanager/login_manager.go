@@ -24,6 +24,9 @@ type LoginManagerService interface {
 	// RefreshLoginQRCode 刷新登录二维码 https://www.showdoc.com.cn/WeChatProject/8966162223712985
 	RefreshLoginQRCode() ([]byte, error)
 
+	// CreateRefreshLoginQRCode 创建登录二维码
+	CreateRefreshLoginQRCode(jpegPath string) error
+
 	// GetLoginQRCode 获取登录二维码图片 https://www.showdoc.com.cn/WeChatProject/9026367939952187
 	GetLoginQRCode() (string, error)
 
