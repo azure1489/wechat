@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/azure1489/wechat/callbackevent/message"
@@ -70,11 +71,13 @@ func (srv *Server) SetMessageHandler(handler func([]message.WcMsgItem) error) {
 // }
 
 // interface{} 转 sring
-func interfaceToFloat64(i interface{}) float64 {
-	if i == nil {
+func stringToFloat64(str string) float64 {
+	f, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		fmt.Println(err)
 		return 0
 	}
-	return i.(float64)
+	return f
 }
 
 // func (srv *Server) getFromType(result gjson.Result) string {
@@ -199,10 +202,10 @@ func (srv *Server) handleRequest() error {
 		case message.MsgTypeImage:
 			// PC收到图片消息
 			image := message.Image{
-				Info:      msgInfo.Get("info").String(),                        // 消息源内容
-				ImgLen:    interfaceToFloat64(msgInfo.Get("img_len").String()), // 消息源内容
-				ImgPath:   msgInfo.Get("img_path").String(),                    // 消息源内容
-				ImgBase64: msgInfo.Get("img_base64").String(),                  // 消息源内容
+				Info:      msgInfo.Get("info").String(),                     // 消息源内容
+				ImgLen:    stringToFloat64(msgInfo.Get("img_len").String()), // 消息源内容
+				ImgPath:   msgInfo.Get("img_path").String(),                 // 消息源内容
+				ImgBase64: msgInfo.Get("img_base64").String(),               // 消息源内容
 			}
 
 			wcMsgItem.MsgItem = image
