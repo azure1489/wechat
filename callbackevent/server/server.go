@@ -299,15 +299,16 @@ func (srv *Server) handleRequest() error {
 				gifMsg.CdnURL = emojiMsg.Emoji.CdnURL
 				base64Desc := emojiMsg.Emoji.Desc
 				if base64Desc != "" {
-					fmt.Println("base64Desc:", base64Desc)
+					// fmt.Println("base64Desc:", base64Desc)
 					if desc, err := decodeString(base64Desc); err == nil {
-						fmt.Println("decodeString()  desc:", desc)
+						// fmt.Println("decodeString()  desc:", desc)
 						desc = strings.TrimSpace(desc)
 						desc = strings.ReplaceAll(desc, "\n", "")
-						fmt.Println("decodeString() - TrimSpace  ReplaceAll desc:", desc)
+						// fmt.Println("decodeString() - TrimSpace  ReplaceAll desc:", desc)
 						if desc2, err := getDesc(desc); err == nil {
+							desc2 = strings.Replace(desc2, "default", "", 1)
 							gifMsg.Desc = desc2
-							fmt.Println("getDesc() desc2:", desc)
+							// fmt.Println("getDesc() desc2:", desc)
 						}
 
 					}
@@ -493,9 +494,9 @@ func getDesc(desc string) (string, error) {
 		return cleanedText, nil
 
 	} else {
-		fmt.Println("No match found")
+		// fmt.Println("No match found")
 
-		return "", nil
+		return desc, nil
 	}
 }
 
