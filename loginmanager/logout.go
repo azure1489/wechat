@@ -28,7 +28,7 @@ func (l *LoginManagerServiceImpl) Logout() error {
 		return err
 	}
 
-	if commonResult.Code != "0" {
+	if commonResult.Code != "1" {
 		return fmt.Errorf(commonResult.Msg+", body=%s", string(resultBody))
 	}
 

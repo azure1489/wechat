@@ -158,7 +158,6 @@ func TestRefreshLoginQRCode(t *testing.T) {
 	config := wechat.WechatConfig{
 		Ip:   "127.0.0.1",
 		Port: "30001",
-
 		// Url:  "https://wx.aworld.ltd/proxy",
 		Url:           "https://proxy.aworld.ltd:9088/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
@@ -179,7 +178,6 @@ func TestRefreshLoginQRCode(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-
 	// 创建一个新的图像，大小和原始图像一样，背景色为白色
 	bounds := img.Bounds()
 	newImg := image.NewRGBA(bounds)
@@ -189,7 +187,7 @@ func TestRefreshLoginQRCode(t *testing.T) {
 	draw.Draw(newImg, bounds, img, image.Point{}, draw.Over)
 
 	// 创建JPG文件
-	jpgFile, err := os.Create("/Users/azure/Downloads/output6.jpg")
+	jpgFile, err := os.Create("/Users/azure/Downloads/output10.jpg")
 	if err != nil {
 		panic(err)
 	}
@@ -204,7 +202,6 @@ func TestRefreshLoginQRCode(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-
 }
 
 // TestGetSelfLoginInfo 测试获取个人详细信息
