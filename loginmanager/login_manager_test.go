@@ -157,9 +157,10 @@ func TestStartWechat(t *testing.T) {
 func TestRefreshLoginQRCode(t *testing.T) {
 	config := wechat.WechatConfig{
 		Ip:   "127.0.0.1",
-		Port: "30002",
-		Url:  "https://wx.aworld.ltd/proxy",
-		// Url:           "https://proxy.aworld.ltd:9088/proxy",
+		Port: "30001",
+
+		// Url:  "https://wx.aworld.ltd/proxy",
+		Url:           "https://proxy.aworld.ltd:9088/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
@@ -188,7 +189,7 @@ func TestRefreshLoginQRCode(t *testing.T) {
 	draw.Draw(newImg, bounds, img, image.Point{}, draw.Over)
 
 	// 创建JPG文件
-	jpgFile, err := os.Create("/Users/azure/Downloads/output5.jpg")
+	jpgFile, err := os.Create("/Users/azure/Downloads/output6.jpg")
 	if err != nil {
 		panic(err)
 	}

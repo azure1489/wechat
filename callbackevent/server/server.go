@@ -104,11 +104,11 @@ func (srv *Server) handleRequest() error {
 	var msgItemList []message.WcMsgItem
 
 	// sendorrecv: 1=收到的消息,2=发送的消息
-	sendorrecv := gjson.Get(jsonText, "sendorrecv").String()
-	if sendorrecv != "2" {
-		// 不处理发送的消息
-		return srv.messageHandler(msgItemList)
-	}
+	// sendorrecv := gjson.Get(jsonText, "sendorrecv").String()
+	// if sendorrecv != "2" {
+	// 	// 不处理发送的消息
+	// 	return srv.messageHandler(msgItemList)
+	// }
 
 	selfwxid := gjson.Get(jsonText, "selfwxid").String()
 	serverPort := gjson.Get(jsonText, "ServerPort").String()
@@ -428,6 +428,9 @@ func (srv *Server) handleRequest() error {
 		case message.MsgTypeLoginQRCodeRefreshEvent:
 			//表示登陆二维码刷新事件
 			wcMsgItem.EventType = message.PCLoginQrcodeRefreshEvent
+			wcMsgItem.MsgItem = message.QRCode{
+				QRCodeBase64: msgInfo.Get("QRCode_Base64").String(),
+			}
 		case message.MsgTypeLoginWeChatEvent:
 			//表示登陆微信事件
 			wcMsgItem.EventType = message.PCLoginWxEvent
