@@ -57,6 +57,8 @@ const (
 	PCRecvGroupImgMsgEvent EventType = "PCRecvGroupImgMsgEvent"
 	// PC端收到的消息(GIF动图)事件
 	PCRecvGroupGifImgMsgEvent EventType = "PCRecvGroupGifImgMsgEvent"
+	// PC收到的好友确认消息事件
+	PCRecvFriendConfirmationMsgEvent EventType = "PCRecvFriendConfirmationMsgEvent"
 	// PC端收到的消息(语音消息)事件
 	PCRecvGroupVoiceMsgEvent EventType = "PCRecvGroupVoiceMsgEvent"
 	// PC端收到的消息(视频消息)事件

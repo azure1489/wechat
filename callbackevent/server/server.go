@@ -235,7 +235,8 @@ func (srv *Server) handleRequest() error {
 				continue
 			}
 
-			if appMsgXml.AppMsg.Type == "57" {
+			switch appMsgXml.AppMsg.Type {
+			case "57":
 				// 引用消息
 				var quoteMsgXml message.QuoteMsgXml
 				// 字符串转换为xml
@@ -262,8 +263,7 @@ func (srv *Server) handleRequest() error {
 					}
 					wcMsgItem.EventType = message.PCRecvGroupQuoteMsgEvent
 				}
-
-			} else if appMsgXml.AppMsg.Type == "51" {
+			case "51":
 				// 视频号消息
 				var channelsMsgXml message.ChannelsMsgXml
 				// 字符串转换为xml
@@ -287,7 +287,12 @@ func (srv *Server) handleRequest() error {
 					}
 					wcMsgItem.EventType = message.PCRecvGroupChannelsMsgEvent
 				}
+			case "5":
 			}
+
+			// if appMsgXml.AppMsg.Type == "57" {
+			// } else if appMsgXml.AppMsg.Type == "51" {
+			// }
 		case message.MsgTypeGif:
 			// 自定义表情消息 "msgtype":"47",
 			gifMsg := message.Gif{
@@ -327,6 +332,29 @@ func (srv *Server) handleRequest() error {
 				}
 				wcMsgItem.EventType = message.PCRecvGroupGifImgMsgEvent
 			}
+		case message.MsgTypeFriendConfirmation:
+			// "msgtype":"37", PC收到好友确认消息
+			wcMsgItem.EventType = message.PCRecvFriendConfirmationMsgEvent
+
+			var friendConfirmationMsgXml message.FriendConfirmationMsgXml
+			// 字符串转换为xml
+			err := xml.Unmarshal([]byte(msgContent), &friendConfirmationMsgXml)
+			if err != nil {
+				fmt.Printf("xml.Unmarshal err: %v\n", err)
+				continue
+			}
+
+			friendConfirmation := message.FriendConfirmation{
+				V3:           friendConfirmationMsgXml.EncryptUserName,
+				V4:           friendConfirmationMsgXml.Ticket,
+				Content:      friendConfirmationMsgXml.Content,
+				FromUserName: friendConfirmationMsgXml.FromUserName,
+				FromNickName: friendConfirmationMsgXml.FromNickName,
+				HeadImgURL:   friendConfirmationMsgXml.BigHeadImgURL,
+			}
+
+			wcMsgItem.MsgItem = friendConfirmation
+
 		case message.MsgTypeVideo:
 			// "msgtype":"43", PC收到视频消息
 			wcMsgItem.MsgItem = message.Video{
