@@ -27,8 +27,8 @@ type LabelManagerService interface {
 }
 
 type LabelManagerServiceImpl struct {
-	// config *wechat.WechatConfig
-	http common.HttpClientService
+	config *wechat.WechatConfig
+	http   common.HttpClientService
 }
 
 func NewLabelManagerService(config *wechat.WechatConfig) LabelManagerService {
@@ -36,7 +36,7 @@ func NewLabelManagerService(config *wechat.WechatConfig) LabelManagerService {
 	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &LabelManagerServiceImpl{
-		// config: config,
-		http: httpClientService,
+		config: config,
+		http:   httpClientService,
 	}
 }

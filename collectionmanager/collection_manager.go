@@ -13,7 +13,8 @@ type CollectionManagerService interface {
 }
 
 type CollectionManagerServiceImpl struct {
-	http common.HttpClientService
+	config *wechat.WechatConfig
+	http   common.HttpClientService
 }
 
 func NewCollectionManagerService(config *wechat.WechatConfig) CollectionManagerService {
@@ -21,7 +22,7 @@ func NewCollectionManagerService(config *wechat.WechatConfig) CollectionManagerS
 	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &CollectionManagerServiceImpl{
-		// config: config,
-		http: httpClientService,
+		config: config,
+		http:   httpClientService,
 	}
 }

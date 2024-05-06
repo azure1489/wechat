@@ -57,8 +57,8 @@ type ContactManagerService interface {
 }
 
 type ContactManagerServiceImpl struct {
-	// config *wechat.WechatConfig
-	http common.HttpClientService
+	config *wechat.WechatConfig
+	http   common.HttpClientService
 }
 
 func NewContactManagerService(config *wechat.WechatConfig) ContactManagerService {
@@ -66,7 +66,7 @@ func NewContactManagerService(config *wechat.WechatConfig) ContactManagerService
 	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &ContactManagerServiceImpl{
-		// config: config,
-		http: httpClientService,
+		config: config,
+		http:   httpClientService,
 	}
 }

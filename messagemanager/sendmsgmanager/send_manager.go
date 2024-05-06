@@ -47,7 +47,8 @@ type SendMsgManagerService interface {
 }
 
 type SendMsgManagerServiceImpl struct {
-	http common.HttpClientService
+	config *wechat.WechatConfig
+	http   common.HttpClientService
 }
 
 func NewSendMsgManagerService(config *wechat.WechatConfig) SendMsgManagerService {
@@ -55,7 +56,7 @@ func NewSendMsgManagerService(config *wechat.WechatConfig) SendMsgManagerService
 	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &SendMsgManagerServiceImpl{
-		// config: config,
-		http: httpClientService,
+		config: config,
+		http:   httpClientService,
 	}
 }

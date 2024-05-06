@@ -63,7 +63,8 @@ func TestGetWeChatProcessNumber(t *testing.T) {
 		Ip:   "127.0.0.1",
 		Port: "29998",
 		// Url:  "https://proxy.aworld.ltd:9088/proxy",
-		Url:           "https://wx.aworld.ltd/proxy",
+		// Url:           "https://wx.aworld.ltd/proxy",
+		Url:           "https://proxy.aworld.ltd:9682/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}
@@ -114,7 +115,8 @@ func TestGetPortOccupiedInfo(t *testing.T) {
 		Ip:   "127.0.0.1",
 		Port: "29998",
 		// Url:           "https://proxy.aworld.ltd:9088/proxy",
-		Url:           "https://wx.aworld.ltd/proxy",
+		Url: "https://proxy.aworld.ltd:9682/proxy",
+		// Url:           "https://wx.aworld.ltd/proxy",
 		PublicKeyPath: "/Users/azure/git/go-project/text-to-silk/proxy-public.pem",
 		Timeout:       time.Second * 60,
 	}

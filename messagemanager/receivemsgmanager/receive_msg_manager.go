@@ -11,7 +11,8 @@ type ReceiveMsgManagerService interface {
 }
 
 type ReceiveMsgManagerServiceImpl struct {
-	http common.HttpClientService
+	config *wechat.WechatConfig
+	http   common.HttpClientService
 }
 
 func NewReceiveMsgManagerService(config *wechat.WechatConfig) ReceiveMsgManagerService {
@@ -19,7 +20,7 @@ func NewReceiveMsgManagerService(config *wechat.WechatConfig) ReceiveMsgManagerS
 	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &ReceiveMsgManagerServiceImpl{
-		// config: config,
-		http: httpClientService,
+		config: config,
+		http:   httpClientService,
 	}
 }

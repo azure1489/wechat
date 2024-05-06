@@ -63,8 +63,8 @@ type ChatRoomManagerService interface {
 }
 
 type ChatRoomManagerServiceImpl struct {
-	// config *wechat.WechatConfig
-	http common.HttpClientService
+	config *wechat.WechatConfig
+	http   common.HttpClientService
 }
 
 func NewChatRoomManagerService(config *wechat.WechatConfig) ChatRoomManagerService {
@@ -72,7 +72,7 @@ func NewChatRoomManagerService(config *wechat.WechatConfig) ChatRoomManagerServi
 	httpClientService := common.NewHttpClientService(config.Ip, config.Port, config.Url, config.PublicKeyPath, config.Timeout)
 
 	return &ChatRoomManagerServiceImpl{
-		// config: config,
-		http: httpClientService,
+		config: config,
+		http:   httpClientService,
 	}
 }
