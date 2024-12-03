@@ -289,6 +289,22 @@ func (srv *Server) handleRequest() error {
 				}
 			case "5":
 				// 服务通知消息
+				var serviceNoticeXml message.ServiceNoticeXml
+				// 字符串转换为xml
+				err = xml.Unmarshal([]byte(msgContent), &serviceNoticeXml)
+				if err != nil {
+					return err
+				}
+
+				serviceNotice := message.ServiceNotice{
+					Title:       serviceNoticeXml.AppMsg.Title,
+					Description: serviceNoticeXml.AppMsg.Des,
+					AppName:     serviceNoticeXml.AppMsg.MMReader.Category.Item.Title,
+					WeappPath:   serviceNoticeXml.AppMsg.MMReader.Category.Item.WeappPath,
+					WeappUser:   serviceNoticeXml.AppMsg.MMReader.Publisher.Username,
+				}
+
+				wcMsgItem.MsgItem = serviceNotice
 				wcMsgItem.EventType = message.PCServiceNoticeEvent
 			}
 
