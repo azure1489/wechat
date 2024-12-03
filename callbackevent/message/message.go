@@ -108,6 +108,8 @@ const (
 	PCGroupMemberAddEvent EventType = "PCGroupMemberAddEvent"
 	// 朋友圈被点赞事件
 	PCFriendCircleLikeEvent EventType = "PCFriendCircleLikeEvent"
+	// 服务通知事件
+	PCServiceNoticeEvent EventType = "PCServiceNoticeEvent"
 	// 未知事件
 	UnknownEvent EventType = "UnknownEvent"
 )

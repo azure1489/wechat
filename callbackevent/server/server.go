@@ -288,6 +288,8 @@ func (srv *Server) handleRequest() error {
 					wcMsgItem.EventType = message.PCRecvGroupChannelsMsgEvent
 				}
 			case "5":
+				// 服务通知消息
+				wcMsgItem.EventType = message.PCServiceNoticeEvent
 			}
 
 			// if appMsgXml.AppMsg.Type == "57" {
