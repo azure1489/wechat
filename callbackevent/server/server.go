@@ -2,12 +2,8 @@ package server
 
 import (
 	"context"
-	"encoding/base64"
-	"encoding/xml"
 	"fmt"
-	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/azure1489/wechat/callbackevent/message"
 	"github.com/tidwall/gjson"
@@ -47,6 +43,108 @@ func (srv *Server) SetMessageHandler(handler func([]message.WcMsgItem) error) {
 	srv.messageHandler = handler
 }
 
+// interface{} 转 sring
+func stringToFloat64(str string) float64 {
+	f, err := strconv.ParseFloat(str, 64)
+	if err != nil {
+		fmt.Println(err)
+		return 0
+	}
+	return f
+}
+
+// handleRequest 处理微信的请求
+func (srv *Server) handleRequest() error {
+	jsonText := string(srv.RequestRawMsg)
+	var msgItemList []message.WcMsgItem
+
+	// 获取基础信息
+	selfwxid := gjson.Get(jsonText, "selfwxid").String()
+	serverPort := gjson.Get(jsonText, "ServerPort").String()
+
+	// 处理消息列表
+	msgList := gjson.Get(jsonText, "msglist")
+	for _, msgInfo := range msgList.Array() {
+		wcMsgItem, err := srv.processMessage(msgInfo, selfwxid, serverPort)
+		if err != nil {
+			// 记录错误但继续处理其他消息
+			fmt.Printf("Error processing message: %v\n", err)
+			continue
+		}
+		msgItemList = append(msgItemList, wcMsgItem)
+	}
+
+	return srv.messageHandler(msgItemList)
+}
+
+// processMessage 处理单条消息
+func (srv *Server) processMessage(msgInfo gjson.Result, selfwxid, serverPort string) (message.WcMsgItem, error) {
+	// 提取基础消息字段
+	wcMsgItem := srv.extractBasicMessageFields(msgInfo, selfwxid, serverPort)
+
+	// 根据消息类型处理具体内容
+	msgType := message.MsgType(msgInfo.Get("msgtype").String())
+	if err := srv.handleMessageByType(msgType, &wcMsgItem, msgInfo); err != nil {
+		return wcMsgItem, fmt.Errorf("handle message type %s: %w", msgType, err)
+	}
+
+	return wcMsgItem, nil
+}
+
+// extractBasicMessageFields 提取消息基础字段
+func (srv *Server) extractBasicMessageFields(msgInfo gjson.Result, selfwxid, serverPort string) message.WcMsgItem {
+	return message.WcMsgItem{
+		ServerPort: serverPort,
+		SelfWxid:   selfwxid,
+		CommonMsg: message.CommonMsg{
+			MsgSvrid: msgInfo.Get("msgsvrid").String(),
+			Time:     msgInfo.Get("time").String(),
+			Msg:      msgInfo.Get("msg").String(),
+			MsgType:  msgInfo.Get("msgtype").String(),
+			FromType: msgInfo.Get("fromtype").String(),
+			FromId:   msgInfo.Get("fromid").String(),
+			FromName: msgInfo.Get("fromname").String(),
+			Index:    msgInfo.Get("index").String(),
+		},
+		ToCommonMsg: message.ToCommonMsg{
+			ToId:   msgInfo.Get("toid").String(),
+			ToName: msgInfo.Get("toname").String(),
+		},
+		EventType: message.UnknownEvent,
+	}
+}
+
+// handleMessageByType 根据消息类型处理消息
+func (srv *Server) handleMessageByType(msgType message.MsgType, wcMsgItem *message.WcMsgItem, msgInfo gjson.Result) error {
+
+	handlers := map[message.MsgType]func(*message.WcMsgItem, gjson.Result) error{
+		message.MsgTypeText:                    srv.handleMsgTypeText,                    // handle_msg_type_text.go
+		message.MsgTypeImage:                   srv.handleMsgTypeImage,                   // handle_msg_type_image.go
+		message.MsgTypeFileOrAppShareLinkFile:  srv.handleMsgTypeFileOrAppShareLinkFile,  // handle_msg_type_file_or_app_share_link_file.go
+		message.MsgTypeGif:                     srv.handleMsgTypeGif,                     // handle_msg_type_gif.go
+		message.MsgTypeFriendConfirmation:      srv.handleMsgTypeFriendConfirmation,      // handle_msg_type_friend_confirmation.go
+		message.MsgTypeVideo:                   srv.handleMsgTypeVideo,                   // handle_msg_type_video.go
+		message.MsgTypeVoice:                   srv.handleMsgTypeVoice,                   // handle_msg_type_voice.go
+		message.MsgTypeShareCard:               srv.handleMsgTypeShareCard,               // handle_msg_type_share_card.go
+		message.MsgTypeLocation:                srv.handleMsgTypeLocation,                // handle_msg_type_location.go
+		message.MsgTypeShareLocation:           srv.handleMsgTypeShareLocation,           // handle_msg_type_share_location.go
+		message.MsgTypeSystem0:                 srv.handleMsgTypeSystem0,                 // handle_msg_type_system0.go
+		message.MsgTypeSystem2:                 srv.handleMsgTypeSystem2,                 // handle_msg_type_system2.go
+		message.MsgTypeLoginQRCodeRefreshEvent: srv.handleMsgTypeLoginQRCodeRefreshEvent, // handle_msg_type_login_qr_code_refresh_event.go
+		message.MsgTypeLoginWeChatEvent:        srv.handleMsgTypeLoginWeChatEvent,        // handle_msg_type_login_wechat_event.go
+		message.MsgTypeLogoutWeChatEvent:       srv.handleMsgTypeLogoutWeChatEvent,       // handle_msg_type_logout_wechat_event.go
+		message.MsgTypeSwitchChatObject:        srv.handleMsgTypeSwitchChatObject,        // handle_msg_type_switch_chat_object.go
+		message.MsgTypeSwitchContact:           srv.handleMsgTypeSwitchContact,           // handle_msg_type_switch_contact.go
+	}
+
+	handler, exists := handlers[msgType]
+	if !exists {
+		return nil
+	}
+
+	return handler(wcMsgItem, msgInfo)
+}
+
 // getMessage 解析微信返回的消息
 // func (srv *Server) getMessage() (interface{}, error) {
 // 	msg := &message.MsgBody{}
@@ -72,16 +170,6 @@ func (srv *Server) SetMessageHandler(handler func([]message.WcMsgItem) error) {
 // 	return i.(string)
 // }
 
-// interface{} 转 sring
-func stringToFloat64(str string) float64 {
-	f, err := strconv.ParseFloat(str, 64)
-	if err != nil {
-		fmt.Println(err)
-		return 0
-	}
-	return f
-}
-
 // func (srv *Server) getFromType(result gjson.Result) string {
 // 	// fromtype: 1=个人消息,2=群消息
 // 	fromtype := result.Get("fromtype")
@@ -96,465 +184,143 @@ func stringToFloat64(str string) float64 {
 
 // }
 
+// handleMessage 处理单个消息
+// func (s *Server) handleMessage(ctx context.Context, selfwxid, serverPort string, msgItem gjson.Result) error {
+// 	handler, exists := s.getMessageHandler(msgItem.EventType)
+// 	if !exists {
+// 		glog.Printf(ctx, "未知消息类型 MsgType:%s\n%s", msgItem.EventType, msgItem.Msg)
+// 		return nil
+// 	}
+
+// 	return handler(ctx, pcuid, port, msgItem)
+// }
+
+// getMessageHandler 获取消息处理器
+// func (s *Server) getMessageHandler(msgType message.MsgType) (func(string, string, gjson.Result) error, bool) {
+
+// 	handlers := map[message.MsgType]func(*message.WcMsgItem, gjson.Result) error{
+// 		message.MsgTypeText:                    s.handleMsgTypeText,
+// 		message.MsgTypeImage:                   s.handleMsgTypeImage,
+// 		message.MsgTypeFileOrAppShareLinkFile:  s.handleMsgTypeFileOrAppShareLinkFile,
+// 		message.MsgTypeGif:                     s.handleMsgTypeGif,
+// 		message.MsgTypeFriendConfirmation:      s.handleMsgTypeFriendConfirmation,
+// 		message.MsgTypeVideo:                   s.handleMsgTypeVideo,
+// 		message.MsgTypeVoice:                   s.handleMsgTypeVoice,
+// 		message.MsgTypeShareCard:               s.handleMsgTypeShareCard,
+// 		message.MsgTypeShareLocation:           s.handleMsgTypeShareLocation,
+// 		message.MsgTypeSystem0:                 s.handleMsgTypeSystem0,
+// 		message.MsgTypeSystem2:                 s.handleMsgTypeSystem2,
+// 		message.MsgTypeLoginQRCodeRefreshEvent: s.handleMsgTypeLoginQRCodeRefreshEvent,
+// 		message.MsgTypeLoginWeChatEvent:        s.handleMsgTypeLoginWeChatEvent,
+// 		message.MsgTypeLogoutWeChatEvent:       s.handleMsgTypeLogoutWeChatEvent,
+// 		message.MsgTypeSwitchChatObject:        s.handleMsgTypeSwitchChatObject,
+// 		message.MsgTypeSwitchContact:           s.handleMsgTypeSwitchContact,
+// 	}
+
+// 	handler, exists := handlers[msgType]
+// 	return handler, exists
+// }
+
 // HandleRequest 处理微信的请求
-func (srv *Server) handleRequest() error {
-
-	jsonText := string(srv.RequestRawMsg)
-
-	var msgItemList []message.WcMsgItem
-
-	// sendorrecv: 1=收到的消息,2=发送的消息
-	// sendorrecv := gjson.Get(jsonText, "sendorrecv").String()
-	// if sendorrecv != "2" {
-	// 	// 不处理发送的消息
-	// 	return srv.messageHandler(msgItemList)
-	// }
-
-	selfwxid := gjson.Get(jsonText, "selfwxid").String()
-	serverPort := gjson.Get(jsonText, "ServerPort").String()
-
-	msgList := gjson.Get(jsonText, "msglist")
-
-	for _, msgInfo := range msgList.Array() {
-
-		msgContent := msgInfo.Get("msg").String()
-
-		msgsvrid := msgInfo.Get("msgsvrid").String()
-		time := msgInfo.Get("time").String()
-		fromType := msgInfo.Get("fromtype").String()
-		msgType := msgInfo.Get("msgtype").String()
-
-		fromid := msgInfo.Get("fromid").String()
-		fromname := msgInfo.Get("fromname").String()
-
-		toid := msgInfo.Get("toid").String()
-		toname := msgInfo.Get("toname").String()
-
-		wcMsgItem := message.WcMsgItem{
-			ServerPort: serverPort,
-			SelfWxid:   selfwxid,
-			CommonMsg: message.CommonMsg{
-				MsgSvrid: msgsvrid,
-				Time:     time,
-				Msg:      msgContent,
-				MsgType:  msgType,  // 消息类型代码
-				FromType: fromType, // 个人消息=1 群消息=2
-				FromId:   fromid,   // 发送方微信ID
-				FromName: fromname, // 发送方昵称
-				Index:    msgInfo.Get("index").String(),
-			},
-			ToCommonMsg: message.ToCommonMsg{
-				ToId:   toid,
-				ToName: toname,
-			},
-			EventType: message.UnknownEvent,
-		}
-
-		switch message.MsgType(msgType) {
-		case message.MsgTypeText:
-
-			msgSource := msgInfo.Get("msgsource").String()
-
-			wcMsgItem.MsgItem = message.Text{
-				MsgSource: msgSource, // 消息源内容
-			}
-
-			// fromtype: 1=个人消息,2=群消息
-			if fromType == "1" {
-				wcMsgItem.EventType = message.PCRecvTextMsgEvent
-
-			} else if fromType == "2" {
-
-				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-					FromGname: msgInfo.Get("fromgname").String(), // 群名称
-					FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-				}
-
-				hasAt := false
-				if msgSource != "" {
-					var msgSourceXml message.MsgSourceXml
-					// 字符串转换为xml
-					err := xml.Unmarshal([]byte(msgSource), &msgSourceXml)
-					if err == nil {
-
-						atUserList := strings.Split(msgSourceXml.AtUserList, ",")
-
-						wcMsgItem.AtText = message.AtText{
-							AtUserList: atUserList,
-						}
-
-						for _, at := range atUserList {
-							if at == selfwxid {
-								hasAt = true
-								break
-							}
-						}
-					} else {
-						fmt.Printf("xml.Unmarshal err: %v\n", err)
-					}
-				}
-
-				if hasAt {
-					wcMsgItem.EventType = message.PCRecvAtTextMsgEvent
-				} else {
-					wcMsgItem.EventType = message.PCRecvGroupTextMsgEvent
-				}
-			}
-
-		case message.MsgTypeImage:
-			// PC收到图片消息
-			image := message.Image{
-				Info:      msgInfo.Get("info").String(),                     // 消息源内容
-				ImgLen:    stringToFloat64(msgInfo.Get("img_len").String()), // 消息源内容
-				ImgPath:   msgInfo.Get("img_path").String(),                 // 消息源内容
-				ImgBase64: msgInfo.Get("img_base64").String(),               // 消息源内容
-			}
-
-			wcMsgItem.MsgItem = image
-
-			// fromtype: 1=个人消息,2=群消息
-			if fromType == "1" {
-				wcMsgItem.EventType = message.PCRecvImgMsgEvent
-			} else if fromType == "2" {
-				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-					FromGname: msgInfo.Get("fromgname").String(), // 群名称
-					FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-				}
-				wcMsgItem.EventType = message.PCRecvGroupImgMsgEvent
-			}
-		case message.MsgTypeFileOrAppShareLinkFile:
-			// "msgtype":"49"
-
-			msgContent := msgInfo.Get("msg").String()
-
-			var appMsgXml message.AppMsgXml
-			// 字符串转换为xml
-			err := xml.Unmarshal([]byte(msgContent), &appMsgXml)
-			if err != nil {
-				fmt.Printf("xml.Unmarshal err: %v\n", err)
-				continue
-			}
-
-			switch appMsgXml.AppMsg.Type {
-			case "57":
-				// 引用消息
-				var quoteMsgXml message.QuoteMsgXml
-				// 字符串转换为xml
-				err = xml.Unmarshal([]byte(msgContent), &appMsgXml)
-				if err != nil {
-					return err
-				}
-				// quote :=
-				wcMsgItem.MsgItem = message.Quote{
-					MsgSource:    quoteMsgXml.AppMsg.ReferMsg.MsgSource, // 消息源内容
-					QuoteMsg:     quoteMsgXml.AppMsg.ReferMsg.Content,   // 引用的消息内容
-					QuoteMsgType: quoteMsgXml.AppMsg.ReferMsg.Type,      // 引用的消息类型
-					QuoteMsgId:   quoteMsgXml.AppMsg.ReferMsg.Svrid,     // 引用的消息id
-					ReplyMsg:     quoteMsgXml.AppMsg.Title,              // 回复的消息内容
-				}
-
-				// fromtype: 1=个人消息,2=群消息
-				if fromType == "1" {
-					wcMsgItem.EventType = message.PCRecvQuoteMsgEvent
-				} else if fromType == "2" {
-					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-						FromGname: msgInfo.Get("fromgname").String(), // 群名称
-						FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-					}
-					wcMsgItem.EventType = message.PCRecvGroupQuoteMsgEvent
-				}
-			case "51":
-				// 视频号消息
-				var channelsMsgXml message.ChannelsMsgXml
-				// 字符串转换为xml
-				err = xml.Unmarshal([]byte(msgContent), &channelsMsgXml)
-				if err != nil {
-					return err
-				}
-
-				wcMsgItem.MsgItem = message.ChannelsMsg{
-					ObjectId:      channelsMsgXml.AppMsg.FinderFeed.ObjectId,
-					ObjectNonceId: channelsMsgXml.AppMsg.FinderFeed.ObjectNonceId,
-				}
-
-				// fromtype: 1=个人消息,2=群消息
-				if fromType == "1" {
-					wcMsgItem.EventType = message.PCRecvChannelsMsgEvent
-				} else if fromType == "2" {
-					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-						FromGname: msgInfo.Get("fromgname").String(), // 群名称
-						FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-					}
-					wcMsgItem.EventType = message.PCRecvGroupChannelsMsgEvent
-				}
-			case "5":
-				// 服务通知消息
-				var serviceNoticeXml message.ServiceNoticeXml
-				// 字符串转换为xml
-				err = xml.Unmarshal([]byte(msgContent), &serviceNoticeXml)
-				if err != nil {
-					return err
-				}
-
-				serviceNotice := message.ServiceNotice{
-					Title:       serviceNoticeXml.AppMsg.Title,
-					Description: serviceNoticeXml.AppMsg.Des,
-					AppName:     serviceNoticeXml.AppMsg.MMReader.Category.Item.Title,
-					WeappPath:   serviceNoticeXml.AppMsg.MMReader.Category.Item.WeappPath,
-					WeappUser:   serviceNoticeXml.AppMsg.MMReader.Publisher.Username,
-				}
-
-				wcMsgItem.MsgItem = serviceNotice
-				wcMsgItem.EventType = message.PCServiceNoticeEvent
-			}
-
-			// if appMsgXml.AppMsg.Type == "57" {
-			// } else if appMsgXml.AppMsg.Type == "51" {
-			// }
-		case message.MsgTypeGif:
-			// 自定义表情消息 "msgtype":"47",
-			gifMsg := message.Gif{
-				GifPath: msgInfo.Get("gif_path").String(),
-			}
-
-			if emojiMsg, err := getEmojiMsg(msgContent); err == nil {
-
-				gifMsg.CdnURL = emojiMsg.Emoji.CdnURL
-				base64Desc := emojiMsg.Emoji.Desc
-				if base64Desc != "" {
-					// fmt.Println("base64Desc:", base64Desc)
-					if desc, err := decodeString(base64Desc); err == nil {
-						// fmt.Println("decodeString()  desc:", desc)
-						desc = strings.TrimSpace(desc)
-						desc = strings.ReplaceAll(desc, "\n", "")
-						// fmt.Println("decodeString() - TrimSpace  ReplaceAll desc:", desc)
-						if desc2, err := getDesc(desc); err == nil {
-							desc2 = strings.Replace(desc2, "default", "", 1)
-							gifMsg.Desc = desc2
-							// fmt.Println("getDesc() desc2:", desc)
-						}
-
-					}
-				}
-			}
-
-			wcMsgItem.MsgItem = gifMsg
-
-			// fromtype: 1=个人消息,2=群消息
-			if fromType == "1" {
-				wcMsgItem.EventType = message.PCRecvGifImgMsgEvent
-			} else if fromType == "2" {
-				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-					FromGname: msgInfo.Get("fromgname").String(), // 群名称
-					FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-				}
-				wcMsgItem.EventType = message.PCRecvGroupGifImgMsgEvent
-			}
-		case message.MsgTypeFriendConfirmation:
-			// "msgtype":"37", PC收到好友确认消息
-			wcMsgItem.EventType = message.PCRecvFriendConfirmationMsgEvent
-
-			var friendConfirmationMsgXml message.FriendConfirmationMsgXml
-			// 字符串转换为xml
-			err := xml.Unmarshal([]byte(msgContent), &friendConfirmationMsgXml)
-			if err != nil {
-				fmt.Printf("xml.Unmarshal err: %v\n", err)
-				continue
-			}
-
-			friendConfirmation := message.FriendConfirmation{
-				V3:           friendConfirmationMsgXml.EncryptUserName,
-				V4:           friendConfirmationMsgXml.Ticket,
-				Content:      friendConfirmationMsgXml.Content,
-				FromUserName: friendConfirmationMsgXml.FromUserName,
-				FromNickName: friendConfirmationMsgXml.FromNickName,
-				HeadImgURL:   friendConfirmationMsgXml.BigHeadImgURL,
-			}
-
-			wcMsgItem.MsgItem = friendConfirmation
-
-		case message.MsgTypeVideo:
-			// "msgtype":"43", PC收到视频消息
-			wcMsgItem.MsgItem = message.Video{
-				Info:      msgInfo.Get("info").String(), // 消息源内容
-				VideoPath: msgInfo.Get("video_path").String(),
-			}
-
-			// fromtype: 1=个人消息,2=群消息
-			if fromType == "1" {
-				wcMsgItem.EventType = message.PCRecvVideoMsgEvent
-			} else if fromType == "2" {
-				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-					FromGname: msgInfo.Get("fromgname").String(), // 群名称
-					FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-				}
-				wcMsgItem.EventType = message.PCRecvGroupVideoMsgEvent
-			}
-		case message.MsgTypeVoice:
-			// "msgtype":"34", PC收到语音消息
-			wcMsgItem.MsgItem = message.Voice{
-				VoiceLen:  msgInfo.Get("voice_len").String(),
-				VoiceData: msgInfo.Get("voice_data").String(),
-				VoiceHex:  msgInfo.Get("voice_hex").String(),
-			}
-			// fromtype: 1=个人消息,2=群消息
-			if fromType == "1" {
-				wcMsgItem.EventType = message.PCRecvVoiceMsgEvent
-			} else if fromType == "2" {
-				wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-					FromGname: msgInfo.Get("fromgname").String(), // 群名称
-					FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-				}
-				wcMsgItem.EventType = message.PCRecvGroupVoiceMsgEvent
-			}
-		case message.MsgTypeShareCard: // "msgtype":"42",
-			// PC收到名片消息
-			wcMsgItem.EventType = message.PCRecvShareCardMsgEvent
-		case message.MsgTypeLocation: // "msgtype":"48",
-			// PC收到位置消息
-			wcMsgItem.EventType = message.PCRecvLocationMsgEvent
-		case message.MsgTypeShareLocation: // "msgtype":"58",
-			// PC收到共享位置消息
-			wcMsgItem.EventType = message.PCRecvShareLocationMsgEvent
-		case message.MsgTypeSystem0: // "msgtype":"1000", 系统消息
-			// if msgItem.Msg == "位置共享结束" {
-			// PC收到共享位置结束消息
-			// eventType = message.PCRecvEndShareLocationMsgEvent
-			// }
-		case message.MsgTypeSystem2:
-
-			// "msgtype":"10002", 撤回消息
-			// msgContent := msgInfo.Get("msg").String()
-
-			sysMsgXml := message.SysMsgXml{}
-			err := xml.Unmarshal([]byte(msgContent), &sysMsgXml)
-			if err != nil {
-				fmt.Printf("xml.Unmarshal err: %v\n", err)
-				continue
-			}
-			if sysMsgXml.Type == "revokemsg" {
-				// 撤回消息
-				revokeMsgXml := message.RevokeMsgXml{}
-				err = xml.Unmarshal([]byte(msgContent), &sysMsgXml)
-				if err != nil {
-					return err
-				}
-
-				revoke := message.Revoke{
-					RevokeMsg:  msgInfo.Get("revoke_msg").String(),
-					Session:    revokeMsgXml.RevokeMsg.Session,
-					MsgId:      revokeMsgXml.RevokeMsg.MsgId,
-					NewMsgId:   revokeMsgXml.RevokeMsg.NewMsgId,
-					ReplaceMsg: revokeMsgXml.RevokeMsg.ReplaceMsg,
-				}
-				wcMsgItem.MsgItem = revoke
-				if fromType == "1" {
-					wcMsgItem.EventType = message.PCRecvRevokeMsgEvent
-				} else if fromType == "2" {
-					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-						FromGname: msgInfo.Get("fromgname").String(), // 群名称
-						FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-					}
-					wcMsgItem.EventType = message.PCRecvGroupRevokeMsgEvent
-				}
-			} else if sysMsgXml.Type == "paymsg" {
-				// 付款事件
-
-				if fromType == "1" {
-					wcMsgItem.EventType = message.PCRecvPayMsgEvent
-				} else if fromType == "2" {
-					wcMsgItem.CommonGroupMsg = message.CommonGroupMsg{
-						FromGname: msgInfo.Get("fromgname").String(), // 群名称
-						FromGid:   msgInfo.Get("fromgid").String(),   // 群ID
-					}
-					wcMsgItem.EventType = message.PCRecvGroupPayMsgEvent
-				}
-			}
-
-		case message.MsgTypeLoginQRCodeRefreshEvent:
-			//表示登陆二维码刷新事件
-			wcMsgItem.EventType = message.PCLoginQrcodeRefreshEvent
-			wcMsgItem.MsgItem = message.QRCode{
-				QRCodeBase64: msgInfo.Get("QRCode_Base64").String(),
-			}
-		case message.MsgTypeLoginWeChatEvent:
-			//表示登陆微信事件
-			wcMsgItem.EventType = message.PCLoginWxEvent
-		case message.MsgTypeLogoutWeChatEvent:
-			//表示退出登陆微信
-			wcMsgItem.EventType = message.PCLogoutWxEvent
-		case message.MsgTypeSwitchChatObject:
-			//表示切换聊天对象
-			wcMsgItem.EventType = message.PCSwitchChatObjectEvent
-		case message.MsgTypeSwitchContact:
-			//表示切换联系人
-			wcMsgItem.EventType = message.PCSwitchContactEvent
-		}
-
-		msgItemList = append(msgItemList, wcMsgItem)
-
-	}
-	return srv.messageHandler(msgItemList)
-}
-
-// 过去Emoji消息
-func getEmojiMsg(emojiXmlStr string) (*message.EmojiMsg, error) {
-
-	var msg message.EmojiMsg
-	err := xml.Unmarshal([]byte(emojiXmlStr), &msg)
-	if err != nil {
-		fmt.Println("Error unmarshalling XML: ", err)
-		return nil, err
-	}
-
-	// fmt.Printf("Parsed Struct: %+v\n", msg)
-
-	return &msg, nil
-}
-
-// 解码 Base64 字符串
-func decodeString(base64String string) (string, error) {
-
-	// 解码 Base64 字符串
-	data, err := base64.StdEncoding.DecodeString(base64String)
-	if err != nil {
-		fmt.Println("Error decoding string: ", err.Error())
-		return "", err
-	}
-
-	return string(data), nil
-}
-
-func getDesc(desc string) (string, error) {
-
-	// 正则表达式匹配 'zh_cn' 后的任意字符，直到 'zh_tw' 之前
-	re := regexp.MustCompile(`zh_cn\s*(.*?)\s*zh_tw`)
-
-	match := re.FindStringSubmatch(desc)
-	// && len(match) > 1
-	if match != nil {
-		// 去除换行符和额外的空格
-		cleanedText := strings.ReplaceAll(match[1], "\n", "")
-		cleanedText = strings.TrimSpace(cleanedText)
-		cleanedText = compressStr(cleanedText)
-
-		// fmt.Println("Matched Text:", cleanedText)
-
-		return cleanedText, nil
-
-	} else {
-		// fmt.Println("No match found")
-
-		return desc, nil
-	}
-}
-
-// 利用正则表达式压缩字符串，去除空格或制表符
-func compressStr(str string) string {
-	if str == "" {
-		return ""
-	}
-	//匹配一个或多个空白符的正则表达式
-	reg := regexp.MustCompile(`\s+`)
-	return reg.ReplaceAllString(str, "")
-}
+// func (srv *Server) handleRequest() error {
+
+// 	jsonText := string(srv.RequestRawMsg)
+
+// 	var msgItemList []message.WcMsgItem
+
+// 	// sendorrecv: 1=收到的消息,2=发送的消息
+// 	// sendorrecv := gjson.Get(jsonText, "sendorrecv").String()
+// 	// if sendorrecv != "2" {
+// 	// 	// 不处理发送的消息
+// 	// 	return srv.messageHandler(msgItemList)
+// 	// }
+
+// 	selfwxid := gjson.Get(jsonText, "selfwxid").String()
+// 	serverPort := gjson.Get(jsonText, "ServerPort").String()
+
+// 	msgList := gjson.Get(jsonText, "msglist")
+
+// 	for _, msgInfo := range msgList.Array() {
+
+// 		msgContent := msgInfo.Get("msg").String()
+// 		msgsvrid := msgInfo.Get("msgsvrid").String()
+// 		time := msgInfo.Get("time").String()
+// 		fromType := msgInfo.Get("fromtype").String()
+// 		msgType := msgInfo.Get("msgtype").String()
+// 		fromid := msgInfo.Get("fromid").String()
+// 		fromname := msgInfo.Get("fromname").String()
+// 		toid := msgInfo.Get("toid").String()
+// 		toname := msgInfo.Get("toname").String()
+
+// 		wcMsgItem := message.WcMsgItem{
+// 			ServerPort: serverPort,
+// 			SelfWxid:   selfwxid,
+// 			CommonMsg: message.CommonMsg{
+// 				MsgSvrid: msgsvrid,
+// 				Time:     time,
+// 				Msg:      msgContent,
+// 				MsgType:  msgType,  // 消息类型代码
+// 				FromType: fromType, // 个人消息=1 群消息=2
+// 				FromId:   fromid,   // 发送方微信ID
+// 				FromName: fromname, // 发送方昵称
+// 				Index:    msgInfo.Get("index").String(),
+// 			},
+// 			ToCommonMsg: message.ToCommonMsg{
+// 				ToId:   toid,
+// 				ToName: toname,
+// 			},
+// 			EventType: message.UnknownEvent,
+// 		}
+
+// 		switch message.MsgType(msgType) {
+// 		case message.MsgTypeText:
+
+// 		case message.MsgTypeImage:
+
+// 		case message.MsgTypeFileOrAppShareLinkFile:
+// 			// "msgtype":"49"
+
+// 			// if appMsgXml.AppMsg.Type == "57" {
+// 			// } else if appMsgXml.AppMsg.Type == "51" {
+// 			// }
+// 		case message.MsgTypeGif:
+
+// 		case message.MsgTypeFriendConfirmation:
+
+// 		case message.MsgTypeVideo:
+
+// 		case message.MsgTypeVoice:
+
+// 		case message.MsgTypeShareCard: // "msgtype":"42",
+
+// 		case message.MsgTypeLocation: // "msgtype":"48",
+
+// 		case message.MsgTypeShareLocation: // "msgtype":"58",
+
+// 		case message.MsgTypeSystem0: // "msgtype":"1000", 系统消息
+// 			// if msgItem.Msg == "位置共享结束" {
+// 			// PC收到共享位置结束消息
+// 			// eventType = message.PCRecvEndShareLocationMsgEvent
+// 			// }
+// 		case message.MsgTypeSystem2:
+
+// 			// "msgtype":"10002", 撤回消息
+// 			// msgContent := msgInfo.Get("msg").String()
+
+// 		case message.MsgTypeLoginQRCodeRefreshEvent:
+
+// 		case message.MsgTypeLoginWeChatEvent:
+
+// 		case message.MsgTypeLogoutWeChatEvent:
+
+// 		case message.MsgTypeSwitchChatObject:
+
+// 		case message.MsgTypeSwitchContact:
+
+// 		}
+
+// 		msgItemList = append(msgItemList, wcMsgItem)
+
+// 	}
+// 	return srv.messageHandler(msgItemList)
+// }
